@@ -1,0 +1,34 @@
+import React from "react";
+import Navbar from "./Navbar";
+import { Outlet } from "react-router-dom";
+import MenuList from "./MenuList";
+
+const Dashboard = () => {
+  return (
+    <div>
+      <Navbar />
+      <div>
+        <div className="drawer top-16 drawer-mobile">
+          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content">
+            {/* Page content here */}
+            <Outlet/>
+            </div>
+          <div className="drawer-side top-16 ">
+            <label
+              htmlFor="my-drawer"
+              aria-label="close sidebar"
+             className="drawer-overlay"
+            ></label>
+            <ul className="menu p-4 w-60 min-h-full bg-primary text-white">
+              {/* Sidebar content here */}
+             <MenuList/>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
