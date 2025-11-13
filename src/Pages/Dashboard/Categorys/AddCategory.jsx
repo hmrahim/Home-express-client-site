@@ -12,7 +12,7 @@ const AddCategory = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const res = await axios.post("http://localhost:5000/api/category", { data });
+    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/category", { data });
     if (res.status === 200) {
       toast.success("Category created successfully");
       reset();

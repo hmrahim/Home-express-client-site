@@ -8,6 +8,7 @@ import {
   useSendEmailVerification,
 } from "react-firebase-hooks/auth";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 
 const Signup = () => {
   const {
@@ -17,21 +18,24 @@ const Signup = () => {
   } = useForm();
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
-   
+
   const [sendEmailVerification, sending, vError] =
     useSendEmailVerification(auth);
 
   const onSubmit = async (data) => {
-   
     createUserWithEmailAndPassword(data.email, data.password);
+    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/user", {
+      name: data.name,
+      email: data.email,
+    });
 
     if (error) {
       toast.error(error?.message);
     } else {
       const success = await sendEmailVerification();
+
       if (success) {
         toast.success("Verification Email Sent to your email address");
-       
       }
     }
   };

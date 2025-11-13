@@ -10,7 +10,7 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
     const { data, isPending, refetch } = useQuery({
     queryKey: ["category"],
-    queryFn: () => axios.get("http://localhost:5000/api/category"),
+    queryFn: () => axios.get("https://server-site-psi-inky.vercel.app/api/category"),
   });
 
   const {
@@ -35,7 +35,7 @@ const AddProduct = () => {
   };
 
   const onSubmit = async (data) => {
-    const res = await axios.post("http://localhost:5000/api/product", {
+    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/product", {
       ...data,
       image,
     });

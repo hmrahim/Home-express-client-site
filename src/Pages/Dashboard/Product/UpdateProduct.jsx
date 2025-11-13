@@ -2,23 +2,28 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const UpdateProduct = () => {
   const { id } = useParams();
   const [items, setIems] = useState("");
   const [image, setImage] = useState("");
+  const Navigate = useNavigate();
   // console.log(image);
   const { data, isPending, refetch } = useQuery({
     queryKey: ["productbyid"],
-    queryFn: () => axios.get(`http://localhost:5000/api/product/${id}`),
+    queryFn: () =>
+      axios.get(`https://server-site-psi-inky.vercel.app/api/product/${id}`),
   });
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/product/${id}`).then((res) => {
-      setIems(res.data);
-      setImage(res.data.image);
-    });
+    axios
+      .get(`https://server-site-psi-inky.vercel.app/api/product/${id}`)
+      .then((res) => {
+        setIems(res.data);
+        setImage(res.data.image);
+      });
   }, []);
 
   const imgbbKey = "765622b71bed5a179efe4bce6d1d53c8";
@@ -46,14 +51,21 @@ const UpdateProduct = () => {
   };
 
   const onSubmit = async (data) => {
-    const res = await axios.put(`http://localhost:5000/api/product/${id}`, {
-      ...data,
-      image,
-    });
+    const res = await axios.put(
+      `https://server-site-psi-inky.vercel.app/api/product/${id}`,
+      {
+        ...data,
+        image,
+      }
+    );
     if (res.status === 200) {
-      toast.success("Product updated successfully");
+      Swal.fire({
+        title: "Product updated!",
+        icon: "success",
+        draggable: false,
+      });
+      Navigate("/dashboard/all-product");
       reset();
-      
     }
   };
 
@@ -170,7 +182,6 @@ const UpdateProduct = () => {
                       Menufacturer Country
                     </legend>
                     <select
-                    
                       className="select select-success w-full"
                       defaultValue={items.country}
                       {...register("country", {
@@ -182,7 +193,7 @@ const UpdateProduct = () => {
                     >
                       <option disabled={true}>Select Country</option>
                       <option>German</option>
-                      <option >Italy</option>
+                      <option>Italy</option>
                       <option>Saudi</option>
                       <option>Pakistan</option>
                       <option>india</option>
@@ -240,10 +251,8 @@ const UpdateProduct = () => {
                       onChange={imageUpload}
                       type="file"
                       className="file-input file-input-success w-full"
-                  
                     />
                   </fieldset>
-                
                 </div>
                 <div className="rounded-3xl flex justify-center items-center max-h-40 overflow-hidden   mx-w-40 border border-success shadow-2xl">
                   <div>

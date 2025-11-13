@@ -12,7 +12,7 @@ const UpdateCategory = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/category/${id}`)
+      .get(`https://server-site-psi-inky.vercel.app/api/category/${id}`)
       .then((res) => setItem(res.data));
   }, []);
   
@@ -24,7 +24,7 @@ const UpdateCategory = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const res = await axios.put(`http://localhost:5000/api/category/${id}`, {
+    const res = await axios.put(`https://server-site-psi-inky.vercel.app/api/category/${id}`, {
       data,
     });
     if (res.status === 200) {

@@ -6,7 +6,7 @@ import axios from "axios";
 const AllProducts = () => {
   const { data, isPending, refetch } = useQuery({
     queryKey: ["product"],
-    queryFn: () => axios.get("http://localhost:5000/api/product"),
+    queryFn: () => axios.get("https://server-site-psi-inky.vercel.app/api/product"),
   });
 refetch()
   return (

@@ -17,7 +17,7 @@ const PlumbingItems = () => {
       <SectionTitle title="Plumbing Items"/>
       <div className="shadow-md  bg-slate-300 rounded-md pb-3 px-4">
 
-      <div className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 my-2 justify-items-center  my-2 py-4">
+      <div className="grid md:grid-cols-4 lg:grid-cols-6 grid-cols-2 gap-2 my-2 justify-items-center  my-2 py-4">
         <ProductCard img={product2} title="" desc="" price="" />
         <ProductCard img={product3} title="" desc="" price="" />
         <ProductCard img={product4} title="" desc="" price="" />

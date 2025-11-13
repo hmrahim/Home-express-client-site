@@ -56,32 +56,7 @@ const Header = () => {
           </div>
           <a className="btn btn-ghost text-xl">Home Express</a>
         </div>
-        <div className="navbar-center ">
-          <label className=" flex justify-center items-center input bg-primary border-1  border-white">
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </g>
-            </svg>
-
-            <input
-              type="search"
-              placeholder="Search what you want"
-              className="text-white  bg-primary "
-            />
-          </label>
-        </div>
+       {/* ================================================= */}
         <div className="navbar-end hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             {menu}

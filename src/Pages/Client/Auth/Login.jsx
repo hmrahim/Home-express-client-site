@@ -4,10 +4,12 @@ import { useForm } from "react-hook-form";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../../firebase.init";
 import {
+  useAuthState,
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
 import { ToastContainer, toast } from "react-toastify";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const Login = () => {
   const {
@@ -17,6 +19,7 @@ const Login = () => {
   } = useForm();
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
+
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
@@ -28,13 +31,23 @@ const Login = () => {
       navigate(from, { replace: true });
     }
   };
+
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-  const googleSignIn = () => {
+  const googleSignIn = async () => {
     signInWithGoogle();
-    if (gUser) {
-      toast.success("Login Successful");
-    }
+    const res = await axios.post("http://localhost:5000/api/user", {
+      name: gUser.user.displayName,
+      email: gUser.user.email,
+    });
+
+    console.log(res);
+
+    // if (gUser) {
+    //   navigate(from,{ replace: true });
+    //   toast.success("Login Successful");
+    // }
   };
+
   return (
     <div className=" flex justify-center items-center h-screen bg-gray-400 px-5 md:px-0">
       <div
@@ -72,14 +85,13 @@ const Login = () => {
               {errors.email?.type === "pattern" && (
                 <span className="text-red-600">{errors.email.message}</span>
               )}
-              
             </fieldset>
             <fieldset className="fieldset">
               <legend className="fieldset-legend text-white">
                 Enter Your Password
               </legend>
               <input
-                type="text"
+                type="password"
                 className="input w-full "
                 placeholder="Type here"
                 {...register("password", {
@@ -115,7 +127,7 @@ const Login = () => {
               </button>
             </div>
           </form>
-          <button onClick={googleSignIn} className="btn btn-neutral my-3">
+          <button onClick={googleSignIn} className="btn btn-neutral my-3 hidden">
             <img src={google} className="h-6 w-6" alt="" />
             {gLoading ? (
               <span className="loading loading-bars loading-md">

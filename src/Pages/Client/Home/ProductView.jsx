@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import image from "../../../assets/cat-3.jpg";
 import currency from "../../../assets/Saudi_Riyal_Symbol-1.png";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { MdAddLocationAlt } from "react-icons/md";
 import { FaHandHoldingHeart } from "react-icons/fa";
 import { RiGhostSmileLine } from "react-icons/ri";
@@ -9,9 +9,20 @@ import { GiStrong } from "react-icons/gi";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { BsCashCoin } from "react-icons/bs";
 import { FaCcMastercard } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 const ProductView = () => {
   const [count, setCount] = useState("1");
   const qty = Number(count);
+  const { id } = useParams();
+  const { data, isPending, refetch } = useQuery({
+    queryKey: ["productbyid"],
+    queryFn: () =>
+      axios.get(`https://server-site-psi-inky.vercel.app/api/product/${id}`),
+  });
+  const product = data?.data;
+  const discoun = (Number(product?.price) * product?.discount) / 100;
+  const discountPrice = Math.round(Number(product?.price) - discoun);
 
   const incress = () => {
     if (qty <= 0) {
@@ -27,36 +38,60 @@ const ProductView = () => {
       setCount(qty - 1);
     }
   };
+  refetch()
   return (
     <div>
-      <div className="w-11/12 mx-auto my-20 min-h-screen  text-center bg-base-200 ">
+      <div className="w-11/12 mx-auto my-20  text-center bg-base-200 ">
         <div className="shadow-md flex flex-col md:flex-row  md:justify-around pt-4 bg-base-100 rounded-md pb-3 px-4">
           <div className=" md:-[80%] bg-white flex flex-col">
             <div className="flex flex-col md:flex-row">
               <div>
-                <img className="w-96 h-96" src={image} alt="" />
+                <img className="w-96 h-96" src={product?.image} alt="" />
               </div>
               <div className="md:w-[50%] bg-white flex flex-col gap-10">
                 <h1 className="text-2xl font-semibold text-left">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo,
-                  veniam!
+                  {product?.name}
                 </h1>{" "}
                 <div>
-                  <p className="text-left">Category: Electric</p>
-                  <p className="text-left ">Brand: Denis</p>
-                  <p className="text-left ">Menufacturer country : Germany</p>
-                  <h2 className="text-left text-5xl flex gap-2 items-center font-bold my-4">
-                    <img src={currency} className="w-10 h-w-10" alt="" />
-                    20<sub className="text-xl">SAR</sub>
-                  </h2> 
+                  <p className="text-left">Category: {product?.category}</p>
+                  <p className="text-left ">Brand: {product?.brand}</p>
+                  <p className="text-left ">Menufacturer country : {product?.country}</p>
+                  {product?.discount ? (
+                    <h2 className="text-left text-5xl flex gap-2 items-center font-bold my-4">
+                      <img src={currency} className="w-10 h-w-10" alt="" />
+
+                      {discountPrice}
+                      <sub className="text-xl">SAR</sub>
+                    </h2>
+                  ) : (
+                    <h2 className="text-left text-5xl flex gap-2 items-center font-bold my-4">
+                      <img src={currency} className="w-10 h-w-10" alt="" />
+
+                      {product?.price}
+                      <sub className="text-xl">SAR</sub>
+                    </h2>
+                  )}
+
                   <p className="flex">
-                    <del className="to-gray-600 flex  font-semibold items-center gap-2">
-                      <img src={currency} className="w-5 h-5" alt="" />
-                      <p className="text-gray-600 text-xl"> 35</p>
-                    </del>{" "}
-                    <span className="text-xl text-black border border-primary px-2   py-0 ml-4">
-                      -25%
-                    </span>
+                    {product?.discount ? (
+                      <del className="to-gray-600 flex  font-semibold items-center gap-2">
+                        <img src={currency} className="w-5 h-5" alt="" />
+                        <p className="text-gray-600 text-xl">
+                          {" "}
+                          {product?.price}
+                        </p>
+                      </del>
+                    ) : (
+                      ""
+                    )}
+
+                    {product?.discount ? (
+                      <span className="text-xl text-black border border-primary px-2   py-0 ml-4">
+                        -{product?.discount}%
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </p>
                 </div>
                 <div className="w-32 rounded-xl  flex border ">
@@ -130,13 +165,15 @@ const ProductView = () => {
               </div>
               <hr className="mt-1" />
               <h3 className="text-left ml-3 text-gray-500">Payment Methods </h3>
-               <div className="flex  items-center text-xs gap-2 mt-2">
+              <div className="flex  items-center text-xs gap-2 mt-2">
                 <span className="text-xl ml-1">
                   <BsCashCoin />
                 </span>
-                <p>Cash on delivery <br /> Cash Payment</p>
+                <p>
+                  Cash on delivery <br /> Cash Payment
+                </p>
               </div>
-               <div className="flex  items-center text-xs gap-2 mt-2">
+              <div className="flex  items-center text-xs gap-2 mt-2">
                 <span className="text-xl ml-1">
                   <FaCcMastercard />
                 </span>
@@ -148,18 +185,7 @@ const ProductView = () => {
         <div className="bg-white">
           <div className=" px-4">
             <p className="text-justify ">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Similique repellat unde aperiam labore libero nesciunt,
-              reprehenderit atque qui quas, eos illo ad maxime odit quo totam
-              voluptatem magnam sequi adipisci enim harum autem, repellendus
-              fuga commodi explicabo! Quam voluptatem praesentium sapiente
-              nesciunt culpa perspiciatis veniam et ipsam exercitationem
-              quaerat? Cumque facere ducimus, similique quo praesentium
-              necessitatibus natus et laboriosam est corrupti, ratione labore
-              ex, quam quod exercitationem aperiam eum amet quis mollitia enim
-              minus delectus dolorem iste. Autem debitis neque optio quis atque
-              a adipisci alias ducimus est accusantium animi eos ipsum vel
-              eligendi modi corrupti, culpa mollitia officiis earum.
+             {product?.desc}
             </p>
           </div>
           <div className="bg-base-300  mt-5">

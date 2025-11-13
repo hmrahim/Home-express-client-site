@@ -15,6 +15,7 @@ import AddCategory from "../Pages/Dashboard/Categorys/AddCategory";
 import AllCategory from "../Pages/Dashboard/Categorys/AllCategory";
 import UpdateCategory from "../Pages/Dashboard/UpdateCategory";
 import ProductView from "../Pages/Client/Home/ProductView";
+import ALlUsers from "../Pages/Dashboard/Users/ALlUsers";
 
 export const router = createBrowserRouter([
   {
@@ -26,9 +27,9 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path:"product-details/:id",
-        Component:ProductView
-      }
+        path: "product-details/:id",
+        Component: ProductView,
+      },
     ],
   },
   {
@@ -43,7 +44,6 @@ export const router = createBrowserRouter([
     path: "/login",
     element: (
       <LoggedOut>
-        {" "}
         <Login />
       </LoggedOut>
     ),
@@ -66,27 +66,31 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/add-product",
-        Component:AddProduct
+        Component: AddProduct,
       },
       {
         path: "/dashboard/all-product",
-        Component:AllProducts
+        Component: AllProducts,
       },
       {
         path: "/dashboard/update-product/:id",
-        Component:UpdateProduct
+        Component: UpdateProduct,
       },
       {
         path: "/dashboard/add-category",
-        Component:AddCategory
+        Component: AddCategory,
       },
       {
         path: "/dashboard/all-category",
-        Component:AllCategory
+        Component: AllCategory,
       },
       {
         path: "/dashboard/update-category/:id",
-        Component:UpdateCategory
+        Component: UpdateCategory,
+      },
+      {
+        path: "/dashboard/all-users",
+        Component: ALlUsers,
       },
     ],
   },

@@ -6,11 +6,31 @@ const MenuList = () => {
     <div className="flex flex-col gap-2">
       <div className="collapse collapse-plus bg-white border border-base-300">
         <input type="radio" name="my-accordion-det-" defaultChecked />
+        <h1 className="collapse-title font-semibold bg-accent">Users</h1>
+        <div className="collapse-content text-sm">
+          <ul>
+            <li className="text-black rounded-md  hover:bg-primary ">
+              <Link
+                to="/dashboard/all-users"
+                className="hover:text-white mt-1"
+              >
+                All Users
+              </Link>
+            </li>
+          </ul>
+          ;
+        </div>
+      </div>
+      <div className="collapse collapse-plus bg-white border border-base-300">
+        <input type="radio" name="my-accordion-det-" defaultChecked />
         <h1 className="collapse-title font-semibold bg-accent">Products</h1>
         <div className="collapse-content text-sm">
           <ul>
             <li className="text-black rounded-md  hover:bg-primary ">
-              <Link to="/dashboard/all-product" className="hover:text-white mt-1">
+              <Link
+                to="/dashboard/all-product"
+                className="hover:text-white mt-1"
+              >
                 All Products
               </Link>
             </li>
@@ -28,11 +48,14 @@ const MenuList = () => {
       </div>
       <div className="collapse collapse-plus bg-white border border-base-300">
         <input type="radio" name="my-accordion-det-" defaultChecked />
-        <h1 className="collapse-title font-semibold bg-accent">Products</h1>
+        <h1 className="collapse-title font-semibold bg-accent">Category</h1>
         <div className="collapse-content text-sm">
           <ul>
             <li className="text-black rounded-md  hover:bg-primary ">
-              <Link to="/dashboard/all-category" className="hover:text-white mt-1">
+              <Link
+                to="/dashboard/all-category"
+                className="hover:text-white mt-1"
+              >
                 All Categorys
               </Link>
             </li>

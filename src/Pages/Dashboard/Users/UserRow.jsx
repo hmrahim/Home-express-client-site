@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const CategoryRow = ({ index, items, refetch }) => {
+const UserRow = ({ users, refetch, index }) => {
   const deleteCategory = async (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -15,7 +15,9 @@ const CategoryRow = ({ index, items, refetch }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`https://server-site-psi-inky.vercel.app/api/category/${id}`);
+        axios.delete(
+          `https://server-site-psi-inky.vercel.app/api/category/${id}`
+        );
         Swal.fire({
           title: "Deleted!",
           text: "Your file has been deleted.",
@@ -24,20 +26,23 @@ const CategoryRow = ({ index, items, refetch }) => {
       }
     });
   };
-  refetch()
+  refetch();
   return (
     <tr className="bg-base-200 text-center">
       <th>{index + 1}</th>
-      <td>{items.name}</td>
+      <td>{users?.name}</td>
+      <td>{users?.email}</td>
       <td className="flex gap-3 justify-center items-center">
         <Link
-          to={`/dashboard/update-category/${items._id}`}
+          disabled
+          to={`/dashboard/update-category/${users?._id}`}
           className="btn btn-xs btn-primary"
         >
           Edit
         </Link>
         <button
-          onClick={() => deleteCategory(items._id)}
+          disabled
+          onClick={() => deleteCategory(users._id)}
           className="btn btn-xs btn-error"
         >
           Delete
@@ -47,4 +52,4 @@ const CategoryRow = ({ index, items, refetch }) => {
   );
 };
 
-export default CategoryRow;
+export default UserRow;

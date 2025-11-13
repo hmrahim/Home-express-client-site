@@ -11,7 +11,7 @@ import product7 from "../../../assets/cat-7.jpg"
 
 const Featured = () => {
   return (
-    <div className="w-11/12 mx-auto my-20 flex flex-col md:flex-row gap-4 text-center bg-white">
+    <div className="w-11/12 mx-auto mt-5  flex flex-col md:flex-row gap-4 text-center bg-white">
       <div className="md:w-1/5 w-full shadow-md  bg-slate-300 rounded-md ">
         <h1 className="text-2xl font-semibold uppercase  mt-5 mb-3">
           Category
@@ -43,7 +43,7 @@ const Featured = () => {
           Featured Product
         </h1>
         <hr />
-        <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-4 my-2 justify-items-center ">
+        <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2 my-2 justify-items-center ">
           <ProductCard img={product2} title="" desc="" price="" />
           <ProductCard img={product3} title="" desc="" price="" />
           <ProductCard img={product4} title="" desc="" price="" />
