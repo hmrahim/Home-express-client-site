@@ -35,12 +35,12 @@ const Login = () => {
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
   const googleSignIn = async () => {
     signInWithGoogle();
-    const res = await axios.post("http://localhost:5000/api/user", {
+    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/user", {
       name: gUser.user.displayName,
       email: gUser.user.email,
     });
 
-    console.log(res);
+    // console.log(res);
 
     // if (gUser) {
     //   navigate(from,{ replace: true });

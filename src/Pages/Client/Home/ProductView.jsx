@@ -11,7 +11,14 @@ import { BsCashCoin } from "react-icons/bs";
 import { FaCcMastercard } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from "../../../firebase.init";
+import { ToastContainer, toast } from "react-toastify";
 const ProductView = () => {
+  const User = useAuthState(auth);
+  const email = User[0]?.email;
+  const [quty, setQty] = useState("");
+
   const [count, setCount] = useState("1");
   const qty = Number(count);
   const { id } = useParams();
@@ -38,7 +45,27 @@ const ProductView = () => {
       setCount(qty - 1);
     }
   };
-  refetch()
+
+  const addToCart = async () => {
+    const items = {
+      name: data.data.name,
+      id: data.data._id,
+      email: email,
+      price: data.data.price,
+      discount: data.data.discount,
+      quantity: count,
+      image: data.data.image,
+    };
+
+    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/cart", items);
+    if (res.data.error === 400) {
+      toast.error(res.data.message);
+    }
+    if (res.data.success === 200) {
+      toast.success(res.data.message);
+    }
+  };
+
   return (
     <div>
       <div className="w-11/12 mx-auto my-20  text-center bg-base-200 ">
@@ -55,7 +82,9 @@ const ProductView = () => {
                 <div>
                   <p className="text-left">Category: {product?.category}</p>
                   <p className="text-left ">Brand: {product?.brand}</p>
-                  <p className="text-left ">Menufacturer country : {product?.country}</p>
+                  <p className="text-left ">
+                    Menufacturer country : {product?.country}
+                  </p>
                   {product?.discount ? (
                     <h2 className="text-left text-5xl flex gap-2 items-center font-bold my-4">
                       <img src={currency} className="w-10 h-w-10" alt="" />
@@ -118,9 +147,12 @@ const ProductView = () => {
                   <Link className="btn  rounded-none md:px-20 btn-error">
                     Buy Now
                   </Link>
-                  <Link className="btn  rounded-none md:px-20 btn-primary">
+                  <button
+                    onClick={addToCart}
+                    className="btn  rounded-none md:px-20 btn-primary"
+                  >
                     Add TO cart
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
@@ -184,9 +216,7 @@ const ProductView = () => {
         </div>
         <div className="bg-white">
           <div className=" px-4">
-            <p className="text-justify ">
-             {product?.desc}
-            </p>
+            <p className="text-justify ">{product?.desc}</p>
           </div>
           <div className="bg-base-300  mt-5">
             <h1 className="text-2xl text-gray-700 py-2 font-semibold  w-full">
@@ -195,6 +225,7 @@ const ProductView = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

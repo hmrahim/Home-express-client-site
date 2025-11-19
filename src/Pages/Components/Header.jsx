@@ -1,9 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { FaCartPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
+import auth from "../../firebase.init";
 
 const Header = () => {
+  const User = useAuthState(auth);
+  const email = User[0]?.email;
+
+  const { data, isPending, refetch } = useQuery({
+    queryKey: ["cartlength"],
+    queryFn: () => axios.get(`https://server-site-psi-inky.vercel.app/api/cart/${email}`),
+  });
+  refetch();
   const menu = (
     <>
       <li>
@@ -20,14 +33,16 @@ const Header = () => {
         <a>Contact</a>
       </li>
       <li>
-        <Link className="" to="/dashboard">Dashboard</Link>
+        <Link className="" to="/dashboard">
+          Dashboard
+        </Link>
       </li>
     </>
   );
-  
+
   return (
     <div>
-      <div className="navbar bg-primary text-base-100 shadow-sm fixed top-0 z-10 opacity-95">
+      <div className="navbar bg-primary text-base-100 shadow-sm fixed flex justify-between top-0 z-10 opacity-95">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -56,18 +71,19 @@ const Header = () => {
           </div>
           <a className="btn btn-ghost text-xl">Home Express</a>
         </div>
-       {/* ================================================= */}
+        {/* ================================================= */}
         <div className="navbar-end hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
-            {menu}
-            <div className="flex justify-center items-center ">
-              
-                
-              
-              
-             
-            </div>
-          </ul>
+          <ul className="menu menu-horizontal px-1">{menu}</ul>
+        </div>
+        <div className="flex justify-center items-center ">
+          <Link to="cart" className="btn ">
+            {isPending ? (
+              <span className="loading loading-ring loading-xs"></span>
+            ) : (
+              data.data.length
+            )}
+            <FaCartPlus className="text-2xl text-primary" />
+          </Link>
         </div>
       </div>
       <ToastContainer />

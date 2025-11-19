@@ -7,7 +7,7 @@ import PaintingItems from "./PaintingItems";
 
 const Home = () => {
   return (
-    <div className="">
+    <div className=" ">
       <Banner />
       <div className="flex justify-center items-center mt-5 px-5">
         <label className="input flex items-center gap-3 border-2 border-primary md:w-1/2 w-full    bg-gray-300">

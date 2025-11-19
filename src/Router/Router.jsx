@@ -16,6 +16,8 @@ import AllCategory from "../Pages/Dashboard/Categorys/AllCategory";
 import UpdateCategory from "../Pages/Dashboard/UpdateCategory";
 import ProductView from "../Pages/Client/Home/ProductView";
 import ALlUsers from "../Pages/Dashboard/Users/ALlUsers";
+import Cart from "../Pages/Cart/Cart";
+import CustomarInfo from "../Pages/Cart/CustomarInfo";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +32,17 @@ export const router = createBrowserRouter([
         path: "product-details/:id",
         Component: ProductView,
       },
+      {
+        path: "cart",
+        element:<Cart/>,
+        children:[
+          {
+            path:"/cart/customar-info",
+            Component:CustomarInfo
+          }
+        ]
+      },
+   
     ],
   },
   {

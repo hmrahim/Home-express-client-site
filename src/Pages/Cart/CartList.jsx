@@ -1,0 +1,144 @@
+import axios from "axios";
+import React, { useState } from "react";
+import { GoTrash } from "react-icons/go";
+import { toast, ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
+import ToolTop from "../Components/ToolTip/ToolTop";
+
+const CartList = ({ cart, refetch }) => {
+  const discountPrice = (Number(cart.price) * Number(cart.discount)) / 100;
+
+  const [count, setCount] = useState(cart.quantity);
+  const qty = Number(count);
+  const incress = async (id) => {
+    if (qty <= 0) {
+      return false;
+    } else {
+      setCount(qty + 1);
+    }
+
+    const res = await axios.put(
+      `https://server-site-psi-inky.vercel.app/api/cart/${id}`,
+      {
+        quantity: Number(count) + 1,
+      }
+    );
+    if (res.status === 200) {
+      toast.success("Quantity Incresed");
+    }
+  };
+  const decress = async (id) => {
+    if (qty <= 1) {
+      return false;
+    } else {
+      setCount(qty - 1);
+    }
+    const res = await axios.put(
+      `https://server-site-psi-inky.vercel.app/api/cart/${id}`,
+      {
+        quantity: Number(count) - 1,
+      }
+    );
+    if (res.status === 200) {
+      toast.warning("Quantity Decresed");
+    }
+  };
+  const deleteCart = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`https://server-site-psi-inky.vercel.app/api/cart/${id}`);
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+    });
+  };
+
+  refetch();
+  return (
+    <tr className="font-sans ">
+      <td className="text-center">
+        <div>
+          <img className="size-10 rounded-box" src={cart.image} />
+        </div>
+      </td>
+      <td className="text-center"> 
+        <div>
+          <h1 className="">{cart.name}</h1>
+        </div>
+      </td>
+      <td  className="text-center ">
+        <div className="relative border-primary border flex flex-row flex-row-reverse justify-center items-center w-fit px-2 rounded-lg">
+          <h3 className="text-xl font-bold ">
+            {cart.discount ? cart.price - discountPrice : cart.price}
+            <sub className="text-xs">sr</sub>
+          </h3>
+          {cart.discount ? (
+            <p className="text-gray-500">
+              <del> {cart.price}</del>
+              <sub></sub>
+            </p>
+          ) : (
+            ""
+          )}
+          {
+            cart.discount ? <ToolTop discount={cart.discount}/> : ""
+          }
+          
+        </div>
+      </td>
+      <td className="text-center">
+        <div className="w-32 rounded-xl  flex gap-2 ">
+          <button
+            onClick={() => decress(cart._id)}
+            className="btn btn-xs btn-square font-bold btn-primary font-bold"
+          >
+            -
+          </button>
+          <input
+            type=""
+            disabled
+            value={count}
+            className="text-center h-6 w-4  "
+          />
+          <button
+            onClick={() => incress(cart._id)}
+            className="btn btn-xs btn-square  font-extrabold btn-primary"
+          >
+            +
+          </button>
+        </div>
+      </td>
+      <td className="text-center">
+        <h1 className="font-bold text-lg">
+          {cart.discount
+            ? cart.price * cart.quantity - discountPrice * Number(cart.quantity)
+            : Number(cart.price) * Number(cart.quantity)}
+          <sub>sr</sub>
+        </h1>
+      </td>
+      <td className="text-center">
+        <button className="btn btn-sm">
+          <GoTrash
+            className="text-red-600 font-bold cursor-pointer"
+            onClick={() => deleteCart(cart._id)}
+          />
+        </button>
+      </td>
+      <ToastContainer />
+    </tr>
+  );
+};
+
+export default CartList;
