@@ -18,6 +18,14 @@ import ProductView from "../Pages/Client/Home/ProductView";
 import ALlUsers from "../Pages/Dashboard/Users/ALlUsers";
 import Cart from "../Pages/Cart/Cart";
 import CustomarInfo from "../Pages/Cart/CustomarInfo";
+import Payment from "../Pages/Cart/Payment";
+import SkipInfo from "./SkipInfo";
+import AuthClient from "../Pages/Dashboard/AuthClient/AuthClient";
+import LoginClient from "../Pages/Dashboard/AuthClient/LoginClient";
+import SignUpClient from "../Pages/Dashboard/AuthClient/SignUpClient";
+import ResetClientPassword from "../Pages/Dashboard/AuthClient/ResetClientPassword";
+import CustomersDashboard from "../Pages/Dashboard/Customers-Dashboard/CustomersDashboard";
+import Orders from "../Pages/Dashboard/Orders/Orders";
 
 export const router = createBrowserRouter([
   {
@@ -34,15 +42,23 @@ export const router = createBrowserRouter([
       },
       {
         path: "cart",
-        element:<Cart/>,
-        children:[
+        element: <Cart />,
+        children: [
           {
-            path:"/cart/customar-info",
-            Component:CustomarInfo
-          }
-        ]
+            path: "/cart/customar-info",
+            element: (
+              <SkipInfo>
+                {" "}
+                <CustomarInfo />
+              </SkipInfo>
+            ),
+          },
+          {
+            path: "/cart/payment",
+            Component: Payment,
+          },
+        ],
       },
-   
     ],
   },
   {
@@ -60,6 +76,20 @@ export const router = createBrowserRouter([
         <Login />
       </LoggedOut>
     ),
+  },
+  {
+    path: "/auth-client",
+    element: <AuthClient />,
+    children: [
+      {
+        path: "/auth-client/signup-client",
+        Component: SignUpClient,
+      },
+      {
+        path: "/auth-client/client-reset-password",
+        Component: ResetClientPassword,
+      },
+    ],
   },
   {
     path: "/resetpass",
@@ -104,6 +134,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/all-users",
         Component: ALlUsers,
+      },
+      {
+        path: "/dashboard/orders",
+        Component: Orders
       },
     ],
   },

@@ -3,15 +3,20 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
+import { fetchAllCategorys } from "../../../api/AllApi";
+import { countryApi } from "../../../api/countryApi";
 
 const AddProduct = () => {
   const imgbbKey = "765622b71bed5a179efe4bce6d1d53c8";
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
-    const { data, isPending, refetch } = useQuery({
-    queryKey: ["category"],
-    queryFn: () => axios.get("https://server-site-psi-inky.vercel.app/api/category"),
-  });
+      const { data, isPending, refetch } = useQuery({
+        queryKey: ["AllCategory"],
+        queryFn: fetchAllCategorys,
+        refetchInterval:1000
+      })
+
+      
 
   const {
     register,
@@ -93,7 +98,7 @@ const AddProduct = () => {
                   >
                     <option disabled={true}>Select Category</option>
                     {
-                      data?.data?.map((category)=>    <option value={category.name} >{category.name}</option>)
+                      data?.map((category)=>    <option value={category.name} >{category.name}</option>)
                     }
                  
                     
@@ -164,11 +169,11 @@ const AddProduct = () => {
                     })}
                   >
                     <option disabled={true}>Select Country</option>
-                    <option>German</option>
-                    <option>Italy</option>
-                    <option>Saudi</option>
-                    <option>Pakistan</option>
-                    <option>india</option>
+                    {
+                      countryApi?.map((country,index)=>   <option value={country.name} >{country.name}</option>)
+                    }
+                  
+                  
                   </select>
                 </fieldset>
                 {errors.country?.type === "required" && (

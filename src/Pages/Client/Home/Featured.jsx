@@ -1,15 +1,24 @@
 import React from "react";
 import ProductCard from "../../Components/ProductCard";
-import product2 from "../../../assets/cat-2.jpg"
-import product3 from "../../../assets/cat-3.jpg"
-import product4 from "../../../assets/cat-4.jpg"
-import product5 from "../../../assets/cat-5.jpg"
-import product6 from "../../../assets/cat-6.jpg"
-import product7 from "../../../assets/cat-7.jpg"
-
-
+import product2 from "../../../assets/cat-2.jpg";
+import product3 from "../../../assets/cat-3.jpg";
+import product4 from "../../../assets/cat-4.jpg";
+import product5 from "../../../assets/cat-5.jpg";
+import product6 from "../../../assets/cat-6.jpg";
+import product7 from "../../../assets/cat-7.jpg";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductForUser } from "../../../api/AllApi";
+import Loader from "../../Components/Loader/Loader";
+import CardLoader from "../../Components/CardLoader";
 
 const Featured = () => {
+  const { data, isPending, refetch } = useQuery({
+    queryKey: ["featuredItem"],
+    queryFn: fetchProductForUser,
+    refetchInterval: 1000,
+  });
+  const featured = data?.filter((elec) => elec.category === "Featured");
+
   return (
     <div className="w-11/12 mx-auto mt-5  flex flex-col md:flex-row gap-4 text-center bg-white">
       <div className="md:w-1/5 w-full shadow-md  bg-slate-300 rounded-md ">
@@ -34,7 +43,6 @@ const Featured = () => {
                 Painting
               </a>
             </li>
-           
           </ul>
         </div>
       </div>
@@ -43,15 +51,27 @@ const Featured = () => {
           Featured Product
         </h1>
         <hr />
-        <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2 my-2 justify-items-center ">
-          <ProductCard img={product2} title="" desc="" price="" />
-          <ProductCard img={product3} title="" desc="" price="" />
-          <ProductCard img={product4} title="" desc="" price="" />
-          <ProductCard img={product5} title="" desc="" price="" />
-          <ProductCard img={product6} title="" desc="" price="" />
-          <ProductCard img={product7} title="" desc="" price="" />
-          
+        {
+          isPending ? 
+          <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2 my-2 justify-items-center ">
+            <CardLoader/>
+            <CardLoader/>
+            <CardLoader/>
+            <CardLoader/>
+         
         </div>
+        : 
+       
+        <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2 my-2 justify-items-center ">
+          <>
+            {
+              featured.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))
+            }
+          </>
+        </div>
+         }
       </div>
     </div>
   );

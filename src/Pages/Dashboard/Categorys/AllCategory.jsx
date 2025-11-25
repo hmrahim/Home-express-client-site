@@ -2,11 +2,13 @@ import React from "react";
 import CategoryRow from "./CategoryRow";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { fetchAllCategorys } from "../../../api/AllApi";
 
 const AllCategory = () => {
   const { data, isPending, refetch } = useQuery({
-    queryKey: ["category"],
-    queryFn: () => axios.get("https://server-site-psi-inky.vercel.app/api/category"),
+    queryKey: ["AllCategory"],
+    queryFn: fetchAllCategorys,
+    refetchInterval:1000
   });
 
   return (
@@ -32,7 +34,7 @@ const AllCategory = () => {
               </thead>
             
               <tbody>
-                {data?.data?.map((category, index) => (
+                {data?.map((category, index) => (
                   <CategoryRow
                     key={category._id}
                     index={index}

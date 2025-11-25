@@ -1,0 +1,8 @@
+.metallic-text {
+  font-size: 36px;
+  font-weight: 900;
+  background: linear-gradient(157deg, #232729 16%, #161718 21%, #013c10 49%, #000000 69%, #147500 96%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

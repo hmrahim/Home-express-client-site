@@ -9,7 +9,7 @@ const CartDetails = ({data,title,isPending,refetch}) => {
               Cart Details
             </h1>{" "}
             <hr classNamep="h-1 bg-primary mb-3" />
-            {data?.data[0] ? (
+            {data?.[0] ? (
               <div className="overflow-x-auto flex justify-center items-center">
                 {isPending ? (
                   <Loader display={``} />
@@ -27,7 +27,7 @@ const CartDetails = ({data,title,isPending,refetch}) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data?.data.map((cart) => (
+                      {data?.map((cart) => (
                         <CartList
                           key={cart._id}
                           cart={cart}

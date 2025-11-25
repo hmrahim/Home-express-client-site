@@ -6,13 +6,16 @@ import auth from "../../firebase.init";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CustomarInfo = () => {
+  const navigate = useNavigate()
   const user = useAuthState(auth);
   const email = user[0]?.email;
   const { data, isPending, refetch } = useQuery({
     queryKey: ["user"],
-    queryFn: () => axios.get(`http://localhost:5000/api/user/${email}`),
+    queryFn: () => axios.get(`https://server-site-psi-inky.vercel.app/api/user/${email}`),
   });
 
   const {
@@ -22,15 +25,15 @@ const CustomarInfo = () => {
     reset,
   } = useForm();
   const onSubmit = async (data) => {
-    const res = await axios.post("http://localhost:5000/api/confirm-order", {
+    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/confirm-order", {
       data,
     });
-    // if (res.status === 200) {
-    //   toast.success("Category created successfully");
-    //   reset();
-    // }
-
-    console.log(res.status);
+  
+    if (res.status === 200) {
+      toast.success("Information added succesfully, please choice a payment method");
+      reset();
+      navigate("/cart/payment")
+    }
   };
 
   return (
@@ -225,7 +228,7 @@ const CustomarInfo = () => {
                   >
                     Address
                   </label>
-                     {errors.address?.type === "required" && (
+                  {errors.address?.type === "required" && (
                     <span className="mt-1 text-sm text-red-600">
                       {errors.address.message}
                     </span>

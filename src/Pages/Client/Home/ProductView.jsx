@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import image from "../../../assets/cat-3.jpg";
 import currency from "../../../assets/Saudi_Riyal_Symbol-1.png";
 import { Link, useParams } from "react-router-dom";
@@ -14,9 +14,14 @@ import axios from "axios";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
 import { ToastContainer, toast } from "react-toastify";
+import AuthClient from "../../Dashboard/AuthClient/AuthClient";
+import { AuthContext } from "../../Dashboard/AuthClient/AuthContext";
 const ProductView = () => {
-  const User = useAuthState(auth);
-  const email = User[0]?.email;
+  const { email,rol } = useContext(AuthContext);
+  // console.log(email,rol);
+
+  // const User = useAuthState(auth);
+  // const email = User[0]?.email;
   const [quty, setQty] = useState("");
 
   const [count, setCount] = useState("1");
@@ -57,7 +62,10 @@ const ProductView = () => {
       image: data.data.image,
     };
 
-    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/cart", items);
+    const res = await axios.post(
+      "https://server-site-psi-inky.vercel.app/api/cart",
+      items
+    );
     if (res.data.error === 400) {
       toast.error(res.data.message);
     }
@@ -72,6 +80,7 @@ const ProductView = () => {
         <div className="shadow-md flex flex-col md:flex-row  md:justify-around pt-4 bg-base-100 rounded-md pb-3 px-4">
           <div className=" md:-[80%] bg-white flex flex-col">
             <div className="flex flex-col md:flex-row">
+              <AuthClient />
               <div>
                 <img className="w-96 h-96" src={product?.image} alt="" />
               </div>
@@ -147,12 +156,21 @@ const ProductView = () => {
                   <Link className="btn  rounded-none md:px-20 btn-error">
                     Buy Now
                   </Link>
-                  <button
-                    onClick={addToCart}
-                    className="btn  rounded-none md:px-20 btn-primary"
-                  >
-                    Add TO cart
-                  </button>
+                  {email ? (
+                    <button
+                      onClick={addToCart}
+                      className="btn  rounded-none md:px-20 btn-primary"
+                    >
+                      Add TO cart
+                    </button>
+                  ) : (
+                    <label
+                      htmlFor="my_modal_6"
+                      className="btn rounded-none md:px-20 btn-primary text-center"
+                    >
+                      Add To Cart
+                    </label>
+                  )}
                 </div>
               </div>
             </div>

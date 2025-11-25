@@ -19,7 +19,7 @@ const Login = () => {
   } = useForm();
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
-
+// console.log(user);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
@@ -40,12 +40,7 @@ const Login = () => {
       email: gUser.user.email,
     });
 
-    // console.log(res);
-
-    // if (gUser) {
-    //   navigate(from,{ replace: true });
-    //   toast.success("Login Successful");
-    // }
+ 
   };
 
   return (

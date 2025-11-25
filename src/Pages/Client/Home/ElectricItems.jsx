@@ -10,31 +10,43 @@ import ProductCard from "../../Components/ProductCard";
 import SeeAll from "../../Components/SeeAll";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { fetchProductForUser } from "../../../api/AllApi";
+import CardLoader from "../../Components/CardLoader";
 
 const ElectricItems = () => {
-  const { data, isPending, refetch } = useQuery({
-    queryKey: ["productHome"],
-    queryFn: () =>
-      axios.get("https://server-site-psi-inky.vercel.app/api/product"),
+  const { data, isPending ,refetch} = useQuery({
+    queryKey: ["ElectricItems"],
+    queryFn: fetchProductForUser,
+    refetchInterval:1000
   });
-  const electric = data?.data.filter(elec => elec.category === "Electric")
+  const electric = data?.filter(elec => elec.category === "Electric")
+  // refetch()
+  // console.log(electric);
   return (
     <div className="w-11/12 mx-auto my-20  text-center bg-white ">
       <SectionTitle title="Electric Items" />
       <div className="shadow-md  bg-slate-300 rounded-md pb-3 px-4">
-        <div className="grid md:grid-cols-4  lg:grid-cols-6  grid-cols-2 gap-4 my-2 justify-items-center  my-2 py-4">
-          { 
-          isPending ? "Loading...." :
-          electric.map((product) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-              refetch={refetch}
-            />
-          ))
-            
-          }
+        {
+          isPending ? 
+           <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2 my-2 justify-items-center ">
+            <CardLoader/>
+            <CardLoader/>
+            <CardLoader/>
+            <CardLoader/>
+         
         </div>
+        : 
+       
+        <div className="grid md:grid-cols-4  lg:grid-cols-6  grid-cols-2 gap-4 my-2 justify-items-center  my-2 py-4 ">
+          <>
+            {
+              electric.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))
+            }
+          </>
+        </div>
+         }
         <SeeAll />
       </div>
     </div>

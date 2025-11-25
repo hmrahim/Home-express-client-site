@@ -24,10 +24,13 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     createUserWithEmailAndPassword(data.email, data.password);
-    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/user", {
-      name: data.name,
-      email: data.email,
-    });
+    const res = await axios.post(
+      "https://server-site-psi-inky.vercel.app/api/user",
+      {
+        name: data.name,
+        email: data.email,
+      }
+    );
 
     if (error) {
       toast.error(error?.message);

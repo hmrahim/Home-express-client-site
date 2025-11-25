@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { fetchAllCategorys } from "../../../api/AllApi";
+import { countryApi } from "../../../api/countryApi";
 
 const UpdateProduct = () => {
   const { id } = useParams();
@@ -25,6 +27,17 @@ const UpdateProduct = () => {
         setImage(res.data.image);
       });
   }, []);
+
+  const {
+    data: data1,
+    isPending: isPending1,
+    refetch: refetch1,
+  } = useQuery({
+    queryKey: ["AllCategory"],
+    queryFn: fetchAllCategorys,
+    refetchInterval: 1000,
+  });
+  console.log(data1);
 
   const imgbbKey = "765622b71bed5a179efe4bce6d1d53c8";
 
@@ -109,7 +122,6 @@ const UpdateProduct = () => {
                       Product category
                     </legend>
                     <select
-                      defaultValue={items.category}
                       className="select select-success w-full"
                       {...register("category", {
                         required: {
@@ -119,10 +131,9 @@ const UpdateProduct = () => {
                       })}
                     >
                       <option disabled={true}>Select Category</option>
-                      <option>Electric</option>
-                      <option>Plamber</option>
-                      <option>Paint</option>
-                      <option>Tools</option>
+                      {data1?.map((category) => (
+                        <option value={category.name} selected={items.category === category.name ? true: false} >{category.name}</option>
+                      ))}
                     </select>
                   </fieldset>
                   {/* {errors.category?.type === "required" && (
@@ -192,11 +203,11 @@ const UpdateProduct = () => {
                       })}
                     >
                       <option disabled={true}>Select Country</option>
-                      <option>German</option>
-                      <option>Italy</option>
-                      <option>Saudi</option>
-                      <option>Pakistan</option>
-                      <option>india</option>
+                      {
+                        countryApi?.map((country)=>  <option value={country.name} selected={items.country=== country.name ? true : false }  >{country.name}</option>)
+                      }
+                     
+                     
                     </select>
                   </fieldset>
                   {errors.country?.type === "required" && (

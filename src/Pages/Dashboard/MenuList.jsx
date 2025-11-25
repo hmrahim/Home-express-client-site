@@ -10,10 +10,7 @@ const MenuList = () => {
         <div className="collapse-content text-sm">
           <ul>
             <li className="text-black rounded-md  hover:bg-primary ">
-              <Link
-                to="/dashboard/all-users"
-                className="hover:text-white mt-1"
-              >
+              <Link to="/dashboard/all-users" className="hover:text-white mt-1">
                 All Users
               </Link>
             </li>
@@ -67,6 +64,24 @@ const MenuList = () => {
                 Add Category
               </Link>
             </li>
+          </ul>
+          ;
+        </div>
+      </div>
+      <div className="collapse collapse-plus bg-white border border-base-300">
+        <input type="radio" name="my-accordion-det-" defaultChecked />
+        <h1 className="collapse-title font-semibold bg-accent">Orders</h1>
+        <div className="collapse-content text-sm">
+          <ul>
+            <li className="text-black rounded-md  hover:bg-primary ">
+              <Link
+                to="/dashboard/orders"
+                className="hover:text-white mt-1"
+              >
+                All Orders
+              </Link>
+            </li>
+           
           </ul>
           ;
         </div>
