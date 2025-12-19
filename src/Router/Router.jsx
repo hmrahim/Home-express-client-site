@@ -37,6 +37,11 @@ import Profile from "../Pages/Dashboard/Customers-Dashboard/Profile";
 import Wallet from "../Pages/Dashboard/Customers-Dashboard/Wallet";
 import DeliveryHistory from "../Pages/Dashboard/Customers-Dashboard/DeliveryHistory";
 import CurrentOrders from "../Pages/Dashboard/Customers-Dashboard/CurrentOrders";
+import Settings from "../Pages/Dashboard/Settings";
+import PolicyLayout from "../Pages/Policies/PolicyLayout";
+import PrivacyPolicy from "../Pages/Policies/PrivacyPolicy";
+import TermsConditions from "../Pages/Policies/TermsConditions";
+import RefundPolicy from "../Pages/Policies/RefundPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -146,6 +151,13 @@ export const router = createBrowserRouter([
         path: "/dashboard/all-users",
         Component: ALlUsers,
       },
+     {
+        path:"/dashboard/settings",
+        Component:Settings,
+      
+      },
+
+
       {
         path: "/dashboard/orders",
         Component: Orders,
@@ -172,6 +184,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      
       {
         path: "/dashboard",
         Component: "",
@@ -202,6 +215,29 @@ export const router = createBrowserRouter([
           },
         ],
       },
+     
     ],
   },
+  {
+    path:"/policies",
+    Component:PolicyLayout,
+    children:[
+      {
+        path:"/policies/privacy-policy",
+        Component:PrivacyPolicy
+      },
+      {
+        path:"/policies",
+        Component:PrivacyPolicy
+      },
+      {
+        path:"/policies/terms-conditions",
+        Component:TermsConditions
+      },
+      {
+        path:"/policies/refund-policy",
+        Component:RefundPolicy
+      }
+    ]
+  }
 ]);

@@ -2,13 +2,13 @@ import axios from "axios";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 
-//  const api = axios.create({
-//     baseURL: "https://server-site-psi-inky.vercel.app/api",
-//   });
+ const api = axios.create({
+    baseURL: "https://server-site-psi-inky.vercel.app/api",
+  });
 
-const api = axios.create({
-  baseURL: " http://localhost:5000/api",
-});
+// const api = axios.create({
+//   baseURL: " http://localhost:5000/api",
+// });
 
 export const fetchRider = async () => {
   const res = await api.get(`/riders`);

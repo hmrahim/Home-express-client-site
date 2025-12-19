@@ -86,6 +86,24 @@ const MenuList = () => {
           ;
         </div>
       </div>
+      <div className="collapse collapse-plus bg-white border border-base-300">
+        <input type="radio" name="my-accordion-det-" defaultChecked />
+        <h1 className="collapse-title font-semibold bg-accent">Settings</h1>
+        <div className="collapse-content text-sm">
+          <ul>
+            <li className="text-black rounded-md  hover:bg-primary ">
+              <Link
+                to="/dashboard/settings"
+                className="hover:text-white mt-1"
+              >
+                Home Settings
+              </Link>
+            </li>
+           
+          </ul>
+          ;
+        </div>
+      </div>
     </div>
   );
 };

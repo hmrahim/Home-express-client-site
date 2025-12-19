@@ -1,65 +1,101 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <div>
-      <footer className="footer footer-horizontal footer-center bg-primary text-primary-content p-10">
-        <aside>
-          <svg
-            width="50"
-            height="50"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            fillRule="evenodd"
-            clipRule="evenodd"
-            className="inline-block fill-current"
-          >
-            <path d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"></path>
-          </svg>
-          <p className="font-bold">
-            ACME Industries Ltd.
-            <br />
-            Providing reliable tech since 1992
-          </p>
-          <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
-        </aside>
-        <nav>
-          <div className="grid grid-flow-col gap-4">
-            <a>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                className="fill-current"
-              >
-                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
-              </svg>
-            </a>
-            <a>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                className="fill-current"
-              >
-                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
-              </svg>
-            </a>
-            <a>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                className="fill-current"
-              >
-                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
-              </svg>
-            </a>
+      <footer class="bg-primary text-white mt-20">
+        <div class="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* <!-- About Section --> */}
+            <div>
+              <h3 class="text-xl font-bold mb-4">About Us</h3>
+              <p class="text-white text-sm">
+                We are a team dedicated to providing the best web solutions. Our
+                goal is to make your online presence powerful and professional.
+              </p>
+            </div>
+
+            {/* <!-- Quick Links --> */}
+            <div>
+              <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+              <ul class="space-y-2 text-white text-sm">
+                <li>
+                  <a href="#" class="hover:text-white transition">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="hover:text-white transition">
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="hover:text-white transition">
+                    Services
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="hover:text-white transition">
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <Link to="/policies/privacy-policy" class="hover:text-white transition">
+                    Privacy Policy
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* <!-- Contact Info --> */}
+            <div>
+              <h3 class="text-xl font-bold mb-4">Contact Us</h3>
+              <ul class="text-white text-sm space-y-2">
+                <li>
+                  Email:{" "}
+                  <a
+                    href="mailto:info@yourwebsite.com"
+                    class="hover:text-white transition"
+                  >
+                    info@yourwebsite.com
+                  </a>
+                </li>
+                <li>
+                  Phone:{" "}
+                  <a href="tel:+1234567890" class="hover:text-white transition">
+                    +1 234 567 890
+                  </a>
+                </li>
+                <li>Address: 123 Main Street, Your City</li>
+              </ul>
+
+              {/* <!-- Social Links --> */}
+              <div class="flex space-x-4 mt-4">
+                <a href="#" class="text-white hover:text-white transition">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h11.06v-9.29H9.69v-3.62h3.14V8.41c0-3.1 1.89-4.79 4.66-4.79 1.32 0 2.46.1 2.79.14v3.24l-1.92.001c-1.51 0-1.8.72-1.8 1.77v2.32h3.6l-.47 3.62h-3.13V24h6.13c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z" />
+                  </svg>
+                </a>
+                <a href="#" class="text-white hover:text-white transition">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.63 0-12 5.37-12 12 0 5.3 3.44 9.79 8.2 11.38.6.11.82-.26.82-.58v-2.02c-3.34.73-4.03-1.61-4.03-1.61-.55-1.4-1.34-1.77-1.34-1.77-1.1-.75.08-.73.08-.73 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.84 1.31 3.53 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.52 11.52 0 0 1 3-.41c1.02.01 2.04.14 3 .41 2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.82.57C20.56 21.79 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                </a>
+                <a href="#" class="text-white hover:text-white transition">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.954 4.569c-.885.392-1.83.656-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.949.555-2.005.959-3.127 1.184-.897-.959-2.178-1.555-3.594-1.555-2.72 0-4.924 2.204-4.924 4.924 0 .39.044.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.425.729-.666 1.577-.666 2.476 0 1.71.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.229-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.112-.849.171-1.296.171-.317 0-.626-.03-.927-.086.627 1.956 2.444 3.379 4.6 3.419-1.68 1.319-3.809 2.105-6.102 2.105-.395 0-.785-.023-1.17-.068 2.179 1.397 4.768 2.212 7.557 2.212 9.054 0 14-7.496 14-13.986 0-.21 0-.423-.016-.633.962-.695 1.8-1.562 2.46-2.549z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
-        </nav>
+
+          {/* <!-- Bottom Text --> */}
+          <div class="mt-12 border-t border-white pt-6 text-center text-white text-sm">
+            &copy; 2025 YourWebsite. All rights reserved.
+          </div>
+        </div>
       </footer>
     </div>
   );
