@@ -26,6 +26,17 @@ import SignUpClient from "../Pages/Dashboard/AuthClient/SignUpClient";
 import ResetClientPassword from "../Pages/Dashboard/AuthClient/ResetClientPassword";
 import CustomersDashboard from "../Pages/Dashboard/Customers-Dashboard/CustomersDashboard";
 import Orders from "../Pages/Dashboard/Orders/Orders";
+import ConfirmedOrder from "../Pages/Dashboard/Orders/ConfirmedOrder";
+import DeliveredOrder from "../Pages/Dashboard/Orders/DeliveredOrder";
+import CanceledOrder from "../Pages/Dashboard/Orders/CanceledOrder";
+import PendingOrder from "../Pages/Dashboard/Orders/PendingOrder";
+import ViewOrder from "../Pages/Dashboard/Orders/ViewOrder";
+import MyOrder from "../Pages/Dashboard/Customers-Dashboard/MyOrder";
+import OrderHistory from "../Pages/Dashboard/Customers-Dashboard/OrderHistory";
+import Profile from "../Pages/Dashboard/Customers-Dashboard/Profile";
+import Wallet from "../Pages/Dashboard/Customers-Dashboard/Wallet";
+import DeliveryHistory from "../Pages/Dashboard/Customers-Dashboard/DeliveryHistory";
+import CurrentOrders from "../Pages/Dashboard/Customers-Dashboard/CurrentOrders";
 
 export const router = createBrowserRouter([
   {
@@ -137,7 +148,59 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/orders",
-        Component: Orders
+        Component: Orders,
+        children: [
+          {
+            path: "/dashboard/orders/confirmed-order",
+            Component: ConfirmedOrder,
+          },
+          {
+            path: "/dashboard/orders/delivered-order",
+            Component: DeliveredOrder,
+          },
+          {
+            path: "/dashboard/orders/canceled-order",
+            Component: CanceledOrder,
+          },
+          {
+            path: "/dashboard/orders/pending-order",
+            Component: PendingOrder,
+          },
+          {
+            path: "/dashboard/orders/view-order/:id",
+            Component: ViewOrder,
+          },
+        ],
+      },
+      {
+        path: "/dashboard",
+        Component: "",
+        children: [
+          {
+            path: "/dashboard/my-orders",
+            Component: MyOrder,
+          },
+          {
+            path: "/dashboard/profile",
+            Component: Profile,
+          },
+          {
+            path: "/dashboard/order-history",
+            Component: OrderHistory,
+          },
+          {
+            path: "/dashboard/wallet",
+            Component: Wallet,
+          },
+          {
+            path: "/dashboard/delivery-history",
+            Component: DeliveryHistory,
+          },
+          {
+            path: "/dashboard/current-order",
+            Component: CurrentOrders,
+          },
+        ],
       },
     ],
   },

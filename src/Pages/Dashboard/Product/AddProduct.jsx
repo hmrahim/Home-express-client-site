@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllCategorys } from "../../../api/AllApi";
 import { countryApi } from "../../../api/countryApi";
+import PreBackButton from "../../Components/PreBackButton"
 
 const AddProduct = () => {
   const imgbbKey = "765622b71bed5a179efe4bce6d1d53c8";
@@ -56,9 +57,7 @@ const AddProduct = () => {
     <div>
       <div className="bg-base-200 min-h-screen pt-10 px-5 md:px-0">
         <div className=" md:w-4/5 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
-          <h1 className="text-2xl font-bold text-primary text-center pb-2">
-            Add New Product
-          </h1>{" "}
+         <PreBackButton title="Add Product" />
           <hr className="h-1 bg-primary" />
           <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="mt-5 grid md:grid-cols-3 gap-4 ">
@@ -117,6 +116,7 @@ const AddProduct = () => {
                     type="number"
                     placeholder="Product Price"
                     className="input input-success w-full"
+                    step="0.01"
                     {...register("price", {
                       required: {
                         value: true,

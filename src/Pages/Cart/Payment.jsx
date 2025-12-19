@@ -21,7 +21,8 @@ const Payment = () => {
     reset,
   } = useForm();
   const onSubmit = async (data) => {
-    const items = { payment: data.payment, status: "pending" };
+    const items = { payment: data.payment, status: "pending",orderNo: "RF-"+ Math.floor(Math.random() *10000*10000*100)
+};
 
     Swal.fire({
       title: "Are you sure?",

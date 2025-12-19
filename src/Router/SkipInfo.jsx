@@ -4,6 +4,7 @@ import auth from "../firebase.init";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import PaperPlainLoader from "../Pages/Components/Loader/PaperPlainLoader";
 
 const SkipInfo = ({ children }) => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const SkipInfo = ({ children }) => {
   });
   const dataEmail = data?.data[0]?.email;
   if(isPending){
-    return "Loading"
+    return <PaperPlainLoader />
   }
   if (dataEmail) {
     return navigate("/cart/payment");

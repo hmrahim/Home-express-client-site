@@ -3,6 +3,7 @@ import CategoryRow from "./CategoryRow";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { fetchAllCategorys } from "../../../api/AllApi";
+import PreBackButton from "../../Components/PreBackButton";
 
 const AllCategory = () => {
   const { data, isPending, refetch } = useQuery({
@@ -13,11 +14,9 @@ const AllCategory = () => {
 
   return (
     <div>
-      <div className="bg-base-200 min-h-screen pt-10 px-5 md:px-0">
-        <div className=" md:w-1/2 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg py-4 border border-success">
-          <h1 className="text-2xl font-bold text-primary text-center pb-2">
-            All Category
-          </h1>{" "}
+      <div className="bg-base-200 min-h-screen pt-10 px-5 md:px-0 ">
+        <div className=" md:w-1/2 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg py-4 border border-success" >
+         <PreBackButton title="All Category"/>
           <hr className="h-1 bg-primary" />
           <div className="overflow-x-auto">
             

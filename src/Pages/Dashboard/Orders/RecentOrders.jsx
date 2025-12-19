@@ -1,62 +1,60 @@
-import React from 'react';
-import image from "../../../assets/cat-2.jpg"
+import React, { useContext } from "react";
+
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { fetchConfirmOrders } from "../../../api/AllApi";
+import { AuthContext } from "../AuthClient/AuthContext";
+import { AuthContextDashboard } from "../AuthClient/AuthContextDashboard";
+import OrderRow from "./OrderRow";
 
 const RecentOrders = () => {
-    return (
-       
+  // const {email} = useContext(AuthContextDashboard)
 
-<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
-    <table class="w-full text-sm text-left rtl:text-right text-body">
-        <thead class="text-sm text-body  bg-primary text-white border-b rounded-base border-default">
-            <tr>
-               
-                <th scope="col" class="px-6 py-3 font-medium">
-                    Product name
-                </th>
-                <th scope="col" class="px-6 py-3 font-medium">
-                    
-                </th>
-                <th scope="col" class="px-6 py-3 font-medium">
-                    Category
-                </th>
-                <th scope="col" class="px-6 py-3 font-medium">
-                    Price
-                </th>
-                <th scope="col" class="px-6 py-3 font-medium">
-                    Status
-                </th>
-            </tr>
+  const { data, isPending, refetch } = useQuery({
+    queryKey: ["user"],
+    queryFn: fetchConfirmOrders,
+    refetchInterval: 1000,
+  });
+
+  const deliveredOrder = data?.filter((order)=> order.status === "pending")
+  return (
+    <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+      <table className="w-full text-sm text-left rtl:text-right text-body">
+        <thead className="text-sm text-body  bg-primary text-white border-b rounded-base border-default">
+          <tr>
+            <th scope="col" className="px-6 py-3 font-medium">
+              Product
+            </th>
+            <th scope="col" className="px-6 py-3 font-medium">
+              Date & Time
+            </th>
+            <th scope="col" className="px-6 py-3 font-medium">
+              Customar Email
+            </th>
+
+            <th scope="col" className="px-6 py-3 font-medium">
+              Order Number
+            </th>
+            <th scope="col" className="px-6 py-3 font-medium"></th>
+
+            <th scope="col" className="px-6 py-3 font-medium">
+              Total Price
+            </th>
+            <th scope="col" className="px-6 py-3 font-medium">
+              Status
+            </th>
+            <th scope="col" className="px-6 py-3 font-medium">
+              Action
+            </th>
+          </tr>
         </thead>
-        <tbody className='mt-5'>
-            <tr class="bg-neutral-primary border-b border-default">
-                <td scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                    <div className='flex  items-center'>
-                      <img src={image}  alt="image" className='w-10 h-10'/>
-                      <h1>Khallad Dous</h1>
-                    </div>
-                </td>
-               <td class="px-6 py-4">
-                    
-                </td>
-                <td class="px-6 py-4">
-                    Laptop
-                </td>
-              
-                <td class="px-6 py-4">
-                    231
-                </td>
-                <td class="px-6 py-4">
-                    231
-                </td>
-              
-            </tr>
-           
-           
+        <tbody className="mt-5">
+          {deliveredOrder?.map((order) => (
+            <OrderRow orders={order} key={order._id} />
+          ))}
         </tbody>
-    </table>
-</div>
-
-    );
+      </table>
+    </div>
+  );
 };
 
 export default RecentOrders;

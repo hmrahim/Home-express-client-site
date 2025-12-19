@@ -9,33 +9,34 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import AdminDashboard from "./AdminDashboard";
 import CustomersDashboard from "./Customers-Dashboard/CustomersDashboard";
+import PaperPlainLoader from "../Components/Loader/PaperPlainLoader";
 
 const Dashboard = () => {
   const user = useAuthState(auth);
   const email = user[0]?.email;
   const { data, isPending, refetch } = useQuery({
     queryKey: ["userEmail"],
-    queryFn: () => axios.get(`https://server-site-psi-inky.vercel.app/api/user/${email}`),
+    queryFn: () =>
+      axios.get(`https://server-site-psi-inky.vercel.app/api/user/${email}`),
   });
   let activeUser = "";
 
   if (isPending) {
-    return <h>Loading....</h>;
+    return <PaperPlainLoader />;
   } else {
-    activeUser = data.data;
+    activeUser = data?.data;
 
     return (
-      <AuthContextDashboard.Provider value={email,activeUser}>
-        { activeUser &&   <div>
-          {activeUser?.rol === "user" ? (
-            <CustomersDashboard />
-          ) : (
-            <AdminDashboard />
-          )}
-        </div>
-          
-        }
-      
+      <AuthContextDashboard.Provider value={(email, activeUser)}>
+        {activeUser && (
+          <div>
+            {activeUser?.rol === "user" || activeUser?.rol === "rider" ? (
+              <CustomersDashboard />
+            ) : (
+              <AdminDashboard />
+            )}
+          </div>
+        )}
       </AuthContextDashboard.Provider>
     );
   }

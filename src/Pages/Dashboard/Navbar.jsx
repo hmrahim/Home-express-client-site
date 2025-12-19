@@ -42,7 +42,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl">Home Express</a>
+        <Link to="/" className="btn btn-ghost normal-case text-xl">Home Express</Link>
       </div>
       <div className="navbar-end">
         <div className="dropdown dropdown-end">

@@ -3,7 +3,7 @@ import "./EmptyCart.css"
 
 const EmptyCart = () => {
     return (
-      <div class="empty-cart">
+      <div className="empty-cart">
 
   <svg viewBox="656 573 264 182" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <rect id="bg-line" stroke="none" fill-opacity="0.2" fill="#FFE100" fill-rule="evenodd" x="656" y="624" width="206" height="38" rx="19"></rect>

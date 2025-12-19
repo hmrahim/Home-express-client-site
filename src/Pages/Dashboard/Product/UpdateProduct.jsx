@@ -37,7 +37,7 @@ const UpdateProduct = () => {
     queryFn: fetchAllCategorys,
     refetchInterval: 1000,
   });
-  console.log(data1);
+  // console.log(data1);
 
   const imgbbKey = "765622b71bed5a179efe4bce6d1d53c8";
 
@@ -150,6 +150,7 @@ const UpdateProduct = () => {
                       placeholder="Product Price"
                       className="input input-success w-full"
                       defaultValue={items.price}
+                      step="0.01"
                       {...register("price", {
                         required: {
                           value: true,

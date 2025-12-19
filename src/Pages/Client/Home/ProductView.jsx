@@ -34,7 +34,7 @@ const ProductView = () => {
   });
   const product = data?.data;
   const discoun = (Number(product?.price) * product?.discount) / 100;
-  const discountPrice = Math.round(Number(product?.price) - discoun);
+  const discountPrice = Number(product?.price) - discoun;
 
   const incress = () => {
     if (qty <= 0) {
@@ -73,6 +73,8 @@ const ProductView = () => {
       toast.success(res.data.message);
     }
   };
+    const [int, dec] = Number(discountPrice).toFixed(2).split(".");
+const [p_int,p_dec] = Number(product?.price).toFixed(2).split(".")
 
   return (
     <div>
@@ -97,16 +99,21 @@ const ProductView = () => {
                   {product?.discount ? (
                     <h2 className="text-left text-5xl flex gap-2 items-center font-bold my-4">
                       <img src={currency} className="w-10 h-w-10" alt="" />
-
-                      {discountPrice}
-                      <sub className="text-xl">SAR</sub>
+                        <div className="flex items-center">
+                          <p>{int}</p>
+                          {dec > 0 && <p className="font-normal text-[18px]">.{dec}</p>}
+                        </div>
+                     
+                    
                     </h2>
                   ) : (
                     <h2 className="text-left text-5xl flex gap-2 items-center font-bold my-4">
                       <img src={currency} className="w-10 h-w-10" alt="" />
 
-                      {product?.price}
-                      <sub className="text-xl">SAR</sub>
+                       <div className="flex items-center">
+                          <p>{p_int}</p>
+                          {p_dec > 0 && <p className="font-normal text-[18px]">.{p_dec}</p>}
+                        </div>
                     </h2>
                   )}
 
@@ -153,7 +160,7 @@ const ProductView = () => {
                   </button>
                 </div>
                 <div className="flex gap-5">
-                  <Link className="btn  rounded-none md:px-20 btn-error">
+                  <Link className="btn  rounded-none md:px-20 btn-error" disabled>
                     Buy Now
                   </Link>
                   {email ? (
