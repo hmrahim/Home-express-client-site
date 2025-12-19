@@ -15,7 +15,7 @@ const RecentOrders = () => {
     refetchInterval: 1000,
   });
 
-  const deliveredOrder = data?.filter((order)=> order.status === "pending")
+  const deliveredOrder = data?.filter((order)=> order?.status === "pending")
   return (
     <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
       <table className="w-full text-sm text-left rtl:text-right text-body">

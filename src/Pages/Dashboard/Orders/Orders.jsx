@@ -20,7 +20,7 @@ const Orders = () => {
       });
 
 
-      const seenItems = data?.filter((data)=> data.seen === "pending");
+      const seenItems = data?.filter((data)=> data?.seen === "pending");
 
 
   const location = useLocation();

@@ -144,7 +144,7 @@ const MyOrder = () => {
                 <div className="px-3">
                   <div className="flex justify-between">
                     <h3>Sub Total</h3>
-                    <strong>{totalAmoutWithDIscountAndWithoutDiscount}</strong>
+                    <strong>{totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}</strong>
                   </div>
                   <div className="flex justify-between">
                     <h3>Shipping Fees</h3>
@@ -155,7 +155,7 @@ const MyOrder = () => {
                     <h3>
                       Total <span className="text-xs">(incld vat)</span>{" "}
                     </h3>
-                    <strong>{totalAmoutWithDIscountAndWithoutDiscount}</strong>
+                    <strong>{totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}</strong>
                   </div>
                 </div>
                 <h1 className="bg-primary p-1 text-center text-white font-bold my-3">

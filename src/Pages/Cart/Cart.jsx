@@ -106,7 +106,7 @@ const Cart = () => {
               {" "}
               <p className="text-gray-500 font-semi">Sub Total </p>
               <p className="font-bold font-sans">
-                {totalAmoutWithDIscountAndWithoutDiscount}
+                {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
                 <sub>sr</sub>
               </p>
             </div>
@@ -131,7 +131,7 @@ const Cart = () => {
               {" "}
               <p className="text-gray-500 font-semi">Total Amount</p>{" "}
               <p className="font-sans font-bold">
-                {totalAmoutWithDIscountAndWithoutDiscount}
+                {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
                 <sub>sr</sub>
               </p>
             </div>

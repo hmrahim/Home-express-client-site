@@ -10,7 +10,7 @@ const DeliveredOrder = () => {
         refetchInterval: 1000,
       });
 
-      const deliveredOrder = data?.filter((order)=> order.status === "delivered")
+      const deliveredOrder = data?.filter((order)=> order?.status === "delivered")
     
       return (
         <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">

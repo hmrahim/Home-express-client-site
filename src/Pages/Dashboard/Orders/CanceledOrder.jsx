@@ -10,7 +10,7 @@ const CanceledOrder = () => {
         refetchInterval: 1000,
       });
 
-      const CanceledOrder = data?.filter((order)=> order.status === "cancelled")
+      const CanceledOrder = data?.filter((order)=> order?.status === "cancelled")
     
       return (
         <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">

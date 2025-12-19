@@ -69,7 +69,7 @@ const OrderRow = ({ orders }) => {
       </th>
       <th scope="col" className="px-6 py-3 font-medium"></th>
       <th scope="col" className="px-6 py-3 font-medium flex items-center">
-      <SaudiRiyal size={15}/>  {totalAmoutWithDIscountAndWithoutDiscount}
+      <SaudiRiyal size={15}/>  {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
       </th>
       <th scope="col" className="px-6 py-3 font-medium">
         {orders.status === "pending" && (

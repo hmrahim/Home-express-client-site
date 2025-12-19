@@ -152,7 +152,7 @@ const CurrentOrders = () => {
           <div className="mt-4 b pt-3 flex items-center justify-between text-sm font-semibold ">
             <span>Total</span>
             <span className="font-sans">
-              {totalAmoutWithDIscountAndWithoutDiscount} SAR
+              {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)} SAR
             </span>
           </div>
         </div>
@@ -183,14 +183,14 @@ const CurrentOrders = () => {
                 <p className="text-sm text-gray-950">
                   Amount:{" "}
                   <span className="font-semibold text-green-600">
-                    {totalAmoutWithDIscountAndWithoutDiscount}
+                    {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
                   </span>
                 </p>
                 <OpenMap location={location} />
               </div>
               <div className="">
                 <ConfirmDelivery
-                  total={totalAmoutWithDIscountAndWithoutDiscount}
+                  total={totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
                   order={confirmOrder}
                 />
               </div>

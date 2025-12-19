@@ -75,7 +75,7 @@ const ViewOrder = () => {
   });
 
   const onSubmit = (data) => {
-    mutation.mutate({ ...data, status: "confirmed",totalAmount: totalAmoutWithDIscountAndWithoutDiscount});
+    mutation.mutate({ ...data, status: "confirmed",totalAmount: totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)});
 
     if (mutation.isPending === false) {
       toast.success("Order confirmed successfully");
@@ -139,7 +139,7 @@ const ViewOrder = () => {
           <div className="px-3">
             <div className="flex justify-between">
               <h3>Sub Total</h3>
-              <strong className="flex items-center"><SaudiRiyal size={18}/> {totalAmoutWithDIscountAndWithoutDiscount}</strong>
+              <strong className="flex items-center"><SaudiRiyal size={18}/> {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}</strong>
             </div>
             <div className="flex justify-between">
               <h3>Shipping Fees</h3>
@@ -150,7 +150,7 @@ const ViewOrder = () => {
               <h3>
                 Total <span className="text-xs">(incld vat)</span>{" "}
               </h3>
-               <strong className="flex items-center"><SaudiRiyal size={18}/> {totalAmoutWithDIscountAndWithoutDiscount}</strong>
+               <strong className="flex items-center"><SaudiRiyal size={18}/> {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}</strong>
             </div>
           </div>
           <h1 className="bg-primary p-1 text-center text-white font-bold my-3">
@@ -261,7 +261,7 @@ const ViewOrder = () => {
               <>
                 {data?.status === "confirmed" ? (
                   <ConfirmDelivery
-                    total={totalAmoutWithDIscountAndWithoutDiscount}
+                    total={totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
                     order={data}
                   />
                 ) : (
@@ -321,6 +321,7 @@ const ViewOrder = () => {
               </>
             )}
           </div>
+          
         </div>
       </div>
       <ToastContainer />

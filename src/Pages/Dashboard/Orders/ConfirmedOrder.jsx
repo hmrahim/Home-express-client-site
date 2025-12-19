@@ -11,7 +11,7 @@ const ConfirmedOrder = () => {
         refetchInterval: 1000,
       });
 
-      const ConfirmOrders = data?.filter((order)=> order.status === "confirmed")
+      const ConfirmOrders = data?.filter((order)=> order?.status === "confirmed")
     
       return (
         <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
