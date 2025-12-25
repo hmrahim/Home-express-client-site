@@ -3,17 +3,23 @@ import axios from 'axios';
 import React from 'react';
 import CategoryRow from '../Categorys/CategoryRow';
 import UserRow from './UserRow';
+import { Helmet } from 'react-helmet-async';
+import { getAllUser } from '../../../api/AllApi';
 
 const ALlUsers = () => {
     const { data, isPending, refetch } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => axios.get("https://server-site-psi-inky.vercel.app/api/user"),
+    queryKey: ["getAllUser"],
+    queryFn:getAllUser,
+    refetchInterval:1000
   });
 
 
   return (
     <div>
       <div className="bg-base-200 min-h-screen pt-10 px-5 md:px-0">
+          <Helmet>
+        <title>Dashboard-All-User</title>
+      </Helmet>
         <div className=" md:w-1/2 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg py-4 border border-success">
           <h1 className="text-2xl font-bold text-primary text-center pb-2">
             All Users
@@ -35,7 +41,7 @@ const ALlUsers = () => {
               </thead>
             
               <tbody>
-                {data?.data.map((users, index) => (
+                {data?.map((users, index) => (
                   <UserRow
                     key={users._id}
                     index={index}

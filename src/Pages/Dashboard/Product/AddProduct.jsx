@@ -2,22 +2,26 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
-import { useQuery } from "@tanstack/react-query";
-import { fetchAllCategorys } from "../../../api/AllApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { fetchAllCategorys, postProduct } from "../../../api/AllApi";
 import { countryApi } from "../../../api/countryApi";
-import PreBackButton from "../../Components/PreBackButton"
+import PreBackButton from "../../Components/PreBackButton";
+import { Helmet } from "react-helmet-async";
 
 const AddProduct = () => {
-  const imgbbKey = "765622b71bed5a179efe4bce6d1d53c8";
+  const imgbbKey = import.meta.env.VITE_API_KEY_IMGBB;
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
-      const { data, isPending, refetch } = useQuery({
-        queryKey: ["AllCategory"],
-        queryFn: fetchAllCategorys,
-        refetchInterval:1000
-      })
+  const { data, isPending, refetch } = useQuery({
+    queryKey: ["AllCategory"],
+    queryFn: fetchAllCategorys,
+    refetchInterval: 1000,
+  });
 
-      
+  const mutation = useMutation({
+    mutationKey: [""],
+    mutationFn: (Pdata) => postProduct(Pdata),
+  });
 
   const {
     register,
@@ -41,23 +45,29 @@ const AddProduct = () => {
   };
 
   const onSubmit = async (data) => {
-    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/product", {
-      ...data,
-      image,
-    });
-    if(res.status === 200){
+    // const res = await axios.post("https://server-site-psi-inky.vercel.app/api/product", {
+    //   ...data,
+    //   image,
+    // });
+
+    const Pdata = { ...data, image };
+     mutation.mutate(Pdata);
+    console.log(mutation.data);
+    if (mutation.data.status === 200) {
       toast.success("Product added successfully");
       reset();
       setImage("");
     }
   };
 
-
   return (
     <div>
       <div className="bg-base-200 min-h-screen pt-10 px-5 md:px-0">
+        <Helmet>
+          <title>Dashboard-Add-product</title>
+        </Helmet>
         <div className=" md:w-4/5 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
-         <PreBackButton title="Add Product" />
+          <PreBackButton title="Add Product" />
           <hr className="h-1 bg-primary" />
           <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="mt-5 grid md:grid-cols-3 gap-4 ">
@@ -96,11 +106,9 @@ const AddProduct = () => {
                     })}
                   >
                     <option disabled={true}>Select Category</option>
-                    {
-                      data?.map((category)=>    <option value={category.name} >{category.name}</option>)
-                    }
-                 
-                    
+                    {data?.map((category) => (
+                      <option value={category.name}>{category.name}</option>
+                    ))}
                   </select>
                 </fieldset>
                 {errors.category?.type === "required" && (
@@ -169,11 +177,9 @@ const AddProduct = () => {
                     })}
                   >
                     <option disabled={true}>Select Country</option>
-                    {
-                      countryApi?.map((country,index)=>   <option value={country.name} >{country.name}</option>)
-                    }
-                  
-                  
+                    {countryApi?.map((country, index) => (
+                      <option value={country.name}>{country.name}</option>
+                    ))}
                   </select>
                 </fieldset>
                 {errors.country?.type === "required" && (

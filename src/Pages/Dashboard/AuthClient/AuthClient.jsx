@@ -19,7 +19,8 @@ import { ToastContainer, toast } from "react-toastify";
 import auth from "../../../firebase.init";
 import axios from "axios";
 import LoginClient from "./LoginClient";
-
+import { useMutation } from "@tanstack/react-query";
+import { postUser } from "../../../api/AllApi";
 
 const AuthClient = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const AuthClient = () => {
 
   // const [useSendEmailVerification, sending, vError] =
   // useSendEmailVerification(auth);
-  
+
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
 
@@ -41,26 +42,28 @@ const AuthClient = () => {
     handleSubmit,
     reset,
   } = useForm();
-
-
-
+  const mutation = useMutation({
+    mutationKey: ["postUser"],
+    mutationFn: (user) => postUser(user),
+  });
   const onSubmit = async (data) => {
-   const result =  createUserWithEmailAndPassword(data.email, data.password);
-   
+    const result = createUserWithEmailAndPassword(data.email, data.password);
 
     if (!error) {
-      const res = await axios.post(
-        "https://server-site-psi-inky.vercel.app/api/user",
-        {
-          name: data.name,
-          email: data.email,
-        }
-      );
-      toast.success("Registration sucesfully");
-      reset()
+      mutation.mutate(user);
+      // const res = await axios.post(
+      //   "https://server-site-psi-inky.vercel.app/api/user",
+      //   {}
+      // );
+      const user = {
+        name: data.name,
+        email: data.email,
+      };
+      toast.success("Registration sucesfully", {
+        autoClose: 1000,
+      });
+      reset();
     }
-
-  
   };
 
   return (
@@ -76,9 +79,9 @@ const AuthClient = () => {
               <Tab>Login</Tab>
               <Tab>SignUp</Tab>
             </TabList>
-           
+
             <TabPanel>
-             <LoginClient/>
+              <LoginClient />
             </TabPanel>
             <TabPanel>
               <div className="max-w-lg w-full">
@@ -115,7 +118,6 @@ const AuthClient = () => {
                                 {errors.name.message}
                               </span>
                             )}
-                           
                           </div>
                         </div>
                         <div className="mt-4">
@@ -145,7 +147,6 @@ const AuthClient = () => {
                                 {errors.email.message}
                               </span>
                             )}
-                          
                           </div>
                         </div>
                         <div className="mt-4">
@@ -202,10 +203,11 @@ const AuthClient = () => {
                           className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-green-800  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                           type="submit"
                         >
-                          {
-                            loading ? <span className="loading loading-bars loading-sm"></span> : 
-                          "Sign Up"
-                          }
+                          {loading ? (
+                            <span className="loading loading-bars loading-sm"></span>
+                          ) : (
+                            "Sign Up"
+                          )}
                         </button>
                       </div>
                     </form>

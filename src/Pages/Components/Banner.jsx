@@ -12,7 +12,7 @@ import { Navigation } from 'swiper/modules';
 
 const Banner = () => {
     return (
-        <div>
+        <div className='mt-[64px] '>
             <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
         <SwiperSlide>
             <img className='w-full' src={slide1} alt="" />

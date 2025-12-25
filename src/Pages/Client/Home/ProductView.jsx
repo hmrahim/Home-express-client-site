@@ -9,15 +9,17 @@ import { GiStrong } from "react-icons/gi";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { BsCashCoin } from "react-icons/bs";
 import { FaCcMastercard } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
 import { ToastContainer, toast } from "react-toastify";
 import AuthClient from "../../Dashboard/AuthClient/AuthClient";
 import { AuthContext } from "../../Dashboard/AuthClient/AuthContext";
+import { Helmet } from "react-helmet-async";
+import { addToCartData, getProductById } from "../../../api/AllApi";
 const ProductView = () => {
-  const { email,rol } = useContext(AuthContext);
+  const { email, rol } = useContext(AuthContext);
   // console.log(email,rol);
 
   // const User = useAuthState(auth);
@@ -28,13 +30,12 @@ const ProductView = () => {
   const qty = Number(count);
   const { id } = useParams();
   const { data, isPending, refetch } = useQuery({
-    queryKey: ["productbyid"],
-    queryFn: () =>
-      axios.get(`https://server-site-psi-inky.vercel.app/api/product/${id}`),
+    queryKey: ["getProductById",id],
+    queryFn: () => getProductById(id),
   });
-  const product = data?.data;
-  const discoun = (Number(product?.price) * product?.discount) / 100;
-  const discountPrice = Number(product?.price) - discoun;
+  
+  const discoun = (Number(data?.price) * data?.discount) / 100;
+  const discountPrice = Number(data?.price) - discoun;
 
   const incress = () => {
     if (qty <= 0) {
@@ -50,89 +51,93 @@ const ProductView = () => {
       setCount(qty - 1);
     }
   };
-
+  const mutation = useMutation({
+    mutationFn: (items) => addToCartData(items),
+    onSuccess: (res) => {
+      if (res.data.error === 400) {
+        return toast.error("Product already added", { autoClose: 1000 });
+      }
+      toast.success("Product added to cart", { autoClose: 1000 });
+    },
+  });
   const addToCart = async () => {
     const items = {
-      name: data.data.name,
-      id: data.data._id,
+      name: data?.name,
+      id: data?._id,
       email: email,
-      price: data.data.price,
-      discount: data.data.discount,
+      price: data?.price,
+      discount: data?.discount,
       quantity: count,
-      image: data.data.image,
+      image: data?.image,
     };
 
-    const res = await axios.post(
-      "https://server-site-psi-inky.vercel.app/api/cart",
-      items
-    );
-    if (res.data.error === 400) {
-      toast.error(res.data.message);
-    }
-    if (res.data.success === 200) {
-      toast.success(res.data.message);
-    }
+    mutation.mutate(items);
   };
-    const [int, dec] = Number(discountPrice).toFixed(2).split(".");
-const [p_int,p_dec] = Number(product?.price).toFixed(2).split(".")
+  const [int, dec] = Number(discountPrice).toFixed(2).split(".");
+  const [p_int, p_dec] = Number(data?.price).toFixed(2).split(".");
 
   return (
     <div>
       <div className="w-11/12 mx-auto my-20  text-center bg-base-200 ">
+        <Helmet>
+          <title>Moom24-{`${data?.name}`}</title>
+        </Helmet>
         <div className="shadow-md flex flex-col md:flex-row  md:justify-around pt-4 bg-base-100 rounded-md pb-3 px-4">
           <div className=" md:-[80%] bg-white flex flex-col">
             <div className="flex flex-col md:flex-row">
               <AuthClient />
               <div>
-                <img className="w-96 h-96" src={product?.image} alt="" />
+                <img className="w-96 h-96" src={data?.image} alt="" />
               </div>
               <div className="md:w-[50%] bg-white flex flex-col gap-10">
                 <h1 className="text-2xl font-semibold text-left">
-                  {product?.name}
+                  {data?.name}
                 </h1>{" "}
                 <div>
-                  <p className="text-left">Category: {product?.category}</p>
-                  <p className="text-left ">Brand: {product?.brand}</p>
+                  <p className="text-left">Category: {data?.category}</p>
+                  <p className="text-left ">Brand: {data?.brand}</p>
                   <p className="text-left ">
-                    Menufacturer country : {product?.country}
+                    Menufacturer country : {data?.country}
                   </p>
-                  {product?.discount ? (
+                  {data?.discount ? (
                     <h2 className="text-left text-5xl flex gap-2 items-center font-bold my-4">
                       <img src={currency} className="w-10 h-w-10" alt="" />
-                        <div className="flex items-center">
-                          <p>{int}</p>
-                          {dec > 0 && <p className="font-normal text-[18px]">.{dec}</p>}
-                        </div>
-                     
-                    
+                      <div className="flex items-center">
+                        <p>{int}</p>
+                        {dec > 0 && (
+                          <p className="font-normal text-[18px]">.{dec}</p>
+                        )}
+                      </div>
                     </h2>
                   ) : (
                     <h2 className="text-left text-5xl flex gap-2 items-center font-bold my-4">
                       <img src={currency} className="w-10 h-w-10" alt="" />
 
-                       <div className="flex items-center">
-                          <p>{p_int}</p>
-                          {p_dec > 0 && <p className="font-normal text-[18px]">.{p_dec}</p>}
-                        </div>
+                      <div className="flex items-center">
+                        <p>{p_int}</p>
+                        {p_dec > 0 && (
+                          <p className="font-normal text-[18px]">.{p_dec}</p>
+                        )}
+                      </div>
                     </h2>
                   )}
 
                   <p className="flex">
-                    {product?.discount ? (
+                    {data?.discount ? (
                       <del className="to-gray-600 flex  font-semibold items-center gap-2">
                         <img src={currency} className="w-5 h-5" alt="" />
                         <p className="text-gray-600 text-xl">
                           {" "}
-                          {product?.price}
+                          {data?.price}
                         </p>
                       </del>
                     ) : (
                       ""
                     )}
 
-                    {product?.discount ? (
+                    {data?.discount ? (
                       <span className="text-xl text-black border border-primary px-2   py-0 ml-4">
-                        -{product?.discount}%
+                        -{data?.discount}%
                       </span>
                     ) : (
                       ""
@@ -160,7 +165,10 @@ const [p_int,p_dec] = Number(product?.price).toFixed(2).split(".")
                   </button>
                 </div>
                 <div className="flex gap-5">
-                  <Link className="btn  rounded-none md:px-20 btn-error" disabled>
+                  <Link
+                    className="btn  rounded-none md:px-20 btn-error"
+                    disabled
+                  >
                     Buy Now
                   </Link>
                   {email ? (
@@ -168,7 +176,7 @@ const [p_int,p_dec] = Number(product?.price).toFixed(2).split(".")
                       onClick={addToCart}
                       className="btn  rounded-none md:px-20 btn-primary"
                     >
-                      Add TO cart
+                      {mutation.isPending ? "Loading..." : "Add TO Cart"}
                     </button>
                   ) : (
                     <label
@@ -241,7 +249,7 @@ const [p_int,p_dec] = Number(product?.price).toFixed(2).split(".")
         </div>
         <div className="bg-white">
           <div className=" px-4">
-            <p className="text-justify ">{product?.desc}</p>
+            <p className="text-justify ">{data?.desc}</p>
           </div>
           <div className="bg-base-300  mt-5">
             <h1 className="text-2xl text-gray-700 py-2 font-semibold  w-full">

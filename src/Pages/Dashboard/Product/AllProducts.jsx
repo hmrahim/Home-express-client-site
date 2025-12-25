@@ -3,18 +3,28 @@ import ProductRow from "./ProductRow";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import PreBackButton from "../../Components/PreBackButton";
+import { Helmet } from "react-helmet-async";
+import { getAuth } from "firebase/auth";
+import { getAllProduct } from "../../../api/AllApi";
 
 const AllProducts = () => {
   const { data, isPending, refetch } = useQuery({
-    queryKey: ["product"],
-    queryFn: () => axios.get("https://server-site-psi-inky.vercel.app/api/product"),
+    queryKey: ["getAllProduct"],
+    queryFn: getAllProduct,
+    refetchInterval: 1000,
   });
-refetch()
+
   return (
     <div>
       <div className="bg-base-200 min-h-screen pt-10 px-5 md:px-0 ">
-        <div style={{overflow:"scroll"}} className=" md:w-5/6 w-full max-h-screen   mx-auto py-5 bg-base-100 rounded-lg shadow-lg  border border-success">
-          <PreBackButton title="All Productu"/>
+        <Helmet>
+          <title>Dashboard-All-product</title>
+        </Helmet>
+        <div
+          style={{ overflow: "scroll" }}
+          className=" md:w-5/6 w-full max-h-screen   mx-auto py-5 bg-base-100 rounded-lg shadow-lg  border border-success"
+        >
+          <PreBackButton title="All Productu" />
           <hr className="h-1 bg-primary" />
           <div>
             <div className="">
@@ -35,12 +45,11 @@ refetch()
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.data?.map((product, index) => (
+                  {data?.map((product, index) => (
                     <ProductRow
                       key={product._id}
                       product={product}
                       index={index}
-                      refetch={refetch}
                     />
                   ))}
                 </tbody>

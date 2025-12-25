@@ -13,6 +13,7 @@ import {
   useSendPasswordResetEmail,
 } from "react-firebase-hooks/auth";
 import { ToastContainer, toast } from "react-toastify";
+import { Helmet } from "react-helmet-async";
 
 const ResetPass = () => {
   const navigate = useNavigate();
@@ -20,27 +21,32 @@ const ResetPass = () => {
     register,
     formState: { errors },
     handleSubmit,
-    reset
+    reset,
   } = useForm();
   const [sendPasswordResetEmail, sending, error] =
     useSendPasswordResetEmail(auth);
-  
 
   const onSubmit = async (data) => {
     const success = await sendPasswordResetEmail(data.email);
 
     if (error) {
-      toast.error(error?.message);
+      toast.error(error?.message, {
+        autoClose: 1000,
+      });
     } else {
-      toast.success("Password Reset Email Sent to your email address");
-  
-     reset();
+      toast.success("Password Reset Email Sent to your email address", {
+        autoClose: 1000,
+      });
+
+      reset();
     }
   };
 
-  
   return (
     <div className=" flex justify-center items-center h-screen bg-gray-400 px-5 md:px-0">
+      <Helmet>
+           <title>Moom24-Reset-Password</title>
+      </Helmet>
       <div
         className=" bg-primary md:w-2/5 w-full mx-auto px-5 py-5 mx-5 rounded-lg
       shadow-2xl "

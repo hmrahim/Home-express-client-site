@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { GiCash } from "react-icons/gi";
 import { FaGooglePay } from "react-icons/fa";
 import { FaApplePay } from "react-icons/fa";
@@ -10,19 +10,40 @@ import auth from "../../firebase.init";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { confirmedOrderWithPayment } from "../../api/AllApi";
+import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
 const Payment = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const user = useAuthState(auth);
-  const email = user[0]?.email;
+  // const email = user[0]?.email;
+  const {email} = useContext(AuthContext);
   const {
     register,
     formState: { errors },
     handleSubmit,
     reset,
   } = useForm();
-  const onSubmit = async (data) => {
-    const items = { payment: data.payment, status: "pending",orderNo: "RF-"+ Math.floor(Math.random() *10000*10000*100)
-};
+
+  const mutation = useMutation({
+    mutationFn: (items) => confirmedOrderWithPayment(email, items),
+    onSuccess:(res)=> {
+      if(res.data.status){
+
+        navigate("/dashboard/my-orders");
+      }
+    }
+    
+  });
+
+  const onSubmit = (data) => {
+    const items = {
+      payment: data.payment,
+      status: "pending",
+      orderNo: "RF-" + Math.floor(Math.random() * 10000 * 10000 * 100),
+    };
+    
+    
 
     Swal.fire({
       title: "Are you sure?",
@@ -32,15 +53,19 @@ const Payment = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Confirm it",
-    }).then(async (result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
-      const res =  await axios.put(`https://server-site-psi-inky.vercel.app/api/confirm-order/${email}`, {
-          items,
-        });
-        if(res.status === 200){
-          navigate("/dashboard")
-          
-        }
+        // const res = await axios.put(
+        //   `https://server-site-psi-inky.vercel.app/api/confirm-order/${email}`,
+        //   {
+        //     items,
+        //   }
+        // );
+        // if (res.status === 200) {
+        //   navigate("/dashboard");
+        // }
+
+        mutation.mutate(items);
 
         Swal.fire({
           title: "Confirmed!",
@@ -50,9 +75,9 @@ const Payment = () => {
       }
     });
 
-    // if(res.status === 200){
-    //   toast.success("Your order is confirmed")
-    // }
+    if(res.status === 200){
+      toast.success("Your order is confirmed")
+    }
   };
   return (
     <div>

@@ -1,31 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PaperPlainLoader from "../Pages/Components/Loader/PaperPlainLoader";
+import { AuthContext } from "../Pages/Dashboard/AuthClient/AuthContext";
+import { getconfirmOrderByEmail } from "../api/AllApi";
 
 const SkipInfo = ({ children }) => {
+  const { email } = useContext(AuthContext);
   const navigate = useNavigate();
   const user = useAuthState(auth);
-  const email = user[0]?.email;
-  const { data, isPending, refetch } = useQuery({
+  // const email = user[0]?.email;
+  const { data, isPending } = useQuery({
     queryKey: ["confirmOrderByEmail"],
-    queryFn: () =>
-      axios.get(`https://server-site-psi-inky.vercel.app/api/confirm-order/${email}`),
+    queryFn: () => getconfirmOrderByEmail(email),
+    refetchInterval:1000
   });
-  const dataEmail = data?.data[0]?.email;
-  if(isPending){
-    return <PaperPlainLoader />
+
+  const dataEmail = data?.data.email;
+  if (isPending) {
+    return <PaperPlainLoader />;
   }
   if (dataEmail) {
     return navigate("/cart/payment");
-  }else{
- return children;
+  } else {
+    return children;
   }
-
- 
 };
 
 export default SkipInfo;

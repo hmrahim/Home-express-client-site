@@ -1,10 +1,13 @@
 import React from "react";
 import PreBackButton from "../../Components/PreBackButton";
+import { Helmet } from "react-helmet-async";
 
 const DeliveryHistory = () => {
   return (
     <div className="pt-4 px-5">
-       
+         <Helmet>
+               <title>Delivery-History</title>
+             </Helmet>
        <PreBackButton title="Delivery History"/> <hr className="h-1 bg-primary mb-4" />
       <main className="mx-auto max-w-6xl">
         <header className="flex flex-col items-center justify-between mb-6 ">

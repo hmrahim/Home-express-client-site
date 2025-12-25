@@ -10,6 +10,7 @@ import {
 } from "react-firebase-hooks/auth";
 import { ToastContainer, toast } from "react-toastify";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const {
@@ -19,7 +20,7 @@ const Login = () => {
   } = useForm();
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
-// console.log(user);
+  // console.log(user);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
@@ -27,7 +28,9 @@ const Login = () => {
   const onSubmit = (data) => {
     signInWithEmailAndPassword(data.email, data.password);
     if (user) {
-      toast.success("Sign in succesfully");
+      toast.success("Sign in succesfully", {
+        autoClose: 1000,
+      });
       navigate(from, { replace: true });
     }
   };
@@ -35,16 +38,20 @@ const Login = () => {
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
   const googleSignIn = async () => {
     signInWithGoogle();
-    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/user", {
-      name: gUser.user.displayName,
-      email: gUser.user.email,
-    });
-
- 
+    const res = await axios.post(
+      "https://server-site-psi-inky.vercel.app/api/user",
+      {
+        name: gUser.user.displayName,
+        email: gUser.user.email,
+      }
+    );
   };
 
   return (
     <div className=" flex justify-center items-center h-screen bg-gray-400 px-5 md:px-0">
+      <Helmet>
+           <title>Moom24-Login</title>
+      </Helmet>
       <div
         className=" bg-primary md:w-2/5 w-full mx-auto px-5 py-5 mx-5 rounded-lg
       shadow-2xl "
@@ -122,7 +129,10 @@ const Login = () => {
               </button>
             </div>
           </form>
-          <button onClick={googleSignIn} className="btn btn-neutral my-3 hidden">
+          <button
+            onClick={googleSignIn}
+            className="btn btn-neutral my-3 hidden"
+          >
             <img src={google} className="h-6 w-6" alt="" />
             {gLoading ? (
               <span className="loading loading-bars loading-md">

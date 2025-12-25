@@ -13,23 +13,25 @@ import { toast, ToastContainer } from "react-toastify";
 import ConfirmDelivery from "./ConfirmDelivery";
 import DeliveryAnimation from "./DeliveryAnimation";
 import { SaudiRiyal } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const ViewOrder = () => {
   const { id } = useParams();
 
   const { data, isPending } = useQuery({
-    queryKey: ["fetchConfirmOrderById"],
+    queryKey: ["fetchConfirmOrderById", id],
     queryFn: () => fetchConfirmOrderById(id),
     refetchInterval: 1000,
   });
+
   const { data: rider, isPending: isRiderPending } = useQuery({
     queryKey: ["fetchRider"],
     queryFn: fetchRider,
     refetchInterval: 1000,
   });
 
-  const withDscount = data?.orders.filter((data) => data.discount !== "");
-  const withoutDiscount = data?.orders.filter((data) => data.discount === "");
+  const withDscount = data?.orders?.filter((data) => data.discount !== "");
+  const withoutDiscount = data?.orders?.filter((data) => data.discount === "");
   //   console.log(withDscount);
   //   console.log(withoutDiscount);
 
@@ -62,7 +64,6 @@ const ViewOrder = () => {
   const totalAmoutWithDIscountAndWithoutDiscount =
     totalAmount - discAmount + amountWithOutDiscount;
 
-
   const {
     register,
     formState: { errors },
@@ -75,7 +76,11 @@ const ViewOrder = () => {
   });
 
   const onSubmit = (data) => {
-    mutation.mutate({ ...data, status: "confirmed",totalAmount: totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)});
+    mutation.mutate({
+      ...data,
+      status: "confirmed",
+      totalAmount: totalAmoutWithDIscountAndWithoutDiscount.toFixed(2),
+    });
 
     if (mutation.isPending === false) {
       toast.success("Order confirmed successfully");
@@ -86,6 +91,9 @@ const ViewOrder = () => {
   return (
     <div>
       <div className="flex gap-5 flex-col md:flex-row">
+        <Helmet>
+          <title>Dashboard-Orders-Details</title>
+        </Helmet>
         <div className="md:w-3/5 w-full rounded-xl shadow-2xl ">
           <div
             className="
@@ -125,7 +133,7 @@ const ViewOrder = () => {
                 </tr>
               </thead>
               <tbody>
-                {data?.orders.map((order) => (
+                {data?.orders?.map((order) => (
                   <ViewOrdersRow orders={order} />
                 ))}
               </tbody>
@@ -139,7 +147,10 @@ const ViewOrder = () => {
           <div className="px-3">
             <div className="flex justify-between">
               <h3>Sub Total</h3>
-              <strong className="flex items-center"><SaudiRiyal size={18}/> {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}</strong>
+              <strong className="flex items-center">
+                <SaudiRiyal size={18} />{" "}
+                {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
+              </strong>
             </div>
             <div className="flex justify-between">
               <h3>Shipping Fees</h3>
@@ -150,7 +161,10 @@ const ViewOrder = () => {
               <h3>
                 Total <span className="text-xs">(incld vat)</span>{" "}
               </h3>
-               <strong className="flex items-center"><SaudiRiyal size={18}/> {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}</strong>
+              <strong className="flex items-center">
+                <SaudiRiyal size={18} />{" "}
+                {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
+              </strong>
             </div>
           </div>
           <h1 className="bg-primary p-1 text-center text-white font-bold my-3">
@@ -321,7 +335,6 @@ const ViewOrder = () => {
               </>
             )}
           </div>
-          
         </div>
       </div>
       <ToastContainer />

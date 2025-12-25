@@ -1,9 +1,17 @@
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { deleteProducts } from "../../../api/AllApi";
 
-const ProductRow = ({ product, index, refetch }) => {
+const ProductRow = ({ product, index }) => {
+  const id = product._id;
+
+  const muation = useMutation({
+    mutationKey: ["deleteProducts"],
+    mutationFn: (id) => deleteProducts(id),
+  });
   const deleteProduct = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -15,9 +23,7 @@ const ProductRow = ({ product, index, refetch }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(
-          `https://server-site-psi-inky.vercel.app/api/product/${id}`
-        );
+        muation.mutate(id);
         Swal.fire({
           title: "Deleted!",
           text: "Your file has been deleted.",
@@ -31,7 +37,6 @@ const ProductRow = ({ product, index, refetch }) => {
     return str.length > maxlength ? str.slice(0, maxlength - 1) + "…" : str;
   }
 
-  refetch();
   return (
     <tr>
       <td className="text-center">{index + 1}</td>
@@ -41,7 +46,15 @@ const ProductRow = ({ product, index, refetch }) => {
       <td className="text-center">{product.country}</td>
       <td className="text-center">SAR {product.price}</td>
       <td className="text-center">
-        <span className={product.discount ? "bg-primary px-2 py-1 rounded-md text-white animate-pulse " : "bg-error px-2 py-1 rounded-md text-white"}>{product.discount ? product.discount + "%" : "No Discount"}</span>
+        <span
+          className={
+            product.discount
+              ? "bg-primary px-2 py-1 rounded-md text-white animate-pulse "
+              : "bg-error px-2 py-1 rounded-md text-white"
+          }
+        >
+          {product.discount ? product.discount + "%" : "No Discount"}
+        </span>
       </td>
       <td className="text-center text-justify">{truncate(product.desc, 20)}</td>
       <td className="text-center">

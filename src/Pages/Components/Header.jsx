@@ -9,20 +9,19 @@ import { ToastContainer } from "react-toastify";
 import auth from "../../firebase.init";
 import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
 import { AuthContextDashboard } from "../Dashboard/AuthClient/AuthContextDashboard";
+import "./custom.css";
 
-const Header = () => {
-  const User = useAuthState(auth);
-  
-  const email = User[0]?.email;
+const Header = ({ cemail }) => {
+  const { email, settings } = useContext(AuthContext);
 
   const { data, isPending, refetch } = useQuery({
     queryKey: ["CartLength"],
-    queryFn: () => axios.get(`https://server-site-psi-inky.vercel.app/api/cart/${email}`),
-   refetchInterval:1000
-   
+    queryFn: () =>
+      axios.get(`https://server-site-psi-inky.vercel.app/api/cart/${email}`),
+    refetchInterval: 1000,
   });
   // console.log(data);
- 
+
   const menu = (
     <>
       <li>
@@ -30,13 +29,13 @@ const Header = () => {
       </li>
 
       <li>
-        <a>Services</a>
+        <Link to="/services">Services</Link>
       </li>
       <li>
-        <a>About</a>
+        <Link to="/about">About</Link>
       </li>
       <li>
-        <a>Contact</a>
+        <Link to="/contact">Contact</Link>
       </li>
       {email && (
         <li>
@@ -47,7 +46,7 @@ const Header = () => {
       )}
     </>
   );
-//  refetch();
+
   return (
     <div>
       <div className="navbar bg-primary text-base-100 shadow-sm fixed flex justify-between top-0 z-10 opacity-95">
@@ -77,18 +76,21 @@ const Header = () => {
               {menu}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl">Home Express</a>
+        
+
+          <div class="neon-container">
+            <h1 class="neon-text capitalize text-4xl font-bold">{settings?.websiteName}</h1>
+          </div>
         </div>
         {/* ================================================= */}
         <div className="navbar-end hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{menu}</ul>
         </div>
         <div className="flex justify-center items-center gap-2">
-          {email ? (
+          {cemail || email ? (
             <Link to="/cart" className="btn ">
-           
-                {data?.data.length}
-              
+              {data?.data.length}
+
               <FaCartPlus className="text-2xl text-primary" />
             </Link>
           ) : (

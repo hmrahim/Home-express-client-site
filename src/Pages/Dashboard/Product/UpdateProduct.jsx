@@ -1,12 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { fetchAllCategorys } from "../../../api/AllApi";
+import { fetchAllCategorys, updateProduct } from "../../../api/AllApi";
 import { countryApi } from "../../../api/countryApi";
+import { Helmet } from "react-helmet-async";
 
 const UpdateProduct = () => {
   const { id } = useParams();
@@ -63,15 +64,24 @@ const UpdateProduct = () => {
     setImage(res.data.data.url);
   };
 
+  const mutation = useMutation({
+    mutationKey: "",
+    mutationFn: (uPdata) => updateProduct(id,uPdata),
+  });
+
   const onSubmit = async (data) => {
-    const res = await axios.put(
-      `https://server-site-psi-inky.vercel.app/api/product/${id}`,
-      {
-        ...data,
-        image,
-      }
-    );
-    if (res.status === 200) {
+    const uPdata = { ...data, image };
+    // const res = await axios.put(
+    //   `https://server-site-psi-inky.vercel.app/api/product/${id}`,
+    //   {
+    //     ...data,
+    //     image,
+    //   }
+
+    // );
+    mutation.mutate(uPdata);
+    
+    if (mutation.data.status === 200) {
       Swal.fire({
         title: "Product updated!",
         icon: "success",
@@ -85,6 +95,9 @@ const UpdateProduct = () => {
   return (
     <div>
       <div className="bg-base-200 min-h-screen pt-10 px-5 md:px-0">
+        <Helmet>
+          <title>Dashboard-Update-product</title>
+        </Helmet>
         <div className=" md:w-4/5 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
           <h1 className="text-2xl font-bold text-primary text-center pb-2">
             Update Product
@@ -132,7 +145,14 @@ const UpdateProduct = () => {
                     >
                       <option disabled={true}>Select Category</option>
                       {data1?.map((category) => (
-                        <option value={category.name} selected={items.category === category.name ? true: false} >{category.name}</option>
+                        <option
+                          value={category.name}
+                          selected={
+                            items.category === category.name ? true : false
+                          }
+                        >
+                          {category.name}
+                        </option>
                       ))}
                     </select>
                   </fieldset>
@@ -204,11 +224,16 @@ const UpdateProduct = () => {
                       })}
                     >
                       <option disabled={true}>Select Country</option>
-                      {
-                        countryApi?.map((country)=>  <option value={country.name} selected={items.country=== country.name ? true : false }  >{country.name}</option>)
-                      }
-                     
-                     
+                      {countryApi?.map((country) => (
+                        <option
+                          value={country.name}
+                          selected={
+                            items.country === country.name ? true : false
+                          }
+                        >
+                          {country.name}
+                        </option>
+                      ))}
                     </select>
                   </fieldset>
                   {errors.country?.type === "required" && (

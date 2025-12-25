@@ -40,7 +40,7 @@ const Featured = () => {
         <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2 my-2 justify-items-center ">
           <>
             {
-              featured.map((product) => (
+              featured?.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))
             }

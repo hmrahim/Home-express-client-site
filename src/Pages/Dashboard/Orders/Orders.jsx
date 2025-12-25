@@ -10,26 +10,29 @@ import { FaArrowRight } from "react-icons/fa";
 import PreBackButton from "../../Components/PreBackButton";
 import { fetchConfirmOrders } from "../../../api/AllApi";
 import { useQuery } from "@tanstack/react-query";
+import PaperPlainLoader from "../../Components/Loader/PaperPlainLoader";
+import { Helmet } from "react-helmet-async";
 
 const Orders = () => {
-
-   const { data, isPending, refetch } = useQuery({
-        queryKey: ["user"],
-        queryFn: fetchConfirmOrders,
-        refetchInterval: 1000,
-      });
-
-
-      const seenItems = data?.filter((data)=> data?.seen === "pending");
-
+  const { data, isPending, refetch } = useQuery({
+    queryKey: ["user"],
+    queryFn: fetchConfirmOrders,
+    refetchInterval: 1000,
+  });
+if(isPending){
+  return <PaperPlainLoader/>
+}
+  const seenItems = data?.filter((data) => data?.seen === "pending");
 
   const location = useLocation();
   return (
     <div className="bg-base-200 pt-10 px-5 md:px-0">
+        <Helmet>
+        <title>Dashboard-Orders</title>
+      </Helmet>
       <div className=" md:w-4/5 min-h-[400px]  w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg py-4 border border-success px-5 my-">
         <PreBackButton title="All-Orders" />
         <hr className="h-1 bg-primary mb-4" />
-        
 
         <ul className=" text-sm font-medium text-center text-body flex -space-x-px gap-5 my-5">
           <li className="w-full focus-within:z-10 relative">
@@ -39,13 +42,12 @@ const Orders = () => {
               aria-current="page"
             >
               <MdPending />
-              Recent Orders 
-              {
-                seenItems?.length > 0 &&  <span className="btn btn-xs btn-error ml-3 absolute right-8">{seenItems?.length} </span>
-              }
-             
-
-             
+              Recent Orders
+              {seenItems?.length > 0 && (
+                <span className="btn btn-xs btn-error ml-3 absolute right-8">
+                  {seenItems?.length}{" "}
+                </span>
+              )}
             </Link>
           </li>
           <li className="w-full focus-within:z-10 ">

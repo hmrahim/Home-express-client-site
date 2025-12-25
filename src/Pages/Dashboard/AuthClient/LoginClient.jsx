@@ -21,7 +21,9 @@ const LoginClient = () => {
   const onSubmit = (data) => {
     signInWithEmailAndPassword(data.email, data.password);
     if (!error) {
-      toast.success("Sign in succesfully");
+      toast.success("Sign in succesfully", {
+        autoClose: 1000,
+      });
 
       reset();
     }

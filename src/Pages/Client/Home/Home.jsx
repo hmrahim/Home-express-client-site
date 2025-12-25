@@ -13,6 +13,7 @@ import {
 } from "../../../api/AllApi";
 import SectionTitle from "../../Components/SectionTitle";
 import ProductCard from "../../Components/ProductCard";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -44,7 +45,13 @@ const Home = () => {
   return (
     <div className=" ">
       <Banner />
-      <form onSubmit={(e)=> e.preventDefault() } className="max-w-2xl mx-auto mt-5 shadow-green">
+      <Helmet>
+        <title>Moom24-Home</title>
+      </Helmet>
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="max-w-2xl mx-auto mt-5 shadow-green"
+      >
         <div className="flex justify-center items-center ">
           <select
             onChange={(e) => setCatValue(e.target.value)}
@@ -84,18 +91,16 @@ const Home = () => {
       </form>
       {filterdData?.length > 0 ? (
         <div className="w-11/12 mx-auto mt-5  text-center bg-white">
-          {
-            search?.length > 0 ? (
-              <SectionTitle title={`Search Result for "${search}"`} />
-            ) : (
-              <SectionTitle title={`Category: ${catValue}`} />
-            )
-          }
-         
+          {search?.length > 0 ? (
+            <SectionTitle title={`Search Result for "${search}"`} />
+          ) : (
+            <SectionTitle title={`Category: ${catValue}`} />
+          )}
+
           <div className="w-full shadow-md  bg-slate-300 rounded-md px-4 py-5">
             <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2 my-2 justify-items-center ">
               <>
-                {filterdData.map((product) => (
+                {filterdData?.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </>

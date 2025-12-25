@@ -42,6 +42,9 @@ import PolicyLayout from "../Pages/Policies/PolicyLayout";
 import PrivacyPolicy from "../Pages/Policies/PrivacyPolicy";
 import TermsConditions from "../Pages/Policies/TermsConditions";
 import RefundPolicy from "../Pages/Policies/RefundPolicy";
+import About from "../Pages/Client/About/About";
+import Services from "../Pages/Client/Services/Services";
+import Contact from "../Pages/Client/Contact/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +54,18 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/services",
+        element: <Services />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         path: "product-details/:id",
@@ -64,7 +79,6 @@ export const router = createBrowserRouter([
             path: "/cart/customar-info",
             element: (
               <SkipInfo>
-                {" "}
                 <CustomarInfo />
               </SkipInfo>
             ),
@@ -151,12 +165,10 @@ export const router = createBrowserRouter([
         path: "/dashboard/all-users",
         Component: ALlUsers,
       },
-     {
-        path:"/dashboard/settings",
-        Component:Settings,
-      
+      {
+        path: "/dashboard/settings",
+        Component: Settings,
       },
-
 
       {
         path: "/dashboard/orders",
@@ -184,7 +196,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      
+
       {
         path: "/dashboard",
         Component: "",
@@ -215,29 +227,28 @@ export const router = createBrowserRouter([
           },
         ],
       },
-     
     ],
   },
   {
-    path:"/policies",
-    Component:PolicyLayout,
-    children:[
+    path: "/policies",
+    Component: PolicyLayout,
+    children: [
       {
-        path:"/policies/privacy-policy",
-        Component:PrivacyPolicy
+        path: "/policies/privacy-policy",
+        Component: PrivacyPolicy,
       },
       {
-        path:"/policies",
-        Component:PrivacyPolicy
+        path: "/policies",
+        Component: PrivacyPolicy,
       },
       {
-        path:"/policies/terms-conditions",
-        Component:TermsConditions
+        path: "/policies/terms-conditions",
+        Component: TermsConditions,
       },
       {
-        path:"/policies/refund-policy",
-        Component:RefundPolicy
-      }
-    ]
-  }
+        path: "/policies/refund-policy",
+        Component: RefundPolicy,
+      },
+    ],
+  },
 ]);

@@ -1,9 +1,16 @@
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { deleteCategoryById } from "../../../api/AllApi";
 
 const CategoryRow = ({ index, items, refetch }) => {
+
+    const mutation = useMutation({
+    mutationKey: ["deleteCategoryById"],
+    mutationFn: (id) => deleteCategoryById(id),
+  });
   const deleteCategory = async (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -15,7 +22,8 @@ const CategoryRow = ({ index, items, refetch }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`https://server-site-psi-inky.vercel.app/api/category/${id}`);
+        mutation.mutate(id)
+        // axios.delete(`https://server-site-psi-inky.vercel.app/api/category/${id}`);
         Swal.fire({
           title: "Deleted!",
           text: "Your file has been deleted.",

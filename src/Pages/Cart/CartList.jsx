@@ -4,11 +4,32 @@ import { GoTrash } from "react-icons/go";
 import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
 import ToolTop from "../Components/ToolTip/ToolTop";
+import { useMutation } from "@tanstack/react-query";
+import { deleteCartItems, updateCartQty } from "../../api/AllApi";
+
 
 const CartList = ({ cart, refetch }) => {
   const discountPrice = (Number(cart.price) * Number(cart.discount)) / 100;
 
   const [count, setCount] = useState(cart.quantity);
+
+  const mutation = useMutation({
+    mutationKey: ["updateCartQty"],
+    mutationFn: (quantity) => updateCartQty(cart._id, quantity),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        toast.success("Quantity Updated", { autoClose: 1000});
+      }
+    },
+  });
+
+
+  const deleteMutation = useMutation({
+    mutationKey:["deleteCart",cart._id],
+    mutationFn:(id)=> deleteCartItems(id),
+  
+  })
+
   const qty = Number(count);
   const incress = async (id) => {
     if (qty <= 0) {
@@ -17,15 +38,9 @@ const CartList = ({ cart, refetch }) => {
       setCount(qty + 1);
     }
 
-    const res = await axios.put(
-      `https://server-site-psi-inky.vercel.app/api/cart/${id}`,
-      {
-        quantity: Number(count) + 1,
-      }
-    );
-    if (res.status === 200) {
-      toast.success("Quantity Incresed");
-    }
+  
+    const quantity = { quantity: Number(count) + 1 };
+    mutation.mutate(quantity);
   };
   const decress = async (id) => {
     if (qty <= 1) {
@@ -33,15 +48,9 @@ const CartList = ({ cart, refetch }) => {
     } else {
       setCount(qty - 1);
     }
-    const res = await axios.put(
-      `https://server-site-psi-inky.vercel.app/api/cart/${id}`,
-      {
-        quantity: Number(count) - 1,
-      }
-    );
-    if (res.status === 200) {
-      toast.warning("Quantity Decresed");
-    }
+
+    const quantity = { quantity: Number(count) - 1 };
+    mutation.mutate(quantity);
   };
   const deleteCart = (id) => {
     Swal.fire({
@@ -54,7 +63,7 @@ const CartList = ({ cart, refetch }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`https://server-site-psi-inky.vercel.app/api/cart/${id}`);
+      deleteMutation.mutate(id)
 
         Swal.fire({
           title: "Deleted!",
@@ -73,12 +82,12 @@ const CartList = ({ cart, refetch }) => {
           <img className="size-10 rounded-box" src={cart.image} />
         </div>
       </td>
-      <td className="text-center"> 
+      <td className="text-center">
         <div>
           <h1 className="">{cart.name}</h1>
         </div>
       </td>
-      <td  className="text-center ">
+      <td className="text-center ">
         <div className="relative border-primary border flex flex-row flex-row-reverse justify-center items-center w-fit px-2 rounded-lg">
           <h3 className="text-xl font-bold ">
             {cart.discount ? cart.price - discountPrice : cart.price}
@@ -92,10 +101,7 @@ const CartList = ({ cart, refetch }) => {
           ) : (
             ""
           )}
-          {
-            cart.discount ? <ToolTop discount={cart.discount}/> : ""
-          }
-          
+          {cart.discount ? <ToolTop discount={cart.discount} /> : ""}
         </div>
       </td>
       <td className="text-center">

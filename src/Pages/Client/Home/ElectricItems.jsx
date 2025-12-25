@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { fetchProductForUser } from "../../../api/AllApi";
 import CardLoader from "../../Components/CardLoader";
+import { Helmet } from "react-helmet-async";
 
 const ElectricItems = () => {
   const { data, isPending, refetch } = useQuery({
@@ -24,6 +25,7 @@ const ElectricItems = () => {
   // console.log(electric);
   return (
     <div className="w-11/12 mx-auto my-10  text-center bg-white ">
+     
       <SectionTitle title="Electric Items" />
       <div className="shadow-md  bg-slate-300 rounded-md pb-3 px-4">
         {isPending ? (
@@ -36,7 +38,7 @@ const ElectricItems = () => {
         ) : (
           <div className="grid md:grid-cols-4  lg:grid-cols-5  grid-cols-2 gap-4 my-2 justify-items-center  my-2 py-4 ">
             <>
-              {electric.map((product) => (
+              {electric?.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
             </>

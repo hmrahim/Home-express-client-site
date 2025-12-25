@@ -23,7 +23,7 @@ const Cart = () => {
   const { pathname } = useLocation();
 
   const { data, isPending, refetch } = useQuery({
-    queryKey: ["allcart"],
+    queryKey: ["allcart",email],
     queryFn: () => fetchCart(email),
     refetchInterval: 1000,
   });
@@ -61,12 +61,14 @@ const Cart = () => {
     totalAmount - discAmount + amountWithOutDiscount;
   const checkOut = (data) => {
     if (data.length <= 0) {
-      toast.warning("add product");
+      toast.warning("add product",{
+        autoClose:1000
+      });
     } else {
       Navigate(`/confrim-checkout`);
     }
   };
-  refetch();
+
   return (
     <div className="w-full min-h-screen bg-gray-300 mt-16 md:mt-16 font-serif">
       <div className="s-full md:w-5/6 mx-auto flex flex-col flex-col-reverse md:flex-row  justify-around  py-5 gap-5 px-5">
@@ -151,7 +153,7 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer autoClose="1000" />
     </div>
   );
 };

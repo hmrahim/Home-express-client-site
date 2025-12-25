@@ -40,7 +40,7 @@ const PlumbingItems = () => {
         <div className="grid md:grid-cols-4  lg:grid-cols-6  grid-cols-2 gap-4 my-2 justify-items-center  my-2 py-4">
           <>
             {
-              plumbing.map((product) => (
+              plumbing?.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))
             }

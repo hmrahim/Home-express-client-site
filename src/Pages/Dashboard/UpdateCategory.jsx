@@ -1,21 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
+import { getCategoryById, putCategory } from "../../api/AllApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const UpdateCategory = () => {
   const navigate = useNavigate();
-  const [item, setItem] = useState("");
   const { id } = useParams();
+  const { data, isPending } = useQuery({
+    queryKey: ["getCategoryById", id],
+    queryFn: () => getCategoryById(id),
+    refetchInterval: 1000,
+  });
 
-  useEffect(() => {
-    axios
-      .get(`https://server-site-psi-inky.vercel.app/api/category/${id}`)
-      .then((res) => setItem(res.data));
-  }, []);
-  
   const {
     register,
     formState: { errors },
@@ -23,23 +24,28 @@ const UpdateCategory = () => {
     reset,
   } = useForm();
 
+  const mutation = useMutation({
+    mutationKey: ["putCategory"],
+    mutationFn: (data) => putCategory(id, data),
+  });
   const onSubmit = async (data) => {
-    const res = await axios.put(`https://server-site-psi-inky.vercel.app/api/category/${id}`, {
-      data,
-    });
-    if (res.status === 200) {
+    mutation.mutate(data);
       Swal.fire({
-  title: "Category updated!",
-  icon: "success",
-  draggable: false
-});
-     
-    }
-     navigate("/dashboard/all-category")
+        title: "Category updated!",
+        icon: "success",
+        draggable: false,
+      });
+    
+  
+    
+    navigate("/dashboard/all-category");
   };
   return (
     <div>
       <div className="bg-base-200 min-h-screen pt-10 px-5 md:px-0">
+        <Helmet>
+          <title>Dashboard-Update-Category</title>
+        </Helmet>
         <div className=" md:w-1/2 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
           <h1 className="text-2xl font-bold text-primary text-center pb-2">
             Update Category
@@ -47,6 +53,9 @@ const UpdateCategory = () => {
           <hr className="h-1 bg-primary" />
           <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="mt-5  ">
+              {
+                isPending ? "Loading..." :
+             
               <div>
                 <fieldset className="fieldset">
                   <legend className="fieldset-legend"> Category Name</legend>
@@ -54,7 +63,7 @@ const UpdateCategory = () => {
                     type="text"
                     placeholder="Category name"
                     className="input input-success w-full"
-                    defaultValue={item && item.name}
+                    defaultValue={data?.name}
                     {...register("name", {
                       required: {
                         value: true,
@@ -69,9 +78,13 @@ const UpdateCategory = () => {
                   </span>
                 )}
               </div>
+               }
             </div>
             <button className="btn w-full md:w-2/12 btn-success my-4">
-              Update category
+            {
+              mutation.isPending ? "Updading" :"Update category"
+            }
+              
             </button>
           </form>
         </div>

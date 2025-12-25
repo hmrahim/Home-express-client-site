@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AuthContextDashboard } from "../AuthClient/AuthContextDashboard";
 import { riderWallet } from "../../../api/AllApi";
 import { SaudiRiyal } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 export default function Wallet() {
   const { email } = useContext(AuthContextDashboard);
@@ -33,6 +34,9 @@ export default function Wallet() {
 
   return (
     <div className="py-4 px-5">
+        <Helmet>
+              <title>Wallet</title>
+            </Helmet>
       <PreBackButton title="Wallet" /> <hr className="h-1 bg-primary mb-4" />
       <main className="mx-auto max-w-5xl font-sans">
         <div className=" gap-6">

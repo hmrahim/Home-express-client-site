@@ -2,7 +2,10 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
-import PreBackButton from "../../Components/PreBackButton"
+import PreBackButton from "../../Components/PreBackButton";
+import { Helmet } from "react-helmet-async";
+import { useMutation } from "@tanstack/react-query";
+import { postCategory } from "../../../api/AllApi";
 
 const AddCategory = () => {
   const {
@@ -11,20 +14,26 @@ const AddCategory = () => {
     handleSubmit,
     reset,
   } = useForm();
-
+  const mutation = useMutation({
+    mutationKey: ["postCategory"],
+    mutationFn: (data) => postCategory(data),
+  });
   const onSubmit = async (data) => {
-    const res = await axios.post("https://server-site-psi-inky.vercel.app/api/category", { data });
-    if (res.status === 200) {
-      toast.success("Category created successfully");
-      reset();
-    }
-  
+    mutation.mutate(data);
+    toast.success("Category created successfully", {
+      autoClose: 1000,
+    });
+
+    reset();
   };
   return (
     <div>
       <div className="bg-base-200 min-h-screen pt-10 px-5 md:px-0">
+        <Helmet>
+          <title>Dashboard-Add-Category</title>
+        </Helmet>
         <div className=" md:w-1/2 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
-         <PreBackButton title="Add Category"/>
+          <PreBackButton title="Add Category" />
           <hr className="h-1 bg-primary" />
           <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="mt-5  ">

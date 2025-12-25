@@ -7,12 +7,12 @@ import { getAuth } from "firebase/auth"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAEeOxGewgRsy6NK9Zn1FPbuxjaCl14v2s",
-  authDomain: "homeexpress-sa.firebaseapp.com",
-  projectId: "homeexpress-sa",
-  storageBucket: "homeexpress-sa.firebasestorage.app",
-  messagingSenderId: "87695177459",
-  appId: "1:87695177459:web:30194fa454d132eee3a986"
+   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

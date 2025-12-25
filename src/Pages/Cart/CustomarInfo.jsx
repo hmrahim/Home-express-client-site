@@ -1,26 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { GiHomeGarage } from "react-icons/gi";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import auth from "../../firebase.init";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import PaperPlainLoader from "../Components/Loader/PaperPlainLoader";
 import CustomerLocation from "../Dashboard/Customers-Dashboard/CustomerLocation";
-import { getAddressFromLocation } from "../../api/AllApi";
+import {
+  confirmOrder,
+  getAddressFromLocation,
+  getUserByEmail,
+  getUserLocation,
+} from "../../api/AllApi";
+import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
 
 const CustomarInfo = () => {
+  const { email } = useContext(AuthContext);
   const [location, setLocation] = useState(null);
-  const { data: address } = useQuery({
-    queryKey: ["getAddressFromLocation"],
-    queryFn: async () =>
-      await axios.get(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.lat}&lon=${location.lng}`
-      ),
-      refetchInterval:1000
+  const { data: address, isPending: addresPending } = useQuery({
+    queryKey: ["getUserLocation"],
+    queryFn: () => getUserLocation(location.lat, location.lng),
+    refetchInterval: 1000,
   });
 
   const info = address?.data?.address;
@@ -28,36 +32,67 @@ const CustomarInfo = () => {
   // console.log(location);
   const navigate = useNavigate();
   const user = useAuthState(auth);
-  const email = user[0]?.email;
+  // const email = user[0]?.email;
   const { data, isPending, refetch } = useQuery({
-    queryKey: ["user"],
-    queryFn: () =>
-      axios.get(`https://server-site-psi-inky.vercel.app/api/user/${email}`),
+    queryKey: ["getUserByEmail", email],
+    queryFn: () => getUserByEmail(email),
+    refetchInterval: 1000,
   });
 
   const {
     register,
+    setValue,
     formState: { errors },
     handleSubmit,
-    reset,
+    watch,
   } = useForm();
+
+  const mutation = useMutation({
+    mutationKey: ["confirmOrder"],
+    mutationFn: (info) => confirmOrder(info),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        toast.success("Shipping address added successfully", {
+          autoClose: 1000,
+        });
+        //  navigate("/cart/payment");
+      }
+    },
+  });
+
+  useEffect(() => {
+    setValue("name", data?.data.name, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("email", data?.data.email, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("city", info?.city, { shouldValidate: true, shouldDirty: true });
+    setValue("region", info?.state, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("building", info?.road, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("area", address?.data.display_name, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  }, [setValue]);
   const onSubmit = async (data) => {
     const info = { ...data, location: location };
-    console.log(info);
-    const res = await axios.post(
-      "https://server-site-psi-inky.vercel.app/api/confirm-order",
-      {
-        info,
-      }
-    );
+    mutation.mutate(info);
 
-    if (res.status === 200) {
-      toast.success(
-        "Information added succesfully, please choice a payment method"
-      );
-      reset();
-      navigate("/cart/payment");
-    }
+    // const res = await axios.post(
+    //   "https://server-site-psi-inky.vercel.app/api/confirm-order",
+    //   {ll
+    //     info,
+    //   }
+    // );
   };
   if (isPending) {
     return <PaperPlainLoader />;
@@ -80,7 +115,6 @@ const CustomarInfo = () => {
                     id="floating_outlined"
                     className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
                     placeholder="Full Name"
-                    value={data?.data?.name}
                     {...register("name")}
                   />
 
@@ -97,7 +131,6 @@ const CustomarInfo = () => {
                     id="floating_outlined"
                     className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
                     placeholder="E-mail"
-                    value={user[0]?.email}
                     disabled="true"
                     {...register("email")}
                   />
@@ -137,16 +170,10 @@ const CustomarInfo = () => {
                 <div id="input" className="relative">
                   <input
                     type="text"
-                    value={info?.city}
                     id="floating_outlined"
                     className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
                     placeholder="City"
-                    {...register("city", {
-                      required: {
-                        value: true,
-                        message: "City is required",
-                      },
-                    })}
+                    {...register("city")}
                   />
                   <label
                     for="floating_outlined"
@@ -154,25 +181,19 @@ const CustomarInfo = () => {
                   >
                     City
                   </label>
-                  {errors.city?.type === "required" && (
+                  {/* {errors.city?.type === "required" && (
                     <span className="mt-1 text-sm text-red-600">
                       {errors.city.message}
                     </span>
-                  )}
+                  )} */}
                 </div>
                 <div id="input" className="relative">
                   <input
                     type="text"
-                    value={info?.state}
                     id="floating_outlined"
                     className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
                     placeholder="Region"
-                    {...register("region", {
-                      required: {
-                        value: true,
-                        message: "Region is required",
-                      },
-                    })}
+                    {...register("region")}
                   />
                   <label
                     for="floating_outlined"
@@ -180,52 +201,39 @@ const CustomarInfo = () => {
                   >
                     Region
                   </label>
-                  {errors.region?.type === "required" && (
+                  {/* {errors.region?.type === "required" && (
                     <span className="mt-1 text-sm text-red-600">
                       {errors.region.message}
                     </span>
-                  )}
+                  )} */}
                 </div>
 
                 <div id="input" className="relative">
                   <input
-                    value={info?.road}
                     type="text"
                     id="floating_outlined"
                     className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
                     placeholder="Building/ House No/ Floor/ Street"
-                    {...register("building", {
-                      required: {
-                        value: true,
-                        message:
-                          "Building / House NO / Floor / Street is required",
-                      },
-                    })}
+                    {...register("building")}
                   />
                   <label
                     for="floating_outlined"
                     className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
                   >
-                    Building/House No/ Floor/ Street
+                    Street
                   </label>
-                  {errors.building?.type === "required" && (
+                  {/* {errors.building?.type === "required" && (
                     <span className="mt-1 text-sm text-red-600">
                       {errors.building.message}
                     </span>
-                  )}
+                  )} */}
                 </div>
                 <div id="input" className="relative">
                   <input
                     type="text"
-                    value={info?.suburb}
                     className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
                     placeholder="Area"
-                    {...register("area", {
-                      required: {
-                        value: true,
-                        message: " Area is required",
-                      },
-                    })}
+                    {...register("area")}
                   />
                   <label
                     for="floating_outlined"
@@ -233,11 +241,11 @@ const CustomarInfo = () => {
                   >
                     Area
                   </label>
-                  {errors.area?.type === "required" && (
+                  {/* {errors.area?.type === "required" && (
                     <span className="mt-1 text-sm text-red-600">
                       {errors.area.message}
                     </span>
-                  )}
+                  )} */}
                 </div>
 
                 <div id="input" className="relative">
@@ -245,25 +253,20 @@ const CustomarInfo = () => {
                     type="text"
                     id="floating_outlined"
                     className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
-                    placeholder="Address"
-                    {...register("address", {
-                      required: {
-                        value: true,
-                        message: "Address is required",
-                      },
-                    })}
+                    placeholder=" Building/House No/ Floor/ "
+                    {...register("address")}
                   />
                   <label
                     for="floating_outlined"
                     className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
                   >
-                    Address
+                    Building/House No/ Floor (Optional)
                   </label>
-                  {errors.address?.type === "required" && (
+                  {/* {errors.address?.type === "required" && (
                     <span className="mt-1 text-sm text-red-600">
                       {errors.address.message}
                     </span>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="my-4">
@@ -277,9 +280,12 @@ const CustomarInfo = () => {
 
               <div className="sm:flex sm:flex-row-reverse flex gap-4 mt-4">
                 <button className="w-fit btn-primary rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px] border  transition-all duration-300">
-                  <div className="flex gap-2 items-center">Save changes</div>
+                  <div className="flex gap-2 items-center">
+                    {mutation.isPending ? "Saving" : "  Save changes"}
+                  </div>
                 </button>
               </div>
+              {/* <pre>{JSON.stringify(watch(), null, 2)}</pre> */}
             </div>
           </form>
         </div>

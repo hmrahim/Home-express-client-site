@@ -7,10 +7,11 @@ import ViewOrdersRow from "../../Dashboard/Orders/ViewOrdersRow";
 import Swal from "sweetalert2";
 import axios from "axios";
 import OrderTracker from "./OrderTracker";
+import { Helmet } from "react-helmet-async";
 const MyOrder = () => {
   const { email } = useContext(AuthContextDashboard);
   const { data, isPending } = useQuery({
-    queryKey: "fetchConfirmOrderByEmail",
+    queryKey: ["fetchConfirmOrderByEmail"],
     queryFn: () => fetchConfirmOrderByEmail(email),
     refetchInterval: 10000,
   });
@@ -64,7 +65,7 @@ const MyOrder = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axios.put(
-          `http://localhost:5000/api/cancel-order/${id}`,
+          `https://server-site-psi-inky.vercel.app/api/cancel-order/${id}`,
           { status: "cancelled" }
         );
         // if(res.status === 200){
@@ -84,6 +85,9 @@ const MyOrder = () => {
 
   return (
     <div className=" pt-5">
+        <Helmet>
+              <title>Dashboard-My-Orders</title>
+            </Helmet>
       <PreBackButton title={"My Orders"} />{" "}
       <hr className="h-1 bg-primary mx-4 md:mx-0" />
       {order !== undefined ? (

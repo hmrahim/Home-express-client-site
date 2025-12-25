@@ -54,9 +54,7 @@ const OrderRow = ({ orders }) => {
 
   return (
     <tr className="hover:bg-green-300 cursor-pointer shadow-2xl mt-2">
-      <th scope="col" className="p-4">
-        {orders.orders[0].name}
-      </th>
+      
       <th scope="col" className="p-4">
         {date}
       </th>

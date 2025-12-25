@@ -4,11 +4,12 @@ import OrderHistoryRow from "./OrderHistoryRow";
 import { AuthContextDashboard } from "../AuthClient/AuthContextDashboard";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllConfirmOrderByEmail } from "../../../api/AllApi";
+import { Helmet } from "react-helmet-async";
 
 const OrderHistory = () => {
   const { email } = useContext(AuthContextDashboard);
   const { data, isPending } = useQuery({
-    queryKey: "fetchAllConfirmOrderByEmail",
+    queryKey: ["fetchAllConfirmOrderByEmail"],
     queryFn: () => fetchAllConfirmOrderByEmail(email),
     refetchInterval: 10000,
   });
@@ -16,6 +17,9 @@ const OrderHistory = () => {
   
   return (
     <div className="my-5 px-5">
+        <Helmet>
+              <title>Dashboard-Orders-History</title>
+            </Helmet>
       <PreBackButton title="Order History" /> <hr className="h-1 bg-primary" />
       <div className="relative overflow-x-auto  shadow-xs rounded-base mt-2">
         {data?.length === 0 ? (

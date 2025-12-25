@@ -21,7 +21,7 @@ const CartDetails = ({data,title,isPending,refetch}) => {
                         <th className="text-center">Image</th>
                         <th className="text-center">Name</th>
                         <th className="text-center">Price</th>
-                        <th className="text-center">Qty Color</th>
+                        <th className="text-center">Qty </th>
                         <th className="text-center">Total Price</th>
                         <th className="text-center">Action</th>
                       </tr>

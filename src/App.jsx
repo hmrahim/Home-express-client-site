@@ -8,29 +8,26 @@ import { createContext, useEffect, useState } from "react";
 import { AuthContext } from "./Pages/Dashboard/AuthClient/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-
-
-
-
+import { getSettingsData } from "./api/AllApi";
+import { getAuth } from "firebase/auth";
 
 function App() {
   const user = useAuthState(auth);
-  const email = user[0]?.email;
+  const email = getAuth()?.currentUser?.email
+ 
+  // const email = user[0]?.email;
   const { data, isPending, refetch } = useQuery({
     queryKey: ["userEmail"],
-    queryFn: () => axios.get(`https://server-site-psi-inky.vercel.app/api/user/${email}`),
+    queryFn: () =>
+      axios.get(`https://server-site-psi-inky.vercel.app/api/user/${email}`),
   });
 
   let rol = "";
   if (!isPending) {
-    rol = data.data.rol;
+    rol = data?.data.rol;
   }
 
-
-
-
-const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstall, setShowInstall] = useState(false);
 
   useEffect(() => {
@@ -58,34 +55,28 @@ const [deferredPrompt, setDeferredPrompt] = useState(null);
     setShowInstall(true);
   };
 
-
-
-
-
-
- 
+  const { data: settings, isPending: settingPending } = useQuery({
+    queryKey: ["getSettingsData"],
+    queryFn: getSettingsData,
+    refetchInterval: 1000,
+  });
 
   refetch();
   return (
-    <AuthContext.Provider value={{ email, rol }}>
+    <AuthContext.Provider value={{ email, rol, settings }}>
       <div className=" font-serif">
         <Header />
 
-
-
- <div>
-     
-      {showInstall && (
-        <button
-          onClick={installApp}
-          className="fixed bottom-5 right-5 bg-blue-600 text-white px-4 py-2 rounded shadow"
-        >
-          Install App
-        </button>
-      )}
-    </div>
-
-
+        <div>
+          {showInstall && (
+            <button
+              onClick={installApp}
+              className="fixed bottom-5 right-5 bg-blue-600 text-white px-4 py-2 rounded shadow"
+            >
+              Install App
+            </button>
+          )}
+        </div>
 
         <Outlet />
         <Footer />

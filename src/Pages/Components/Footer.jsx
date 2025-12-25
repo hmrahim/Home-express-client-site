@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
 
 const Footer = () => {
+  const { settings } = useContext(AuthContext);
+
   return (
     <div>
       <footer class="bg-primary text-white mt-20">
@@ -10,10 +13,7 @@ const Footer = () => {
             {/* <!-- About Section --> */}
             <div>
               <h3 class="text-xl font-bold mb-4">About Us</h3>
-              <p class="text-white text-sm">
-                We are a team dedicated to providing the best web solutions. Our
-                goal is to make your online presence powerful and professional.
-              </p>
+              <p class="text-white text-sm">{settings?.aboutText}</p>
             </div>
 
             {/* <!-- Quick Links --> */}
@@ -41,7 +41,10 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <Link to="/policies/privacy-policy" class="hover:text-white transition">
+                  <Link
+                    to="/policies/privacy-policy"
+                    class="hover:text-white transition"
+                  >
                     Privacy Policy
                   </Link>
                 </li>
@@ -58,16 +61,16 @@ const Footer = () => {
                     href="mailto:info@yourwebsite.com"
                     class="hover:text-white transition"
                   >
-                    info@yourwebsite.com
+                    {settings?.email}
                   </a>
                 </li>
                 <li>
                   Phone:{" "}
                   <a href="tel:+1234567890" class="hover:text-white transition">
-                    +1 234 567 890
+                    {settings?.phone}
                   </a>
                 </li>
-                <li>Address: 123 Main Street, Your City</li>
+                <li>{settings?.address}</li>
               </ul>
 
               {/* <!-- Social Links --> */}
@@ -93,7 +96,7 @@ const Footer = () => {
 
           {/* <!-- Bottom Text --> */}
           <div class="mt-12 border-t border-white pt-6 text-center text-white text-sm">
-            &copy; 2025 YourWebsite. All rights reserved.
+            &copy; {settings?.copyright}
           </div>
         </div>
       </footer>

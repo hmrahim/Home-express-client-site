@@ -18,19 +18,17 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-const CustomerLocation = ({setLocation}) => {
+const CustomerLocation = ({ setLocation }) => {
   const [marker, setMarker] = useState(null);
-if(marker !== null) {
-    setLocation(marker)
+  if (marker !== null) {
+    setLocation(marker);
   }
- 
- 
 
   // Detect user location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
-        setMarker({lat:pos.coords.latitude, lng:pos.coords.longitude});
+        setMarker({ lat: pos.coords.latitude, lng: pos.coords.longitude });
       });
     }
   }, []);
@@ -38,7 +36,7 @@ if(marker !== null) {
   const MapClick = () => {
     useMapEvents({
       click(e) {
-        setMarker({lat:e.latlng.lat, lng:e.latlng.lng});
+        setMarker({ lat: e.latlng.lat, lng: e.latlng.lng });
       },
     });
     return null;
