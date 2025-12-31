@@ -17,6 +17,7 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^0.561.0",
     "react": "^19.0.0-rc.1",
+    "react-datepicker": "^9.1.0",
     "react-dom": "^19.0.0-rc.1",
     "react-firebase-hooks": "^5.1.1",
     "react-helmet-async": "^2.0.5",
@@ -28,6 +29,7 @@
     "react-toastify": "^11.0.5",
     "sweetalert2": "^11.26.3",
     "swiper": "^12.0.3",
+    "ua-parser-js": "^2.0.7",
     "vite-plugin-pwa": "^1.2.0"
   },
   "devDependencies": {

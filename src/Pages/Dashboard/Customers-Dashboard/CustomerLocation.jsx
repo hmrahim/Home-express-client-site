@@ -53,7 +53,7 @@ const CustomerLocation = ({ setLocation }) => {
   }
 
   return (
-    <div className="border-2 border-primary shadow-xl">
+    <div className="border-2 border-primary shadow-xl rounded-lg overflow-hidden">
       <MapContainer
         center={marker || [23.8103, 90.4125]}
         zoom={20}

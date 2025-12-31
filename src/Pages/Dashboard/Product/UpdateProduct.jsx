@@ -102,7 +102,7 @@ const UpdateProduct = () => {
           <h1 className="text-2xl font-bold text-primary text-center pb-2">
             Update Product
           </h1>{" "}
-          <hr className="h-1 bg-primary" />
+            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           {!isPending ? (
             <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
               <div className="mt-5 grid md:grid-cols-3 gap-4 ">

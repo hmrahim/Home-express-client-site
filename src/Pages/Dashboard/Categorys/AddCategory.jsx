@@ -34,7 +34,7 @@ const AddCategory = () => {
         </Helmet>
         <div className=" md:w-1/2 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
           <PreBackButton title="Add Category" />
-          <hr className="h-1 bg-primary" />
+            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="mt-5  ">
               <div>

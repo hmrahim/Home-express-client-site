@@ -3,13 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { getAuth } from "firebase/auth";
 
- const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL,
-  });
-
 // const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+//   baseURL: import.meta.env.VITE_API_BASE_URL,
 // });
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+});
 
 api.interceptors.request.use(
   async (config) => {
@@ -28,11 +28,6 @@ api.interceptors.request.use(
   }
 );
 
-// =======================Payment===============================
-export const confirmedOrderWithPayment = async (email,items) => {
-  const res = await api.put(`/confirm-order/${email}`, items);
-  return res.status === 200 ? res : null;
-};
 // ===========================user api===============================
 
 export const postUser = async (user) => {
@@ -54,13 +49,22 @@ export const getUserLocation = async (lat, lng) => {
   return res.status === 200 ? res : null;
 };
 
-export const confirmOrder = async (info) => {
-  const res = await api.post(`/confirm-order`, { info });
+// =======================Payment===============================
+export const confirmedOrderWithPayment = async (items,email) => {
+  const res = await api.put(`/confirm-order/${email}`, items);
+  return res.status === 200 ? res : null;
+};
+export const confirmOrder = async (items) => {
+  const res = await api.post(`/confirm-order`, { items });
   return res.status === 200 ? res : null;
 };
 export const getconfirmOrderByEmail = async (email) => {
   const res = await api.get(`/confirm-order/${email}`);
   return res.status === 200 ? res : null;
+};
+export const getDistanceApi = async (email) => {
+  const res = await api.get(`/distence-customer/${email}`);
+  return res.status === 200 ? res.data : null;
 };
 
 // =================product api=======================
@@ -200,4 +204,37 @@ export const postSettingsData = async (formData) => {
 export const getSettingsData = async () => {
   const res = await api.get(`/settings`);
   return res.status === 200 ? res.data : [];
+};
+
+// ==========================visitors========================
+
+export const postVisitor = async (visitor) => {
+  const res = await api.post(`/visitors`, visitor);
+  return res.status === 200 ? res : [];
+};
+export const getVisitor = async (date) => {
+  const res = await api.get(`/visitors?date=${date}`);
+  return res.status === 200 ? res.data : [];
+};
+
+// ========================promocode routers =======================
+export const postPromocode = async (data) => {
+  const res = await api.post(`/promocode`, data);
+  return res.status === 200 ? res : [];
+};
+export const getPromocode = async () => {
+  const res = await api.get(`/promocode`);
+  return res.status === 200 ? res.data : [];
+};
+export const getPromocodeById = async (id) => {
+  const res = await api.get(`/promocode/${id}`);
+  return res.status === 200 ? res.data : [];
+};
+export const updatePromoById = async (PromoData, id) => {
+  const res = await api.put(`/promocode/${id}`, PromoData);
+  return res.status === 200 ? res : [];
+};
+export const deletePromo = async (id) => {
+  const res = await api.delete(`/promocode/${id}`);
+  return res.status === 200 ? res : [];
 };

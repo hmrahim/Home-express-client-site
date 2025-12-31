@@ -23,6 +23,7 @@ const ViewOrder = () => {
     queryFn: () => fetchConfirmOrderById(id),
     refetchInterval: 1000,
   });
+  const deliveryFee = data?.distence <=5 ? (15).toFixed(2) : (Number(data?.distence) * 5).toFixed(2);
 
   const { data: rider, isPending: isRiderPending } = useQuery({
     queryKey: ["fetchRider"],
@@ -153,8 +154,12 @@ const ViewOrder = () => {
               </strong>
             </div>
             <div className="flex justify-between">
-              <h3>Shipping Fees</h3>
-              <strong className="text-green-600">Free</strong>
+              <h3>Distence</h3>   
+              <strong className="text-green-600 flex items-center">{data?.distence}km </strong>
+            </div>
+            <div className="flex justify-between">
+              <h3>Shipping Fees</h3>   
+              <strong className="text-green-600 flex items-center"><SaudiRiyal size={18} />{" "} {deliveryFee}</strong>
             </div>
             <hr className="h-1 bg-primary my-1" />
             <div className="flex justify-between">
@@ -163,7 +168,7 @@ const ViewOrder = () => {
               </h3>
               <strong className="flex items-center">
                 <SaudiRiyal size={18} />{" "}
-                {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
+                {  Number(totalAmoutWithDIscountAndWithoutDiscount) + Number(deliveryFee) }
               </strong>
             </div>
           </div>
@@ -224,13 +229,13 @@ const ViewOrder = () => {
               <div className="flex justify-between border-b border-gray-500 py-1 my-3 cursor-pointer  px-1">
                 <h3>Castumar Email</h3>
                 <strong className="text-orange-600">
-                  {data?.address.email}
+                  {data?.email}
                 </strong>
               </div>
               <div className="flex justify-between border-b border-gray-500 py-1 my-3 cursor-pointer  px-1">
                 <h3>Castumar Number</h3>
                 <strong className="text-orange-600">
-                  {data?.address.number}
+                  {data?.address.phone}
                 </strong>
               </div>
               <div className="flex justify-between border-b border-gray-500 py-1 my-3 cursor-pointer  px-1">
@@ -242,7 +247,7 @@ const ViewOrder = () => {
               <div className="flex justify-between border-b border-gray-500 py-1 my-3 cursor-pointer  px-1">
                 <h3>Rigion</h3>
                 <strong className="text-orange-600">
-                  {data?.address.region}
+                  {data?.address.state}
                 </strong>
               </div>
               <div className="flex justify-between border-b border-gray-500 py-1 my-3 cursor-pointer  px-1">
@@ -254,13 +259,13 @@ const ViewOrder = () => {
               <div className="flex justify-between border-b border-gray-500 py-1 my-3 cursor-pointer  px-1">
                 <h3>Area</h3>
                 <strong className="text-orange-600">
-                  {data?.address.area}
+                  {data?.address.road}, {data?.address.suburb}
                 </strong>
               </div>
               <div className="flex justify-between border-b border-gray-500 py-1 my-3 cursor-pointer  px-1">
                 <h3>Full Address</h3>
                 <strong className="text-orange-600">
-                  {data?.address.address}
+                  {data?.address.city},{data?.address.country}
                 </strong>
               </div>
             </div>

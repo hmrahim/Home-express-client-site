@@ -8,7 +8,7 @@ const Services = () => {
           <title>Moom24-Services</title>
       </Helmet>
       {/* HERO */}
-      <section className="relative bg-gradient-to-r from-green-600 to-green-500 text-white">
+      <section className="relative bg-gradient-to-r from-green-500 to-emerald-600 text-white">
         <div className="max-w-7xl mx-auto px-6 py-24 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fadeIn">
             Our Professional Services
@@ -73,7 +73,7 @@ const Services = () => {
       </section>
 
       {/* CTA */}
-      <section className="bg-gradient-to-r from-green-600 to-green-500 text-white">
+      <section className="bg-gradient-to-r from-green-500 to-emerald-600 text-white">
         <div className="max-w-7xl mx-auto px-6 py-20 text-center">
           <h2 className="text-3xl font-bold mb-4">
             Need Professional Service?
@@ -111,7 +111,7 @@ const WhyCard = ({ title, icon }) => (
 
 const Step = ({ number, text }) => (
   <div className="relative">
-    <div className="w-14 h-14 mx-auto rounded-full bg-primary text-white flex items-center justify-center text-xl font-bold mb-4">
+    <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white flex items-center justify-center text-xl font-bold mb-4">
       {number}
     </div>
     <p className="font-medium">{text}</p>

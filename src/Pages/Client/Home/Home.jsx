@@ -1,23 +1,90 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Banner from "../../Components/Banner";
 import Featured from "./Featured";
 import ElectricItems from "./ElectricItems";
 import PlumbingItems from "./PlumbingItems";
 import PaintingItems from "./PaintingItems";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   fetchAllCategorys,
   fetchProductForUser,
   fetchSeacrhProduct,
+  postVisitor,
 } from "../../../api/AllApi";
 import SectionTitle from "../../Components/SectionTitle";
 import ProductCard from "../../Components/ProductCard";
 import { Helmet } from "react-helmet-async";
+import { UAParser } from "ua-parser-js";
 
 const Home = () => {
   const [search, setSearch] = useState("");
   const [catValue, setCatValue] = useState("");
+
+  const parser = new UAParser(navigator.userAgent);
+
+  // Parsed result object
+  const result = parser.getResult();
+
+  const browserInfo = {
+    browserName: result.browser.name, // Chrome / Firefox / Edge
+    browserVersion: result.browser.version, // 120.0.6099.109
+    os: result.os.name, // Windows / Android / iOS
+    osVersion: result.os.version, // OS version
+    deviceType: result.device.type || "desktop", // mobile / tablet / desktop
+    deviceVendor: result.device.vendor || "Unknown",
+  };
+
+  const page = window.location.pathname;
+  const referrer =
+    document.referrer && document.referrer !== ""
+      ? document.referrer
+      : "direct";
+
+
+  const visitor = {
+    page: page,
+    referrer: referrer,
+    userAgent: browserInfo,
+  };
+
+  const mutation = useMutation({
+    mutationFn: (visitor) => postVisitor(visitor),
+  });
+
+  useEffect(() => {
+    mutation.mutate(visitor);
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const { data, isPending, refetch } = useQuery({
     queryKey: ["featuredItem"],

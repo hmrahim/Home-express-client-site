@@ -16,7 +16,7 @@ const Navbar = () => {
     navigate('/')
   }
   return (
-    <div className="navbar bg-primary  text-primary-content fixed top-0 z-10">
+    <div className="navbar bg-gradient-to-r from-green-500 to-emerald-600  text-primary-content fixed top-0 z-10">
       <div className="navbar-start">
         <div className="dropdown">
           <label
@@ -42,7 +42,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-center">
-        <Link to="/" className="btn btn-ghost normal-case text-xl">Home Express</Link>
+        <Link to="/" className="btn btn-ghost  text-2xl font-bold tracking-[5px]">Moom24</Link>
       </div>
       <div className="navbar-end">
         <div className="dropdown dropdown-end">

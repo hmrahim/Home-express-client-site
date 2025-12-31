@@ -8,7 +8,7 @@ const About = () => {
           <title>Moom24-About</title>
       </Helmet>
       {/* HERO SECTION */}
-      <section className="bg-gradient-to-r from-primary to-green-600 text-white">
+      <section className="bg-gradient-to-r from-green-500 to-emerald-600 text-white">
         <div className="max-w-7xl mx-auto px-6 py-20 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             About Our Store
@@ -78,7 +78,7 @@ const About = () => {
       </section>
 
       {/* TRUST STATS */}
-      <section className="bg-primary text-white">
+      <section className="bg-gradient-to-r from-green-500 to-emerald-600 text-white">
         <div className="max-w-7xl mx-auto px-6 py-16 grid sm:grid-cols-3 text-center gap-8">
           <Stat number="50K+" label="Happy Customers" />
           <Stat number="10K+" label="Orders Delivered" />
@@ -102,7 +102,7 @@ const About = () => {
           <p className="text-gray-600 mb-6">
             Discover thousands of products made just for you.
           </p>
-          <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-green-700 transition">
+          <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:bg-green-700 transition">
             Explore Products
           </button>
         </div>

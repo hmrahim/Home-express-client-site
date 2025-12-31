@@ -8,7 +8,7 @@ import { createContext, useEffect, useState } from "react";
 import { AuthContext } from "./Pages/Dashboard/AuthClient/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { getSettingsData } from "./api/AllApi";
+import { fetchCart, getSettingsData } from "./api/AllApi";
 import { getAuth } from "firebase/auth";
 
 function App() {
@@ -21,6 +21,12 @@ function App() {
     queryFn: () =>
       axios.get(`https://server-site-psi-inky.vercel.app/api/user/${email}`),
   });
+
+   const { data:cart, isPending:cartLoader } = useQuery({
+      queryKey: ["allcart", email],
+      queryFn: () => fetchCart(email),
+      refetchInterval: 1000,
+    });
 
   let rol = "";
   if (!isPending) {
@@ -63,7 +69,7 @@ function App() {
 
   refetch();
   return (
-    <AuthContext.Provider value={{ email, rol, settings }}>
+    <AuthContext.Provider value={{ email, rol, settings,cart,cartLoader }}>
       <div className=" font-serif">
         <Header />
 

@@ -22,8 +22,8 @@ const Settings = () => {
     // console.log("FILE:", files);
 
     if (!files) return;
-    if (files.size > 1024 * 500) {
-      setError("Image size must be less then 100 kb and file must be an image");
+    if (files.size > 1024 * 1000) {
+      setError("Image size must be less then 1 Mb and file must be an image");
       e.target.value = null;
     } else {
       const imageUrl = URL.createObjectURL(files);
@@ -80,7 +80,7 @@ const Settings = () => {
       <div className="bg-base-200  pt-10 px-5 md:px-0">
         <div className=" md:w-4/5 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
           <PreBackButton title="Home Settings" />{" "}
-          <hr className="h-1 bg-primary" />
+            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-6 mb-6 md:grid-cols-2 my-5">
               <div>

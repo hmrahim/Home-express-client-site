@@ -30,10 +30,10 @@ const ProductView = () => {
   const qty = Number(count);
   const { id } = useParams();
   const { data, isPending, refetch } = useQuery({
-    queryKey: ["getProductById",id],
+    queryKey: ["getProductById", id],
     queryFn: () => getProductById(id),
   });
-  
+
   const discoun = (Number(data?.price) * data?.discount) / 100;
   const discountPrice = Number(data?.price) - discoun;
 
@@ -126,10 +126,7 @@ const ProductView = () => {
                     {data?.discount ? (
                       <del className="to-gray-600 flex  font-semibold items-center gap-2">
                         <img src={currency} className="w-5 h-5" alt="" />
-                        <p className="text-gray-600 text-xl">
-                          {" "}
-                          {data?.price}
-                        </p>
+                        <p className="text-gray-600 text-xl"> {data?.price}</p>
                       </del>
                     ) : (
                       ""
@@ -147,7 +144,7 @@ const ProductView = () => {
                 <div className="w-32 rounded-xl  flex border ">
                   <button
                     onClick={decress}
-                    className="btn btn-square font-bold text-3xl btn-primary"
+                    className="btn btn-square font-bold text-3xl bg-gradient-to-r from-green-500 to-emerald-600"
                   >
                     -
                   </button>
@@ -159,7 +156,7 @@ const ProductView = () => {
                   />
                   <button
                     onClick={incress}
-                    className="btn btn-square  font-bold text-3xl btn-primary"
+                    className="btn btn-square  font-bold text-3xl bg-gradient-to-r from-green-500 to-emerald-600"
                   >
                     +
                   </button>
@@ -174,7 +171,7 @@ const ProductView = () => {
                   {email ? (
                     <button
                       onClick={addToCart}
-                      className="btn  rounded-none md:px-20 btn-primary"
+                      className="btn  rounded-none md:px-20 bg-gradient-to-r from-green-500 to-emerald-600 text-white"
                     >
                       {mutation.isPending ? "Loading..." : "Add TO Cart"}
                     </button>

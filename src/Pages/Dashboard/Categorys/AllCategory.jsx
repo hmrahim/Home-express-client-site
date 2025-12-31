@@ -21,7 +21,7 @@ const AllCategory = () => {
       </Helmet>
         <div className=" md:w-1/2 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg py-4 border border-success" >
          <PreBackButton title="All Category"/>
-          <hr className="h-1 bg-primary" />
+            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           <div className="overflow-x-auto">
             
                

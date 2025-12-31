@@ -6,10 +6,12 @@ import auth from "../../firebase.init";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import PaperPlainLoader from "../Components/Loader/PaperPlainLoader";
 import CustomerLocation from "../Dashboard/Customers-Dashboard/CustomerLocation";
+import { FaShippingFast, FaWhatsapp } from "react-icons/fa";
+import { MdAttachEmail } from "react-icons/md";
 import {
   confirmOrder,
   getAddressFromLocation,
@@ -19,6 +21,15 @@ import {
 import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
 
 const CustomarInfo = () => {
+  const [isChecked, setIsChecked] = useState(false);
+  const toggle = () => {
+    if (isChecked === true) {
+      setIsChecked(false);
+    } else if (isChecked === false) {
+      setIsChecked(true);
+    }
+  };
+
   const { email } = useContext(AuthContext);
   const [location, setLocation] = useState(null);
   const { data: address, isPending: addresPending } = useQuery({
@@ -27,7 +38,8 @@ const CustomarInfo = () => {
     refetchInterval: 1000,
   });
 
-  const info = address?.data?.address;
+  const info = address?.data;
+  // console.log(address);
 
   // console.log(location);
   const navigate = useNavigate();
@@ -38,6 +50,8 @@ const CustomarInfo = () => {
     queryFn: () => getUserByEmail(email),
     refetchInterval: 1000,
   });
+
+  const name = data?.data.name;
 
   const {
     register,
@@ -50,231 +64,199 @@ const CustomarInfo = () => {
   const mutation = useMutation({
     mutationKey: ["confirmOrder"],
     mutationFn: (info) => confirmOrder(info),
-    onSuccess: (res) => {
-      if (res.status === 200) {
-        toast.success("Shipping address added successfully", {
-          autoClose: 1000,
-        });
-        //  navigate("/cart/payment");
-      }
-    },
   });
 
-  useEffect(() => {
-    setValue("name", data?.data.name, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    setValue("email", data?.data.email, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    setValue("city", info?.city, { shouldValidate: true, shouldDirty: true });
-    setValue("region", info?.state, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    setValue("building", info?.road, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    setValue("area", address?.data.display_name, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-  }, [setValue]);
+  // useEffect(() => {
+  //   setValue("name", data?.data.name, {
+  //     shouldValidate: true,
+  //     shouldDirty: true,
+  //   });
+  //   setValue("email", data?.data.email, {
+  //     shouldValidate: true,
+  //     shouldDirty: true,
+  //   });
+  //   setValue("city", info?.city, { shouldValidate: true, shouldDirty: true });
+  //   setValue("region", info?.state, {
+  //     shouldValidate: true,
+  //     shouldDirty: true,
+  //   });
+  //   setValue("building", info?.road, {
+  //     shouldValidate: true,
+  //     shouldDirty: true,
+  //   });
+  //   setValue("area", address?.data.display_name, {
+  //     shouldValidate: true,
+  //     shouldDirty: true,
+  //   });
+  // }, [setValue]);
+
   const onSubmit = async (data) => {
-    const info = { ...data, location: location };
+    const info = {
+      ...data,
+      email: email,
+      name:name,
+      location: location,
+      address: address?.data.address,
+    };
     mutation.mutate(info);
 
-    // const res = await axios.post(
-    //   "https://server-site-psi-inky.vercel.app/api/confirm-order",
-    //   {ll
-    //     info,
-    //   }
-    // );
+
+    //  localStorage.setItem("address", JSON.stringify(info));
+    //  const isSaved = localStorage.getItem("address")
+
+    // if (isSaved) {
+    //   navigate("/cart/payment");
+    // }
+    // console.log(info);
   };
   if (isPending) {
     return <PaperPlainLoader />;
   }
 
   return (
-    <div className=" font-serif">
-      <div className="flex flex-col md:flex-row justify-around  py-5 gap-5 ">
-        <div className="bg-base-100 w-full md:px-5 rounded-lg  md:px-0">
-          <h1 className="text-2xl text-center font-semibold mt-5">
-            Order Information
+    <div className="">
+      <div className="flex flex-col md:flex-row justify-around  gap-5 ">
+        <div className="bg-base-100 w-full md:px-5 rounded-lg px-4  md:px-0 ">
+          <h1 className="text-2xl text-center text-gray-950 font-semibold mt-5">
+            Shipping Information
           </h1>{" "}
           <hr className="h-1 bg-primary mb-3" />
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="bg-white py-4 ">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                <div id="input" className="relative">
-                  <input
-                    type="text"
-                    id="floating_outlined"
-                    className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
-                    placeholder="Full Name"
-                    {...register("name")}
-                  />
+            <div className="bg-white py-4 text-gray-800">
+              <div className=" flex flex-col justify-center">
+                <div>
+                  <div class="bg-base-200 mb-4 rounded-2xl shadow p-4 ">
+                    {/* <!-- Header --> */}
+                    <div class="flex items-center justify-between mb-4">
+                      <h2 class="text-lg font-semibold text-gray-800">
+                        Customer Information
+                      </h2>
+                      <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                        Verified
+                      </span>
+                    </div>
 
-                  <label
-                    for="floating_outlined"
-                    className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-                  >
-                    Full name
-                  </label>
-                </div>
-                <div id="input" className="relative">
-                  <input
-                    type="text"
-                    id="floating_outlined"
-                    className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
-                    placeholder="E-mail"
-                    disabled="true"
-                    {...register("email")}
-                  />
-                  <label
-                    for="floating_outlined"
-                    className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-                  >
-                    E-mail
-                  </label>
-                </div>
+                    {/* <!-- Info List --> */}
+                    <div class="space-y-2 grid grid-cols-1 md:grid-cols-2  ">
+                      {/* <!-- Name --> */}
+                      <div class="flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
+                          N
+                        </div>
+                        <div>
+                          <p class="text-sm text-gray-500">Full Name</p>
+                          <p class="text-base font-medium text-gray-800">
+                            {data?.data.name}
+                          </p>
+                        </div>
+                      </div>
 
-                <div id="input" className="relative">
-                  <input
-                    type="Number"
-                    id="floating_outlined"
-                    className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
-                    placeholder="Mobile Number"
-                    {...register("number", {
-                      required: {
-                        value: true,
-                        message: "Phone number is required",
-                      },
-                    })}
-                  />
-                  <label
-                    for="floating_outlined"
-                    className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-                  >
-                    Mobile Number
-                  </label>
-                  {errors.number?.type === "required" && (
-                    <span className="mt-1 text-sm text-red-600">
-                      {errors.number.message}
-                    </span>
-                  )}
-                </div>
-                <div id="input" className="relative">
-                  <input
-                    type="text"
-                    id="floating_outlined"
-                    className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
-                    placeholder="City"
-                    {...register("city")}
-                  />
-                  <label
-                    for="floating_outlined"
-                    className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-                  >
-                    City
-                  </label>
-                  {/* {errors.city?.type === "required" && (
-                    <span className="mt-1 text-sm text-red-600">
-                      {errors.city.message}
-                    </span>
-                  )} */}
-                </div>
-                <div id="input" className="relative">
-                  <input
-                    type="text"
-                    id="floating_outlined"
-                    className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
-                    placeholder="Region"
-                    {...register("region")}
-                  />
-                  <label
-                    for="floating_outlined"
-                    className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-                  >
-                    Region
-                  </label>
-                  {/* {errors.region?.type === "required" && (
-                    <span className="mt-1 text-sm text-red-600">
-                      {errors.region.message}
-                    </span>
-                  )} */}
-                </div>
+                      {/* <!-- Email --> */}
+                      <div class="flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+                          <MdAttachEmail />
+                        </div>
+                        <div>
+                          <p class="text-sm text-gray-500">Email Address</p>
+                          <p class="text-base font-medium text-gray-800">
+                            {email && email}
+                          </p>
+                        </div>
+                      </div>
 
-                <div id="input" className="relative">
-                  <input
-                    type="text"
-                    id="floating_outlined"
-                    className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
-                    placeholder="Building/ House No/ Floor/ Street"
-                    {...register("building")}
-                  />
-                  <label
-                    for="floating_outlined"
-                    className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-                  >
-                    Street
-                  </label>
-                  {/* {errors.building?.type === "required" && (
-                    <span className="mt-1 text-sm text-red-600">
-                      {errors.building.message}
-                    </span>
-                  )} */}
-                </div>
-                <div id="input" className="relative">
-                  <input
-                    type="text"
-                    className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
-                    placeholder="Area"
-                    {...register("area")}
-                  />
-                  <label
-                    for="floating_outlined"
-                    className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-                  >
-                    Area
-                  </label>
-                  {/* {errors.area?.type === "required" && (
-                    <span className="mt-1 text-sm text-red-600">
-                      {errors.area.message}
-                    </span>
-                  )} */}
-                </div>
+                      {/* <!-- Phone --> */}
 
-                <div id="input" className="relative">
-                  <input
-                    type="text"
-                    id="floating_outlined"
-                    className="block w-full text-sm h-[50px] px-4 text-slate-900 bg-white rounded-[8px] border border-violet-200 appearance-none focus:border-transparent focus:outline focus:outline-2 focus:outline-primary focus:ring-0 hover:border-brand-500-secondary- peer invalid:border-error-500 invalid:focus:border-error-500 overflow-ellipsis overflow-hidden text-nowrap pr-[48px]"
-                    placeholder=" Building/House No/ Floor/ "
-                    {...register("address")}
-                  />
-                  <label
-                    for="floating_outlined"
-                    className="peer-placeholder-shown:-z-10 peer-focus:z-10 absolute text-[14px] leading-[150%] text-primary peer-focus:text-primary peer-invalid:text-error-500 focus:invalid:text-error-500 duration-300 transform -translate-y-[1.2rem] scale-75 top-2 z-10 origin-[0] bg-white disabled:bg-gray-50-background- px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-[1.2rem] rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-                  >
-                    Building/House No/ Floor (Optional)
-                  </label>
-                  {/* {errors.address?.type === "required" && (
-                    <span className="mt-1 text-sm text-red-600">
-                      {errors.address.message}
-                    </span>
-                  )} */}
+                      {/* <!-- Address --> */}
+                      <div class="flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-semibold">
+                          <FaShippingFast />
+                        </div>
+                        <div>
+                          <p class="text-sm text-gray-500">Shipping Address</p>
+                          <p class="text-base font-medium text-gray-800 leading-relaxed">
+                            {info?.address.road}, {info?.address.suburb},{" "}
+                            {info?.address.postcode}, {info?.address.state},{" "}
+                            {info?.address.city}, {info?.address.country}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="flex items-start gap-3 w-full">
+                        <div class="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-semibold">
+                          <FaWhatsapp />
+                        </div>
+                        <div>
+                          <input
+                            {...register("phone", {
+                              required: {
+                                value: true,
+                                message: "Phone number is required",
+                              },
+                              minLength: {
+                                value: 10,
+                                message: "Please provide a valid phone number",
+                              },
+                              maxLength: {
+                                value: 10,
+                                message: "You cant provide more then 10 digit",
+                              },
+                            })}
+                            type="Number"
+                            placeholder="Phone"
+                            className="w-full input border-1 border-gray-300 "
+                          />
+                          {errors.phone?.type === "required" && (
+                            <span className="text-red-600">
+                              {errors.phone.message}
+                            </span>
+                          )}
+                          {errors.phone?.type === "minLength" && (
+                            <span className="text-red-600">
+                              {errors.phone.message}
+                            </span>
+                          )}
+                          {errors.phone?.type === "maxLength" && (
+                            <span className="text-red-600">
+                              {errors.phone.message}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="flex gap-3 flex-col mt-5 ">
+                        <div className="flex  gap-2 items-center">
+                          <label class="text-white">
+                            <input
+                              checked={isChecked}
+                              onClick={toggle}
+                              class="dark:border-white-400/20 dark:scale-100 transition-all duration-500 ease-in-out dark:hover:scale-110 dark:checked:scale-100 w-6 h-6"
+                              type="checkbox"
+                            />
+                          </label>
+                          <h1 className="font-semibold">Add Custom Address</h1>
+                        </div>
+                        <div
+                          className={`${isChecked === false ? "hidden" : ""}`}
+                        >
+                          <div className=" ">
+                            <fieldset className="fieldset">
+                              <textarea
+                                {...register("customAddress")}
+                                className="textarea h-24 w-full broder-1 border-gray-400"
+                                placeholder="Add Your information"
+                              ></textarea>
+                            </fieldset>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="my-4">
-                <label className="text-xl text-green-600 pb-2 font-bold">
-                  Select Location
-                </label>
-              </div>
-              <div>
+                <div className="my-4">
+                  <label className="text-xl text-green-600 pb-2 font-bold">
+                    Select Location
+                  </label>
+                </div>
                 <CustomerLocation setLocation={setLocation} />
               </div>
 

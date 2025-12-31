@@ -24,7 +24,7 @@ const ALlUsers = () => {
           <h1 className="text-2xl font-bold text-primary text-center pb-2">
             All Users
           </h1>{" "}
-          <hr className="h-1 bg-primary" />
+            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           <div className="overflow-x-auto">
             
                

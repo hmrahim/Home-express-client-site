@@ -20,7 +20,7 @@ const OrderHistory = () => {
         <Helmet>
               <title>Dashboard-Orders-History</title>
             </Helmet>
-      <PreBackButton title="Order History" /> <hr className="h-1 bg-primary" />
+      <PreBackButton title="Order History" />   <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
       <div className="relative overflow-x-auto  shadow-xs rounded-base mt-2">
         {data?.length === 0 ? (
           <h1 className="text-center p-5 font-bold">No Order History Found</h1>

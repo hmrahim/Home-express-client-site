@@ -15,14 +15,16 @@ import { Helmet } from "react-helmet-async";
 
 const Orders = () => {
   const { data, isPending, refetch } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["fetchConfirmOrders"],
     queryFn: fetchConfirmOrders,
     refetchInterval: 1000,
   });
+
+ 
 if(isPending){
   return <PaperPlainLoader/>
 }
-  const seenItems = data?.filter((data) => data?.seen === "pending");
+  const seenItems = data?.filter((data) => data?.status === "pending");
 
   const location = useLocation();
   return (

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GiCash } from "react-icons/gi";
 import { FaGooglePay } from "react-icons/fa";
 import { FaApplePay } from "react-icons/fa";
@@ -10,14 +10,40 @@ import auth from "../../firebase.init";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { confirmedOrderWithPayment } from "../../api/AllApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  confirmedOrderWithPayment,
+  confirmOrder,
+  getDistanceApi,
+} from "../../api/AllApi";
 import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
+import OrderSummery from "./OrderSummery";
 const Payment = () => {
   const navigate = useNavigate();
   const user = useAuthState(auth);
+  // const [address, setAddress] = useState("");
+
   // const email = user[0]?.email;
-  const {email} = useContext(AuthContext);
+  const { email, cart } = useContext(AuthContext);
+  const deliveryFee =
+    cart?.distence <= 5
+      ? (15).toFixed(2)
+      : (Number(cart?.distence) * 5).toFixed(2);
+  const totalAmount = (cart?.totalAmount + Number(deliveryFee)).toFixed(2);
+  // useEffect(() => {
+  //   const data = localStorage.getItem("address");
+  //   const parsData = JSON.parse(data);
+  //   if (parsData) {
+  //     setAddress(parsData);
+  //   }
+  // }, []);
+
+  const { data, isPending } = useQuery({
+    queryKey: ["getDistanceApi", email],
+    queryFn: () => getDistanceApi(email),
+    refetchInterval: 1000,
+  });
+
   const {
     register,
     formState: { errors },
@@ -26,14 +52,12 @@ const Payment = () => {
   } = useForm();
 
   const mutation = useMutation({
-    mutationFn: (items) => confirmedOrderWithPayment(email, items),
-    onSuccess:(res)=> {
-      if(res.data.status){
-
-        navigate("/dashboard/my-orders");
+    mutationFn: (items) => confirmedOrderWithPayment(items, email),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        // navigate("/dashboard");
       }
-    }
-    
+    },
   });
 
   const onSubmit = (data) => {
@@ -41,9 +65,8 @@ const Payment = () => {
       payment: data.payment,
       status: "pending",
       orderNo: "RF-" + Math.floor(Math.random() * 10000 * 10000 * 100),
+      totalAmount: totalAmount,
     };
-    
-    
 
     Swal.fire({
       title: "Are you sure?",
@@ -74,151 +97,155 @@ const Payment = () => {
         });
       }
     });
-
-    if(res.status === 200){
-      toast.success("Your order is confirmed")
-    }
   };
   return (
     <div>
-      {/* <!-- Payment Section --> */}
-      <section className="bpy-20 px-6">
-        <div className=" flex justify-center items-center flex-col md:flex-row lg:flex-row">
-          {/* <!-- Checkout Form --> */}
-          <div className="p-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Payment Details
-            </h2>
-            <form className="space-y-5">
-              <div>
-                <label className="block mb-1 text-sm text-gray-600">
-                  Name on Card
-                </label>
-                <input
-                  disabled
-                  type="text"
-                  placeholder="Holder Name"
-                  className="w-full border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label className="block mb-1 text-sm text-gray-600">
-                  Card Number
-                </label>
-                <input
-                  disabled
-                  type="text"
-                  placeholder="1234 5678 9012 3456"
-                  className="w-full border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div className="flex gap-4">
-                <div className="w-1/2">
-                  <label className="block mb-1 text-sm text-gray-600">
-                    Expiry
-                  </label>
+      <div class="max-w-5xl mx-auto px-4 py-10">
+        {/* <!-- Title --> */}
+        <h1 class="text-3xl font-bold text-center  mb-4">
+          Choose Payment Method
+        </h1>
+        <hr className="bg-white h-1 mb-4" />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* <!-- LEFT SIDE --> */}
+            <div class="lg:col-span-2 space-y-6">
+              {/* <!-- Cash on Delivery --> */}
+              <label class="block bg-white rounded-2xl shadow p-6 cursor-pointer border-2 border-green-500">
+                <div class="flex items-center gap-4">
+                  <input
+                    {...register("payment", {
+                      required: {
+                        value: true,
+                        message: "Payment method is required",
+                      },
+                    })}
+                    type="radio"
+                    class="accent-green-600 w-5 h-5"
+                    value="cash"
+                  />
+                  <div>
+                    <h2 class="text-lg font-semibold flex items-center gap-2">
+                      Cash on Delivery
+                      <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                        Cash on delivery
+                      </span>
+                    </h2>
+                    <p class="text-sm text-gray-500">
+                      Pay when your order is delivered to your doorstep
+                    </p>
+                  </div>
+                </div>
+              </label>
+
+              {/* <!-- Card Payment --> */}
+              <label class="block bg-white rounded-2xl shadow p-6 cursor-pointer hover:border-indigo-500 border-2 border-transparent">
+                <div class="flex items-center gap-4">
+                  <input
+                    {...register("payment", {
+                      required: {
+                        value: true,
+                        message: "Payment method is required",
+                      },
+                    })}
+                    value="Card"
+                    type="radio"
+                    class="accent-indigo-600 w-5 h-5"
+                    disabled
+                  />
+                  <div>
+                    <h2 class="text-lg font-semibold">Debit / Credit Card</h2>
+                    <p class="text-sm text-gray-500">
+                      Visa, MasterCard, MadaCard
+                    </p>
+                  </div>
+                </div>
+
+                {/* <!-- Card Fields (UI Only) --> */}
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <input
                     disabled
                     type="text"
-                    placeholder="MM/YY"
-                    className="w-full border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="Card Number"
+                    class="border rounded-lg px-4 py-3 w-full"
                   />
-                </div>
-                <div className="w-1/2">
-                  <label className="block mb-1 text-sm text-gray-600">
-                    CVC
-                  </label>
                   <input
                     disabled
                     type="text"
-                    placeholder="123"
-                    className="w-full border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="Card Holder Name"
+                    class="border rounded-lg px-4 py-3 w-full"
+                  />
+                  <input
+                    disabled
+                    type="text"
+                    placeholder="MM / YY"
+                    class="border rounded-lg px-4 py-3 w-full"
+                  />
+                  <input
+                    disabled
+                    type="text"
+                    placeholder="CVV"
+                    class="border rounded-lg px-4 py-3 w-full"
                   />
                 </div>
+              </label>
+
+              {/* <!-- Mobile Banking --> */}
+
+              {/* <!-- Bank Transfer --> */}
+            </div>
+
+            {/* <!-- RIGHT SIDE --> */}
+            <div class="bg-white  rounded-2xl shadow p-6 h-fit">
+              <h2 class="text-xl font-semibold mb-2 text-black">
+                Order Summary
+              </h2>{" "}
+              <hr className="mb-2" />
+              <div class="space-y-3 text-sm">
+                <div class="flex justify-between text-black">
+                  <span>Subtotal</span>
+                  <span>{cart?.totalAmount.toFixed(2)}</span>
+                </div>
+
+                <div class="flex justify-between text-black">
+                  <span>Distence</span>
+                  <span>
+                    {cart?.distence ? `${cart?.distence} km` : "0 km"}
+                  </span>
+                </div>
+                <div class="flex justify-between text-black">
+                  <span>Delivery Fee</span>
+                  <span>{deliveryFee}</span>
+                </div>
+
+                {/* <div class="flex justify-between text-green-600">
+                  <span>Promo Discount</span>
+                  <span>-৳200</span>
+                </div> */}
+
+                <hr />
+
+                <div class="flex justify-between font-bold text-lg text-black">
+                  <span>Total</span>
+                  <span>{totalAmount} </span>
+                </div>
               </div>
-            </form>
-          </div>
-
-          {/* <!-- Payment Methods & Summary --> */}
-          {/* <!-- From Uiverse.io by SmookyDev -->  */}
-          <div className="w-[300px] p-2 py-5 aspect-square rounded-lg shadow flex flex-col items-center justify-center gap-2 bg-slate-50  text-black">
-            <h1 className="capitalize text-2xl font-semibold self-start">
-              {" "}
-              Payment method
-            </h1>
-
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <label className="inline-flex justify-between w-full items-center z-10 rounded-lg p-2 border border-transparent has-[:checked]:border-primary  has-[:checked]:text-primary has-[:checked]:bg-indigo-50 has-[:checked]:font-bold hover:bg-slate-200 transition-all cursor-pointer has-[:checked]:transition-all has-[:checked]:duration-500 duration-500 relative [&amp;_p]:has-[:checked]:translate-y-0 [&amp;_p]:has-[:checked]:transition-transform [&amp;_p]:has-[:checked]:duration-500 [&amp;_p]:has-[:checked]:opacity-100 overflow-hidden">
-                <div className="inline-flex items-center justify-center gap-2 relative z-10">
-                  <FaGooglePay className="text-4xl" />
-                  <p className="font-semibold absolute inset-0 w-full whitespace-nowrap  translate-x-full top-1 left-2 transition-all duration-700 ">
-                    Google Pay
-                  </p>
-                </div>
-                <input
-                  className="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
-                  value="google"
-                  name="payment"
-                  type="radio"
-                  disabled
-                  {...register("payment", { required: true })}
-                />
-              </label>
-              <label className="inline-flex justify-between w-full items-center rounded-lg p-2 border border-transparent has-[:checked]:border-primary  has-[:checked]:text-primary has-[:checked]:bg-indigo-50 has-[:checked]:font-bold hover:bg-slate-200 transition-all cursor-pointer has-[:checked]:transition-all has-[:checked]:duration-500 duration-500 relative [&amp;_p]:has-[:checked]:translate-y-0 [&amp;_p]:has-[:checked]:transition-transform [&amp;_p]:has-[:checked]:duration-500 [&amp;_p]:has-[:checked]:opacity-100 overflow-hidden">
-                <div className="inline-flex items-center justify-center gap-2 relative">
-                  <FaApplePay className="text-4xl" />
-                  <p className="font-semibold absolute inset-0 w-full whitespace-nowrap  translate-x-full top-1 left-2 transition-all duration-700">
-                    Apple Pay
-                  </p>
-                </div>
-                <input
-                  className="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
-                  value="apple"
-                  name="payment"
-                  type="radio"
-                  disabled
-                />
-              </label>
-
-              <label className="inline-flex justify-between w-full items-center rounded-lg p-2 border border-transparenthas-[:checked]:border-primary  has-[:checked]:text-primary has-[:checked]:bg-indigo-50 has-[:checked]:font-bold hover:bg-slate-200 transition-all cursor-pointer has-[:checked]:transition-all has-[:checked]:duration-500 duration-500 relative [&amp;_p]:has-[:checked]:translate-y-0 [&amp;_p]:has-[:checked]:transition-transform [&amp;_p]:has-[:checked]:duration-500 [&amp;_p]:has-[:checked]:opacity-100 overflow-hidden">
-                <div className="inline-flex items-center justify-center gap-2 relative">
-                  <FaCcVisa className="text-4xl" />
-                  <p className="font-semibold absolute inset-0 w-full whitespace-nowrap  translate-x-full top-1 ml-2 transition-all duration-700 ">
-                    Credit Card
-                  </p>
-                </div>
-                <input
-                  className="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
-                  value="visa"
-                  name="payment"
-                  type="radio"
-                  disabled
-                  {...register("payment", { required: true })}
-                />
-              </label>
-              <label className="inline-flex justify-between w-full items-center rounded-lg p-2 border border-transparent has-[:checked]:border-primary  has-[:checked]:text-primary has-[:checked]:bg-indigo-50 has-[:checked]:font-bold hover:bg-slate-200 transition-all cursor-pointer has-[:checked]:transition-all has-[:checked]:duration-500 duration-500 relative [&amp;_p]:has-[:checked]:translate-y-0 [&amp;_p]:has-[:checked]:transition-transform [&amp;_p]:has-[:checked]:duration-500 [&amp;_p]:has-[:checked]:opacity-100 overflow-hidden">
-                <div className="inline-flex items-center justify-center gap-2 relative">
-                  <GiCash className="text-2xl" />
-
-                  <p className="font-semibold ml-2 absolute inset-0 w-full whitespace-nowrap translate-x-full  transition-all duration-700 ">
-                    Cash On Delivery
-                  </p>
-                </div>
-                <input
-                  className="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
-                  value="cash"
-                  name="payment"
-                  type="radio"
-                  {...register("payment", { required: true })}
-                />
-              </label>
-              <button className="w-full mt-4 bg-primary hover:bg-green-700 text-white text-lg py-3 rounded-lg transition">
-                Confirm Order
+              <button class="mt-6 w-full btn bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-xl text-lg font-semibold transition">
+                Confirm Payment
               </button>
-            </form>
+              {errors.payment?.type === "required" && (
+                <span className="mt-1 text-red-600">
+                  {errors.payment.message}
+                </span>
+              )}
+              <p class="text-xs text-gray-500 text-center mt-3">
+                Your payment information is secure
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </form>
+      </div>
+
       <ToastContainer />
     </div>
   );

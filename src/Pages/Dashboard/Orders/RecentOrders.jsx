@@ -11,7 +11,7 @@ const RecentOrders = () => {
   // const {email} = useContext(AuthContextDashboard)
 
   const { data, isPending, refetch } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["fetchConfirmOrders"],
     queryFn: fetchConfirmOrders,
     refetchInterval: 1000,
   });

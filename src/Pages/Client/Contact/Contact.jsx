@@ -8,7 +8,7 @@ const Contact = () => {
                 <title>Moom24-Contact</title>
             </Helmet>
       {/* HERO */}
-      <section className="bg-gradient-to-r from-green-600 to-green-500 text-white">
+      <section className="bg-gradient-to-r from-green-500 to-emerald-600 to-emerald-600 text-white">
         <div className="max-w-7xl mx-auto px-6 py-24 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fadeIn">
             Contact Us
@@ -62,7 +62,7 @@ const Contact = () => {
 
           <button
             type="submit"
-            className="w-full py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 hover:scale-[1.02] transition"
+            className="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg font-semibold hover:bg-green-700 hover:scale-[1.02] transition"
           >
             Send Message
           </button>

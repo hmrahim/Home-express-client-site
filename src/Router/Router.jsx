@@ -45,6 +45,11 @@ import RefundPolicy from "../Pages/Policies/RefundPolicy";
 import About from "../Pages/Client/About/About";
 import Services from "../Pages/Client/Services/Services";
 import Contact from "../Pages/Client/Contact/Contact";
+import Visitors from "../Pages/Dashboard/Visitors/Visitors";
+import ErrorPage from "../Pages/404/ErrorPage";
+import AddPromoCode from "../Pages/Dashboard/PromoCode/AddPromoCode";
+import AllPromocode from "../Pages/Dashboard/PromoCode/AllPromocode";
+import UpdatePromo from "../Pages/Dashboard/PromoCode/UpdatePromo";
 
 export const router = createBrowserRouter([
   {
@@ -169,6 +174,22 @@ export const router = createBrowserRouter([
         path: "/dashboard/settings",
         Component: Settings,
       },
+      {
+        path: "/dashboard/visitors",
+        Component: Visitors,
+      },
+      {
+        path: "/dashboard/add-promocode",
+        Component: AddPromoCode,
+      },
+      {
+        path: "/dashboard/all-promocode",
+        Component: AllPromocode,
+      },
+      {
+        path: "/dashboard/update-promo/:id",
+        Component: UpdatePromo,
+      },
 
       {
         path: "/dashboard/orders",
@@ -251,4 +272,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:"*",
+    element:<ErrorPage/>
+  }
 ]);

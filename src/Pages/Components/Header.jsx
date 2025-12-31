@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { createContext, useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FaCartPlus } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { ToastContainer } from "react-toastify";
 import auth from "../../firebase.init";
@@ -25,23 +25,23 @@ const Header = ({ cemail }) => {
   const menu = (
     <>
       <li>
-        <Link to="/">Home</Link>
+        <NavLink to="/">Home</NavLink>
       </li>
 
       <li>
-        <Link to="/services">Services</Link>
+        <NavLink to="/services">Services</NavLink>
       </li>
       <li>
-        <Link to="/about">About</Link>
+        <NavLink to="/about">About</NavLink>
       </li>
       <li>
-        <Link to="/contact">Contact</Link>
+        <NavLink to="/contact">Contact</NavLink>
       </li>
       {email && (
         <li>
-          <Link className="" to="/dashboard">
+          <NavLink className="" to="/dashboard">
             Dashboard
-          </Link>
+          </NavLink>
         </li>
       )}
     </>
@@ -49,7 +49,7 @@ const Header = ({ cemail }) => {
 
   return (
     <div>
-      <div className="navbar bg-primary text-base-100 shadow-sm fixed flex justify-between top-0 z-10 opacity-95">
+      <div className="navbar bg-gradient-to-r from-green-500 to-emerald-600 text-base-100 shadow-sm fixed flex justify-between top-0 z-10 opacity-95">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -71,7 +71,7 @@ const Header = ({ cemail }) => {
             </div>
             <ul
               tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-primary rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-gradient-to-l from-green-500 to-emerald-600 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               {menu}
             </ul>
@@ -79,7 +79,8 @@ const Header = ({ cemail }) => {
         
 
           <div class="neon-container">
-            <h1 class="neon-text capitalize text-4xl font-bold">{settings?.websiteName}</h1>
+            <img className="h-12" src={settings?.logo.displayUrl} alt="" />
+            {/* <h1 class="neon-text capitalize text-4xl font-bold">{settings?.websiteName}</h1> */}
           </div>
         </div>
         {/* ================================================= */}
@@ -88,13 +89,13 @@ const Header = ({ cemail }) => {
         </div>
         <div className="flex justify-center items-center gap-2">
           {cemail || email ? (
-            <Link to="/cart" className="btn ">
+            <NavLink to="/cart" className="btn ">
               {data?.data.length}
 
               <FaCartPlus className="text-2xl text-primary" />
-            </Link>
+            </NavLink>
           ) : (
-            <Link to="/login">Login</Link>
+            <NavLink to="/login">Login</NavLink>
           )}
         </div>
       </div>

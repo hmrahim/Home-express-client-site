@@ -50,7 +50,7 @@ const UpdateCategory = () => {
           <h1 className="text-2xl font-bold text-primary text-center pb-2">
             Update Category
           </h1>{" "}
-          <hr className="h-1 bg-primary" />
+            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="mt-5  ">
               {

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { useQuery } from "@tanstack/react-query";
@@ -11,19 +11,38 @@ import { getconfirmOrderByEmail } from "../api/AllApi";
 const SkipInfo = ({ children }) => {
   const { email } = useContext(AuthContext);
   const navigate = useNavigate();
-  const user = useAuthState(auth);
-  // const email = user[0]?.email;
-  const { data, isPending } = useQuery({
-    queryKey: ["confirmOrderByEmail"],
+
+const { data: address, isLoading } = useQuery({
+    queryKey: ["getconfirmOrderByEmail", email],
     queryFn: () => getconfirmOrderByEmail(email),
-    refetchInterval:1000
+    refetchInterval: 1000,
   });
 
-  const dataEmail = data?.data.email;
-  if (isPending) {
+{/* <>
+
+  // const [address, setAddress] = useState(true);
+  // const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+    //   const data = localStorage.getItem("address");
+    //   const parsData = JSON.parse(data)
+    //   if (parsData) {
+      //     setAddress(parsData);
+      
+      //   }
+      // }, []);
+      
+      // const data = localStorage.getItem("address");
+  // const infoEmail = JSON.parse(data);
+  </> */}
+
+  
+  if (isLoading) {
     return <PaperPlainLoader />;
   }
-  if (dataEmail) {
+
+
+  if (address?.data.email) {
     return navigate("/cart/payment");
   } else {
     return children;

@@ -7,7 +7,7 @@ const ProductCard = ({ product, refetch }) => {
   const discount = (Number(product?.price) * product?.discount) / 100;
   const discountPrice = Number(product?.price) - discount;
   const [int, dec] = Number(discountPrice).toFixed(2).split(".");
-const [p_int,p_dec] = Number(product?.price).toFixed(2).split(".")
+  const [p_int, p_dec] = Number(product?.price).toFixed(2).split(".");
   return (
     <div>
       <div className=" bg-base-100 hover:shadow-xl shadow-red-700 relative p-2 duration-300 rounded-xl">
@@ -30,13 +30,12 @@ const [p_int,p_dec] = Number(product?.price).toFixed(2).split(".")
                     <sub>
                       <SaudiRiyal size={20} />
                     </sub>
-                    <del className="flex"> 
-                     <p>
-                       {p_int} 
-                      </p>  {
-                      p_dec >0 && <p className="text-[12px] font-normal">.{p_dec}</p>
-                    }
-                      </del>
+                    <del className="flex">
+                      <p>{p_int}</p>{" "}
+                      {p_dec > 0 && (
+                        <p className="text-[12px] font-normal">.{p_dec}</p>
+                      )}
+                    </del>
                   </h2>
                 ) : (
                   ""
@@ -45,29 +44,25 @@ const [p_int,p_dec] = Number(product?.price).toFixed(2).split(".")
                   <h2 className=" flex items-center">
                     <SaudiRiyal size={28} />
                     <p className="text-4xl font-bold">{int}</p>
-                    {
-                      dec >0 && <p className="text-sm font-normal">.{dec}</p>
-                    }
-                    
+                    {dec > 0 && <p className="text-sm font-normal">.{dec}</p>}
                   </h2>
                 ) : (
                   <h2 className="text-4xl font-bold flex items-center">
-                   <sub>
+                    <sub>
                       <SaudiRiyal size={20} />
                     </sub>
-                    <p className="flex"> 
-                     <p>
-                       {p_int} 
-                      </p>  {
-                      p_dec >0 && <p className="text-[12px] font-normal">.{p_dec}</p>
-                    }
-                      </p>
+                    <p className="flex">
+                      <p>{p_int}</p>{" "}
+                      {p_dec > 0 && (
+                        <p className="text-[12px] font-normal">.{p_dec}</p>
+                      )}
+                    </p>
                   </h2>
                 )}
               </div>
 
               {product?.discount ? (
-                <h2 className=" bg-primary px-2 py-1 rounded-bl-xl rounded-tr-xl text-white font-semibold absolute top-0  right-0 animate-pulse">
+                <h2 className=" bg-gradient-to-r from-green-500 to-emerald-600 px-2 py-1 rounded-bl-xl rounded-tr-xl text-white font-semibold absolute top-0  right-0 animate-pulse">
                   {" "}
                   {product?.discount}% Off
                 </h2>
@@ -78,7 +73,7 @@ const [p_int,p_dec] = Number(product?.price).toFixed(2).split(".")
 
             <Link
               to={`/product-details/${product?._id}`}
-              className="btn btn-md btn-primary w-full mt-2"
+              className="btn btn-md bg-gradient-to-r from-green-500 to-emerald-600 text-white  w-full mt-2"
             >
               Buy Now
             </Link>

@@ -108,7 +108,7 @@ const CartList = ({ cart, refetch }) => {
         <div className="w-32 rounded-xl  flex gap-2 ">
           <button
             onClick={() => decress(cart._id)}
-            className="btn btn-xs btn-square font-bold btn-primary font-bold"
+            className="btn btn-xs btn-square shadow-xl  bg-gradient-to-r from-green-500 to-emerald-600 text-base-100 font-bold"
           >
             -
           </button>
@@ -116,11 +116,11 @@ const CartList = ({ cart, refetch }) => {
             type=""
             disabled
             value={count}
-            className="text-center h-6 w-4  "
+            className="text-center h-6 w-4  bg-transparent"
           />
           <button
             onClick={() => incress(cart._id)}
-            className="btn btn-xs btn-square  font-extrabold btn-primary"
+            className="btn btn-xs btn-square shadow-xl   bg-gradient-to-r from-green-500 to-emerald-600 text-base-100 font-bold"
           >
             +
           </button>

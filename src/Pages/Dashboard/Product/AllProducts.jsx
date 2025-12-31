@@ -25,7 +25,7 @@ const AllProducts = () => {
           className=" md:w-5/6 w-full max-h-screen   mx-auto py-5 bg-base-100 rounded-lg shadow-lg  border border-success"
         >
           <PreBackButton title="All Productu" />
-          <hr className="h-1 bg-primary" />
+            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           <div>
             <div className="">
               <table className="table table-zebra-zebra table-xs  ">
