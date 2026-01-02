@@ -7,6 +7,7 @@ import { fetchAllCategorys, postProduct } from "../../../api/AllApi";
 import { countryApi } from "../../../api/countryApi";
 import PreBackButton from "../../Components/PreBackButton";
 import { Helmet } from "react-helmet-async";
+import productUnits from "./unit";
 
 const AddProduct = () => {
   const imgbbKey = import.meta.env.VITE_API_KEY_IMGBB;
@@ -18,17 +19,24 @@ const AddProduct = () => {
     refetchInterval: 1000,
   });
 
-  const mutation = useMutation({
-    mutationKey: [""],
-    mutationFn: (Pdata) => postProduct(Pdata),
-  });
-
   const {
     register,
     formState: { errors },
     handleSubmit,
     reset,
   } = useForm();
+
+  const mutation = useMutation({
+    mutationKey: [""],
+    mutationFn: (Pdata) => postProduct(Pdata),
+    onSuccess: (res) => {
+      if (res.data.status === 200) {
+        toast.success("Product added successfully");
+        reset();
+        setImage("");
+      }
+    },
+  });
 
   const imageUpload = async (e) => {
     const image = e.target.files[0];
@@ -51,13 +59,7 @@ const AddProduct = () => {
     // });
 
     const Pdata = { ...data, image };
-     mutation.mutate(Pdata);
-    console.log(mutation.data);
-    if (mutation.data.status === 200) {
-      toast.success("Product added successfully");
-      reset();
-      setImage("");
-    }
+    mutation.mutate(Pdata);
   };
 
   return (
@@ -68,7 +70,7 @@ const AddProduct = () => {
         </Helmet>
         <div className=" md:w-4/5 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
           <PreBackButton title="Add Product" />
-            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
+          <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="mt-5 grid md:grid-cols-3 gap-4 ">
               <div>
@@ -136,6 +138,53 @@ const AddProduct = () => {
                 {errors.price?.type === "required" && (
                   <span className="mt-1 text-red-600">
                     {errors.price.message}
+                  </span>
+                )}
+              </div>
+              <div>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">Unit</legend>
+                  <select
+                    defaultValue="Pick a unit"
+                    className="select select-success w-full"
+                    {...register("unit", {
+                      required: {
+                        value: true,
+                        message: "Unit is required",
+                      },
+                    })}
+                  >
+                    <option disabled={true}>Select Unit</option>
+                    {productUnits.map((unit) => (
+                      <option value={unit.value}>{unit.label}</option>
+                    ))}
+                  </select>
+                </fieldset>
+                {errors.unit?.type === "required" && (
+                  <span className="mt-1 text-red-600">
+                    {errors.unit.message}
+                  </span>
+                )}
+              </div>
+              <div>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend"> Min Quantity</legend>
+                  <input
+                    type="number"
+                    placeholder="Minimum Quantity"
+                    className="input input-success w-full"
+                    step="0.01"
+                    {...register("minQty", {
+                      required: {
+                        value: true,
+                        message: "Price is required",
+                      },
+                    })}
+                  />
+                </fieldset>
+                {errors.minQty?.type === "required" && (
+                  <span className="mt-1 text-red-600">
+                    {errors.minQty.message}
                   </span>
                 )}
               </div>

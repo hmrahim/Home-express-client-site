@@ -7,6 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Footer from "../Components/Footer";
 
 const AdminDashboard = () => {
   return (
@@ -32,6 +33,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

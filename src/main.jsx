@@ -14,6 +14,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { HelmetProvider } from "react-helmet-async";
+import ScrollToTop from "./Pages/Components/ScrollToTop.jsx";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router}></RouterProvider>
+        <RouterProvider router={router}>
+          <ScrollToTop/>
+        </RouterProvider>
         <ToastContainer />
       </QueryClientProvider>
     </HelmetProvider>

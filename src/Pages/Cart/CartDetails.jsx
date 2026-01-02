@@ -4,17 +4,20 @@ import Loader from "../Components/Loader/Loader";
 import OrderSummery from "./OrderSummery";
 
 const CartDetails = ({ data, title, isPending, refetch,totalAmount }) => {
+  // console.log(data);
   return (
-    <div>
+    <div className="">
       <h1 className="text-2xl text-center font-semibold mt-5">Cart Details</h1>{" "}
       <hr classNamep="h-1 bg-primary mb-3" />
       {data?.[0] ? (
-        <div className="w-full flex gap-5 flex-col-reverse  justify-between items-start flex-col md:flex-row md:p-4">
+        <div className="w-full flex gap-5 flex-col-reverse  items-start flex-col md:flex-row md:p-4">
           <div
-            className="w-full md:w-3/5 overflow-x-auto flex justify-center items-center 
-            [&::-webkit-scrollbar]:w-1 
-            [&::-webkit-scrollbar-thumb]:bg-red
-            [&::-webkit-scrollbar-thumb]:rounded-xl"
+            className="w-full md:w-3/5 overflow-x-scroll flex justify-center items-center 
+             [&::-webkit-scrollbar]:h-2 
+          [&::-webkit-scrollbar]:w-1 
+          [&::-webkit-scrollbar]:bg-white 
+          [&::-webkit-scrollbar-thumb]:hover:bg-gray-400 
+          "
           >
             {isPending ? (
               <Loader display={``} />

@@ -7,9 +7,9 @@ import ToolTop from "../Components/ToolTip/ToolTop";
 import { useMutation } from "@tanstack/react-query";
 import { deleteCartItems, updateCartQty } from "../../api/AllApi";
 
-
 const CartList = ({ cart, refetch }) => {
   const discountPrice = (Number(cart.price) * Number(cart.discount)) / 100;
+  const minQty = cart?.minQty;
 
   const [count, setCount] = useState(cart.quantity);
 
@@ -18,17 +18,15 @@ const CartList = ({ cart, refetch }) => {
     mutationFn: (quantity) => updateCartQty(cart._id, quantity),
     onSuccess: (res) => {
       if (res.status === 200) {
-        toast.success("Quantity Updated", { autoClose: 1000});
+        toast.success("Quantity Updated", { autoClose: 1000 });
       }
     },
   });
 
-
   const deleteMutation = useMutation({
-    mutationKey:["deleteCart",cart._id],
-    mutationFn:(id)=> deleteCartItems(id),
-  
-  })
+    mutationKey: ["deleteCart", cart._id],
+    mutationFn: (id) => deleteCartItems(id),
+  });
 
   const qty = Number(count);
   const incress = async (id) => {
@@ -38,12 +36,11 @@ const CartList = ({ cart, refetch }) => {
       setCount(qty + 1);
     }
 
-  
     const quantity = { quantity: Number(count) + 1 };
     mutation.mutate(quantity);
   };
   const decress = async (id) => {
-    if (qty <= 1) {
+    if (qty <= minQty) {
       return false;
     } else {
       setCount(qty - 1);
@@ -63,7 +60,7 @@ const CartList = ({ cart, refetch }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-      deleteMutation.mutate(id)
+        deleteMutation.mutate(id);
 
         Swal.fire({
           title: "Deleted!",
@@ -76,7 +73,7 @@ const CartList = ({ cart, refetch }) => {
 
   refetch();
   return (
-    <tr className="font-sans ">
+    <tr className="">
       <td className="text-center">
         <div>
           <img className="size-10 rounded-box" src={cart.image} />

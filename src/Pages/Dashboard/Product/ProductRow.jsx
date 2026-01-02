@@ -45,6 +45,8 @@ const ProductRow = ({ product, index }) => {
       <td className="text-center">{product.brand}</td>
       <td className="text-center">{product.country}</td>
       <td className="text-center">SAR {product.price}</td>
+      <td className="text-center">{product.unit}</td>
+      <td className="text-center">{product.minQty ? product.minQty : 1} Pice</td>
       <td className="text-center">
         <span
           className={
@@ -53,7 +55,7 @@ const ProductRow = ({ product, index }) => {
               : "bg-error px-2 py-1 rounded-md text-white"
           }
         >
-          {product.discount ? product.discount + "%" : "No Discount"}
+          {product.discount ? product.discount + "%" : "No"}
         </span>
       </td>
       <td className="text-center text-justify">{truncate(product.desc, 20)}</td>

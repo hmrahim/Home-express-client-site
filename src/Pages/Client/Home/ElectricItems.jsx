@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SectionTitle from "../../Components/SectionTitle";
 import product2 from "../../../assets/cat-2.jpg";
 import product3 from "../../../assets/cat-3.jpg";
@@ -8,11 +8,13 @@ import product6 from "../../../assets/cat-6.jpg";
 import product7 from "../../../assets/cat-7.jpg";
 import ProductCard from "../../Components/ProductCard";
 import SeeAll from "../../Components/SeeAll";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { fetchProductForUser } from "../../../api/AllApi";
+import { fetchProductForUser, infiniteScroll } from "../../../api/AllApi";
 import CardLoader from "../../Components/CardLoader";
 import { Helmet } from "react-helmet-async";
+import { InView, useInView } from "react-intersection-observer";
+import LoadingSpiner from "../../Components/Loader/LoadingSpiner";
 
 const ElectricItems = () => {
   const { data, isPending, refetch } = useQuery({
@@ -20,32 +22,123 @@ const ElectricItems = () => {
     queryFn: fetchProductForUser,
     refetchInterval: 1000,
   });
-  const electric = data?.filter((elec) => elec.category === "Electric");
-  // refetch()
-  // console.log(electric);
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: "150px", // একটু আগেই load হবে
+  });
+
+  const {
+    data: scroll,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["infiniteScroll"],
+    queryFn: infiniteScroll,
+    getNextPageParam: (lastPage, allPages) => {
+      console.log("lastPage:", lastPage);
+      console.log("allPages:", allPages.length);
+
+      return lastPage?.hasMore ? allPages.length + 1 : undefined;
+    },
+  });
+
+  // useEffect(() => {
+  //   if ((InView && hasNextPage)) {
+  //     fetchNextPage();
+  //   }
+  // }, [InView, hasNextPage, fetchNextPage]);
+
+  // const handleScroll = () => {
+  //   const bottom =
+  //     window.innerHeight + window.scrollY >=
+  //     document.documentElement.scrollHeight - 200;
+  //     if(bottom && hasNextPage && !isFetchingNextPage){
+  //       fetchNextPage();
+  //     }
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      const isBottom =
+        Math.ceil(scrollTop + windowHeight) >= documentHeight - 800;
+
+      if (isBottom && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const electric = data?.filter((elec) => elec.category === "Electricals");
+
   return (
-    <div className="w-11/12 mx-auto my-10  text-center bg-white ">
-     
-      <SectionTitle title="Electric Items" />
-      <div className="shadow-md  bg-slate-300 rounded-md pb-3 px-4">
-        {isPending ? (
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2 my-2 justify-items-center ">
-            <CardLoader />
-            <CardLoader />
-            <CardLoader />
-            <CardLoader />
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-4  lg:grid-cols-5  grid-cols-2 gap-4 my-2 justify-items-center  my-2 py-4 ">
-            <>
-              {electric?.map((product) => (
+    <div className="flex flex-col justify-center">
+      <div className="container mx-auto  lg:px-6  my-10  text-center bg-white ">
+        <div className="shadow-md  bg-slate-300 rounded-md pb-3 px-4">
+          {isPending ? (
+            <div
+              className=" grid
+      grid-cols-2
+      sm:grid-cols-3
+      md:grid-cols-4
+      lg:grid-cols-4
+      xl:grid-cols-5
+      gap-4
+      sm:gap-5
+      md:gap-6"
+            >
+              <CardLoader />
+              <CardLoader />
+              <CardLoader />
+              <CardLoader />
+            </div>
+          ) : (
+            <div
+              className="grid
+      grid-cols-2
+      sm:grid-cols-3
+      md:grid-cols-4
+      lg:grid-cols-4
+      xl:grid-cols-5
+      gap-4
+      sm:gap-5
+      md:gap-6  my-2 py-4 "
+            >
+              <>
+                {/* {data?.map((product) => (
                 <ProductCard key={product._id} product={product} />
-              ))}
-            </>
-          </div>
-        )}
-        <SeeAll />
+              ))} */}
+
+                {scroll?.pages.map((page) =>
+                  page?.data.map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))
+                )}
+              </>
+
+             
+            </div>
+          )}
+        </div>
+
+        {/* <div ref={ref} className="h-16"> {isFetchingNextPage && "Loading more..."} </div> */}
       </div>
+       <div className="h-16 w-full flex justify-center items-center">
+                {isFetchingNextPage && <LoadingSpiner />}
+              </div>
     </div>
   );
 };

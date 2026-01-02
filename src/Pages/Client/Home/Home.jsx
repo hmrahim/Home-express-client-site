@@ -41,7 +41,6 @@ const Home = () => {
       ? document.referrer
       : "direct";
 
-
   const visitor = {
     page: page,
     referrer: referrer,
@@ -55,36 +54,6 @@ const Home = () => {
   useEffect(() => {
     mutation.mutate(visitor);
   }, []);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   const { data, isPending, refetch } = useQuery({
     queryKey: ["featuredItem"],
@@ -122,19 +91,23 @@ const Home = () => {
         <div className="flex justify-center items-center ">
           <select
             onChange={(e) => setCatValue(e.target.value)}
-            className=" bg-primary rounded-l-full text-white px-4 py-[20px] outline-none cursor-pointer --webkit-appearance: none --moz-appearance:none appearance:none "
+            className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-l-full text-white px-4 py-[19px] outline-none cursor-pointer --webkit-appearance: none --moz-appearance:none appearance:none "
           >
-            <option>Select Category</option>
+            <option className="text-black">Select Category</option>
             {catData &&
               catData?.map((cat) => (
-                <option value={cat.name} key={cat._id}>
+                <option
+                  className="text-black bg-gradient-to-r from-green-500 to-emerald-600"
+                  value={cat.name}
+                  key={cat._id}
+                >
                   {cat.name}
                 </option>
               ))}
           </select>
 
           {/* <!-- From Uiverse.io by jubayer-10 -->  */}
-          <div className="p-5 overflow-hidden w-[60px] h-[61px] hover:w-[270px] bg-primary shadow-[2px_2px_20px_rgba(0,0,0,0.08)] rounded-r-full flex group items-center hover:duration-300 duration-300">
+          <div className="p-5 overflow-hidden w-[60px] h-[61px] hover:w-[270px] bg-gradient-to-l from-green-500 to-emerald-600 shadow-[2px_2px_20px_rgba(0,0,0,0.08)] rounded-r-full flex group items-center hover:duration-300 duration-300">
             <div className="flex items-center justify-center fill-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -164,8 +137,18 @@ const Home = () => {
             <SectionTitle title={`Category: ${catValue}`} />
           )}
 
-          <div className="w-full shadow-md  bg-slate-300 rounded-md px-4 py-5">
-            <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-2 my-2 justify-items-center ">
+          <div className="container mx-auto px-3 sm:px-4 lg:px-6  bg-slate-300 rounded-md  py-5">
+            <div
+              className=" grid
+      grid-cols-2
+      sm:grid-cols-3
+      md:grid-cols-4
+      lg:grid-cols-4
+      xl:grid-cols-5
+      gap-4
+      sm:gap-5
+      md:gap-6"
+            >
               <>
                 {filterdData?.map((product) => (
                   <ProductCard key={product._id} product={product} />
@@ -176,10 +159,7 @@ const Home = () => {
         </div>
       ) : (
         <>
-          <Featured />
           <ElectricItems />
-          <PlumbingItems />
-          <PaintingItems />
         </>
       )}
     </div>

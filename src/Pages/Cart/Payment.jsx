@@ -21,7 +21,6 @@ import OrderSummery from "./OrderSummery";
 const Payment = () => {
   const navigate = useNavigate();
   const user = useAuthState(auth);
-  // const [address, setAddress] = useState("");
 
   // const email = user[0]?.email;
   const { email, cart } = useContext(AuthContext);
@@ -30,13 +29,6 @@ const Payment = () => {
       ? (15).toFixed(2)
       : (Number(cart?.distence) * 5).toFixed(2);
   const totalAmount = (cart?.totalAmount + Number(deliveryFee)).toFixed(2);
-  // useEffect(() => {
-  //   const data = localStorage.getItem("address");
-  //   const parsData = JSON.parse(data);
-  //   if (parsData) {
-  //     setAddress(parsData);
-  //   }
-  // }, []);
 
   const { data, isPending } = useQuery({
     queryKey: ["getDistanceApi", email],
@@ -55,7 +47,7 @@ const Payment = () => {
     mutationFn: (items) => confirmedOrderWithPayment(items, email),
     onSuccess: (res) => {
       if (res.status === 200) {
-        // navigate("/dashboard");
+        navigate("/dashboard");
       }
     },
   });
@@ -78,16 +70,6 @@ const Payment = () => {
       confirmButtonText: "Yes, Confirm it",
     }).then((result) => {
       if (result.isConfirmed) {
-        // const res = await axios.put(
-        //   `https://server-site-psi-inky.vercel.app/api/confirm-order/${email}`,
-        //   {
-        //     items,
-        //   }
-        // );
-        // if (res.status === 200) {
-        //   navigate("/dashboard");
-        // }
-
         mutation.mutate(items);
 
         Swal.fire({
@@ -101,16 +83,16 @@ const Payment = () => {
   return (
     <div>
       <div class="max-w-5xl mx-auto px-4 py-10">
-        {/* <!-- Title --> */}
+    
         <h1 class="text-3xl font-bold text-center  mb-4">
           Choose Payment Method
         </h1>
         <hr className="bg-white h-1 mb-4" />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* <!-- LEFT SIDE --> */}
+    
             <div class="lg:col-span-2 space-y-6">
-              {/* <!-- Cash on Delivery --> */}
+           
               <label class="block bg-white rounded-2xl shadow p-6 cursor-pointer border-2 border-green-500">
                 <div class="flex items-center gap-4">
                   <input

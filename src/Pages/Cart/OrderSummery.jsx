@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 const OrderSummery = ({ data, totalAmount }) => {
   const { pathname } = useLocation();
   return (
-    <div class="bg-white text-green-700 rounded-2xl shadow p-6 h-fit mt-2">
+    <div class="bg-white text-green-700 rounded-2xl shadow p-2 h-fit mx-5 md:mx-0 mt-2">
       <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
 
       <div class="space-y-3 text-sm">

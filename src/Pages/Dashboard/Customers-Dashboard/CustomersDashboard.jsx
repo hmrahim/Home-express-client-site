@@ -15,9 +15,10 @@ import Wallet from "./Wallet";
 import CurrentOrders from "./CurrentOrders";
 import RiderSearchingComponent from "./RiderSearchingComponent";
 import { Helmet } from "react-helmet-async";
+import Footer from "../../Components/Footer";
 
 const CustomersDashboard = () => {
-  const { email } = useContext(AuthContextDashboard);
+  const { email ,cart} = useContext(AuthContextDashboard);
 
   const { data, isPending, refetch } = useQuery({
     queryKey: ["userByEmail"],
@@ -44,7 +45,8 @@ const CustomersDashboard = () => {
 
   return (
     <div>
-      <Header cemail={email} />
+      <Header cemail={email} cart={cart} />
+      
         <Helmet>
               <title>Dashboard</title>
             </Helmet>
@@ -180,6 +182,7 @@ const CustomersDashboard = () => {
         </div>
         <ToastContainer />
       </div>
+      <Footer/>
     </div>
   );
 };

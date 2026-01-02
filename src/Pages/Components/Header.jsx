@@ -11,16 +11,8 @@ import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
 import { AuthContextDashboard } from "../Dashboard/AuthClient/AuthContextDashboard";
 import "./custom.css";
 
-const Header = ({ cemail }) => {
+const Header = ({ cemail, cart }) => {
   const { email, settings } = useContext(AuthContext);
-
-  const { data, isPending, refetch } = useQuery({
-    queryKey: ["CartLength"],
-    queryFn: () =>
-      axios.get(`https://server-site-psi-inky.vercel.app/api/cart/${email}`),
-    refetchInterval: 1000,
-  });
-  // console.log(data);
 
   const menu = (
     <>
@@ -76,7 +68,6 @@ const Header = ({ cemail }) => {
               {menu}
             </ul>
           </div>
-        
 
           <div class="neon-container">
             <img className="h-12" src={settings?.logo.displayUrl} alt="" />
@@ -90,7 +81,7 @@ const Header = ({ cemail }) => {
         <div className="flex justify-center items-center gap-2">
           {cemail || email ? (
             <NavLink to="/cart" className="btn ">
-              {data?.data.length}
+              {cart?.data.length}
 
               <FaCartPlus className="text-2xl text-primary" />
             </NavLink>

@@ -94,12 +94,11 @@ const CustomarInfo = () => {
     const info = {
       ...data,
       email: email,
-      name:name,
+      name: name,
       location: location,
       address: address?.data.address,
     };
     mutation.mutate(info);
-
 
     //  localStorage.setItem("address", JSON.stringify(info));
     //  const isSaved = localStorage.getItem("address")
@@ -173,11 +172,15 @@ const CustomarInfo = () => {
                         </div>
                         <div>
                           <p class="text-sm text-gray-500">Shipping Address</p>
-                          <p class="text-base font-medium text-gray-800 leading-relaxed">
-                            {info?.address.road}, {info?.address.suburb},{" "}
-                            {info?.address.postcode}, {info?.address.state},{" "}
-                            {info?.address.city}, {info?.address.country}
-                          </p>
+                          {info?.address === undefined ? (
+                            <p>Loading...</p>
+                          ) : (
+                            <p class="text-base font-medium text-gray-800 leading-relaxed">
+                              {info?.address.road}, {info?.address.suburb},{" "}
+                              {info?.address.postcode}, {info?.address.state},{" "}
+                              {info?.address.city}, {info?.address.country}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div class="flex items-start gap-3 w-full">
@@ -263,7 +266,7 @@ const CustomarInfo = () => {
               <div className="sm:flex sm:flex-row-reverse flex gap-4 mt-4">
                 <button className="w-fit btn-primary rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px] border  transition-all duration-300">
                   <div className="flex gap-2 items-center">
-                    {mutation.isPending ? "Saving" : "  Save changes"}
+                    {mutation.isPending ? "Saving..." : "  Save changes"}
                   </div>
                 </button>
               </div>

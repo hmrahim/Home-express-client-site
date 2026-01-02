@@ -3,13 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { getAuth } from "firebase/auth";
 
-// const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_BASE_URL,
-// });
-
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
+
+// const api = axios.create({
+//   baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+// });
 
 api.interceptors.request.use(
   async (config) => {
@@ -89,6 +89,13 @@ export const deleteProducts = async (id) => {
   const res = await api.delete(`/product/${id}`);
   return res.status === 200 ? res.data : null;
 };
+
+
+export const infiniteScroll = async ({pageParam = 1}) => {
+  const res = await api.get(`/infinite-scroll?page=${pageParam}&limit=10`);
+  return res.status === 200 ? res.data : null;
+};
+
 
 //==================Category api==================
 

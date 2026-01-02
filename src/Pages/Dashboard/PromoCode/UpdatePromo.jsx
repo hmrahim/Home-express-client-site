@@ -38,7 +38,7 @@ const UpdatePromo = () => {
   const mutation = useMutation({
     mutationFn: (PromoData) => updatePromoById(PromoData, id),
     onSuccess: (res) => {
-      console.log(res);
+      // console.log(res);
       if (res.status === 200) {
         toast.success("Promo code updated successfully", { autoClose: 1000 });
         navigate("/dashboard/all-promocode");

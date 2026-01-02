@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import image from "../../../assets/cat-3.jpg";
 import currency from "../../../assets/Saudi_Riyal_Symbol-1.png";
 import { Link, useParams } from "react-router-dom";
@@ -18,21 +18,27 @@ import AuthClient from "../../Dashboard/AuthClient/AuthClient";
 import { AuthContext } from "../../Dashboard/AuthClient/AuthContext";
 import { Helmet } from "react-helmet-async";
 import { addToCartData, getProductById } from "../../../api/AllApi";
+import Loader from "../../Components/Loader/Loader";
 const ProductView = () => {
   const { email, rol } = useContext(AuthContext);
-  // console.log(email,rol);
 
-  // const User = useAuthState(auth);
-  // const email = User[0]?.email;
-  const [quty, setQty] = useState("");
-
-  const [count, setCount] = useState("1");
-  const qty = Number(count);
   const { id } = useParams();
   const { data, isPending, refetch } = useQuery({
     queryKey: ["getProductById", id],
     queryFn: () => getProductById(id),
+    
+    refetchInterval: 1000,
   });
+  const [count, setCount] = useState(Number(data?.minQty) || 1);
+  // Initial quantity is set to minimum quantity
+useEffect(() => {
+  if (data?.minQty) {
+    setCount(Number(data.minQty));
+  }
+}, [data]);
+  // console.log(minQty);
+
+  const qty = count;
 
   const discoun = (Number(data?.price) * data?.discount) / 100;
   const discountPrice = Number(data?.price) - discoun;
@@ -45,7 +51,7 @@ const ProductView = () => {
     }
   };
   const decress = () => {
-    if (qty <= 1) {
+    if (qty <= Number(data?.minQty)) {
       return false;
     } else {
       setCount(qty - 1);
@@ -68,6 +74,7 @@ const ProductView = () => {
       price: data?.price,
       discount: data?.discount,
       quantity: count,
+      minQty: data?.minQty,
       image: data?.image,
     };
 
@@ -75,6 +82,10 @@ const ProductView = () => {
   };
   const [int, dec] = Number(discountPrice).toFixed(2).split(".");
   const [p_int, p_dec] = Number(data?.price).toFixed(2).split(".");
+
+  if (isPending ) {
+    return <Loader />;
+  }
 
   return (
     <div>
@@ -99,6 +110,11 @@ const ProductView = () => {
                   <p className="text-left ">
                     Menufacturer country : {data?.country}
                   </p>
+                  <p className="text-left ">
+                    Minimum Order Quantity : {data?.minQty} Pieces for this
+                    items.
+                  </p>
+                  <p className="text-left ">Product Unit : {data?.unit}</p>
                   {data?.discount ? (
                     <h2 className="text-left text-5xl flex gap-2 items-center font-bold my-4">
                       <img src={currency} className="w-10 h-w-10" alt="" />
@@ -152,7 +168,7 @@ const ProductView = () => {
                     type=""
                     disabled
                     value={count}
-                    className="outline-0 text-center h-11 w-10  "
+                    className="outline-0  text-center h-11 w-10  "
                   />
                   <button
                     onClick={incress}

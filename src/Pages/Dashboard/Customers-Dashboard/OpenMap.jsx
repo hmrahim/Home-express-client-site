@@ -3,7 +3,7 @@ import { CiLocationOn } from "react-icons/ci";
 
 const OpenMap = ({ location }) => {
   const url = `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}&travelmode=driving`;
-  console.log(url);
+  // console.log(url);
   const openMap = () => {
     window.open(url, "_blank");
   };

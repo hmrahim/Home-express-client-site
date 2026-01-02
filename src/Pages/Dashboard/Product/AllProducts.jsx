@@ -6,6 +6,7 @@ import PreBackButton from "../../Components/PreBackButton";
 import { Helmet } from "react-helmet-async";
 import { getAuth } from "firebase/auth";
 import { getAllProduct } from "../../../api/AllApi";
+import Loader from "../../Components/Loader/Loader";
 
 const AllProducts = () => {
   const { data, isPending, refetch } = useQuery({
@@ -13,6 +14,10 @@ const AllProducts = () => {
     queryFn: getAllProduct,
     refetchInterval: 1000,
   });
+
+if(isPending){
+  return <Loader/>
+}
 
   return (
     <div>
@@ -38,6 +43,8 @@ const AllProducts = () => {
                     <th className="text-center">Brand</th>
                     <th className="text-center">Country</th>
                     <th className="text-center">Price</th>
+                    <th className="text-center">Unit</th>
+                    <th className="text-center">MinQty</th>
                     <th className="text-center">Discount</th>
                     <th className="text-center">Desc.</th>
                     <th className="text-center">Image</th>

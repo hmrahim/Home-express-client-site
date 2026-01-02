@@ -9,18 +9,20 @@ const ProductCard = ({ product, refetch }) => {
   const [int, dec] = Number(discountPrice).toFixed(2).split(".");
   const [p_int, p_dec] = Number(product?.price).toFixed(2).split(".");
   return (
-    <div>
-      <div className=" bg-base-100 hover:shadow-xl shadow-red-700 relative p-2 duration-300 rounded-xl">
-        <figure className="overflow-hidden h-44 flex justify-center items-center">
+    <div
+      className="rounded-xl p-[1px] bg-gradient-to-r from-green-500 to-emerald-600"
+    >
+      <div className=" h-[320px] relative bg-base-100 hover:shadow-2xl  relative p-2 duration-300 rounded-xl border-2">
+        <figure className="overflow-hidden rounded-xl flex justify-center items-center">
           <img
-            className=" mx-5 h-full image-full hover:scale-150 transition-all"
+            className="h-[180px] w-[180px] mx-5 h-full image-full hover:scale-150 transition-all"
             src={product?.image}
             alt="Shoes"
           />
         </figure>
 
-        <div className="">
-          <h2 className="card-title">{product?.name}</h2>
+        <div className=" ">
+          <h2 className="card-title text-[16px] md:text-lg">{product?.name}</h2>
 
           <div className="flex flex-col w-full">
             <div className="flex items-center  ">
@@ -73,7 +75,7 @@ const ProductCard = ({ product, refetch }) => {
 
             <Link
               to={`/product-details/${product?._id}`}
-              className="btn btn-md bg-gradient-to-r from-green-500 to-emerald-600 text-white  w-full mt-2"
+              className="absolute bottom-0 left-0 right-0 btn btn-md bg-gradient-to-r from-green-500 to-emerald-600 text-white  w-full mt-2 rounded-b-xl rounded-none"
             >
               Buy Now
             </Link>

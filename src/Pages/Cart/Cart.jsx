@@ -24,47 +24,14 @@ const Cart = () => {
   const email = User[0]?.email;
   const { pathname } = useLocation();
 
-  const { data, isPending, refetch } = useQuery({
+  const { data:cart, isPending, refetch } = useQuery({
     queryKey: ["allcart", email],
     queryFn: () => fetchCart(email),
     refetchInterval: 1000,
   });
-  const { cart, cartLoader } = useContext(AuthContext);
 
-  const withDscount = data?.data?.filter((data) => data.discount !== "");
-  // const withoutDiscount = data?.data?.filter((data) => data.discount === "");
 
-  // const amountWithOutDiscount = withoutDiscount?.reduce(
-  //   (previousValue, currentValue) => {
-  //     return (
-  //       previousValue +
-  //       Number(currentValue.price) * Number(currentValue.quantity)
-  //     );
-  //   },
-  //   0
-  // );
 
-  // const discAmount = withDscount?.reduce((previousValue, currentValue) => {
-  //   return (
-  //     previousValue +
-  //     (Number(currentValue.price) *
-  //       Number(currentValue.quantity) *
-  //       Number(currentValue.discount)) /
-  //       100
-  //   );
-  // }, 0);
-
-  // const totalAmount = withDscount?.reduce((previousValue, currentValue) => {
-  //   return (
-  //     previousValue + Number(currentValue.price) * Number(currentValue.quantity)
-  //   );
-  // }, 0);
-
-  // const totalAmoutWithDIscountAndWithoutDiscount =
-  //   totalAmount - discAmount + amountWithOutDiscount;
- 
-  
-  
   const checkOut = (data) => {
     if (cart.data.length <= 0) {
       toast.warning("add product", {
@@ -77,12 +44,12 @@ const Cart = () => {
 
   return (
     <div className="w-full min-h-screen bg-gray-300 mt-16 md:mt-16 font-serif">
-      <div className=" md:w-4/5 mx-auto flex flex-col flex-col-reverse md:flex-row  justify-around  py-5 gap-5 px-5">
+      <div className=" md:w-4/5 mx-auto flex flex-col flex-col-reverse md:flex-row  justify-around  py-5 gap-5 ">
         <div className=" bg-gradient-to-r from-green-500 to-emerald-600 text-white md:w-full w-full rounded-lg  md:px-0">
           {cart?.length === 0 ? (
             <div className="flex justify-center items-center flex-col">
               <img
-                className="max-h-[300px] max-w-[300px] "
+                className=""
                 src={image}
                 alt=""
               />

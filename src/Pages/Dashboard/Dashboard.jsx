@@ -11,14 +11,21 @@ import AdminDashboard from "./AdminDashboard";
 import CustomersDashboard from "./Customers-Dashboard/CustomersDashboard";
 import PaperPlainLoader from "../Components/Loader/PaperPlainLoader";
 import { Helmet } from "react-helmet-async";
+import { fetchCart, getUserByEmail } from "../../api/AllApi";
+import { getAuth } from "firebase/auth";
 
 const Dashboard = () => {
-  const user = useAuthState(auth);
-  const email = user[0]?.email;
-  const { data, isPending, refetch } = useQuery({
-    queryKey: ["userEmail"],
-    queryFn: () =>
-      axios.get(`https://server-site-psi-inky.vercel.app/api/user/${email}`),
+  const email = getAuth()?.currentUser?.email;
+  const { data, isPending } = useQuery({
+    queryKey: ["getUserByEmail"],
+    queryFn: () => getUserByEmail(email),
+    refetchInterval: 1000,
+  });
+
+  const { data: cart } = useQuery({
+    queryKey: ["fetchCart"],
+    queryFn: () => fetchCart(email),
+    refetchInterval: 1000,
   });
   let activeUser = "";
 
@@ -28,10 +35,10 @@ const Dashboard = () => {
     activeUser = data?.data;
 
     return (
-      <AuthContextDashboard.Provider value={(email, activeUser)}>
-         <Helmet>
-        <title>Dashboard</title>
-      </Helmet>
+      <AuthContextDashboard.Provider value={{ email, activeUser, cart }}>
+        <Helmet>
+          <title>Dashboard</title>
+        </Helmet>
         {activeUser && (
           <div>
             {activeUser?.rol === "user" || activeUser?.rol === "rider" ? (

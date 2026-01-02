@@ -13,8 +13,8 @@ const Settings = () => {
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
-  console.log(preview);
-  console.log(error);
+  // console.log(preview);
+  // console.log(error);
 
   const handleChange = (e) => {
     const files = e.target.files[0];

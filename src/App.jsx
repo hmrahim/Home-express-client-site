@@ -55,7 +55,7 @@ function App() {
 
     deferredPrompt.prompt();
     const result = await deferredPrompt.userChoice;
-    console.log("User choice:", result.outcome);
+ 
 
     setDeferredPrompt(null);
     setShowInstall(true);
@@ -70,8 +70,8 @@ function App() {
   refetch();
   return (
     <AuthContext.Provider value={{ email, rol, settings,cart,cartLoader }}>
-      <div className=" font-serif">
-        <Header />
+      <div className="">
+        <Header cart={cart}  />
 
         <div>
           {showInstall && (
