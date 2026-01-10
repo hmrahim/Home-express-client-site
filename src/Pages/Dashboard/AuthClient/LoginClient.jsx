@@ -5,7 +5,7 @@ import auth from "../../../firebase.init";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
-const LoginClient = () => {
+const LoginClient = ({setModal}) => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   const location = useLocation();
@@ -24,6 +24,7 @@ const LoginClient = () => {
       toast.success("Sign in succesfully", {
         autoClose: 1000,
       });
+      setModal(false);
 
       reset();
     }

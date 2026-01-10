@@ -50,6 +50,7 @@ import ErrorPage from "../Pages/404/ErrorPage";
 import AddPromoCode from "../Pages/Dashboard/PromoCode/AddPromoCode";
 import AllPromocode from "../Pages/Dashboard/PromoCode/AllPromocode";
 import UpdatePromo from "../Pages/Dashboard/PromoCode/UpdatePromo";
+import AdminProductForm from "../Pages/Dashboard/Product/AdminProductForm";
 
 export const router = createBrowserRouter([
   {
@@ -145,6 +146,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/add-product",
         Component: AddProduct,
+      },
+      {
+        path: "/dashboard/add-varient",
+        Component: AdminProductForm,
       },
       {
         path: "/dashboard/all-product",

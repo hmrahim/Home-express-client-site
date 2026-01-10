@@ -50,7 +50,7 @@ const Cart = () => {
             <div className="flex justify-center items-center flex-col">
               <img
                 className=""
-                src={image}
+                src=""
                 alt=""
               />
               <h1 className="text-4xl font-bold my-10 shadow-xl p-4">

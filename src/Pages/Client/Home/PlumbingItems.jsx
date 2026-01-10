@@ -1,14 +1,6 @@
 import React from "react";
 import SectionTitle from "../../Components/SectionTitle";
 import ProductCard from "../../Components/ProductCard";
-import product2 from "../../../assets/cat-2.jpg";
-import product3 from "../../../assets/cat-3.jpg";
-import product4 from "../../../assets/cat-4.jpg";
-import product5 from "../../../assets/cat-5.jpg";
-import product6 from "../../../assets/cat-6.jpg";
-import product7 from "../../../assets/cat-7.jpg";
-import product8 from "../../../assets/cat-8.jpg";
-import product9 from "../../../assets/cat-9.jpg";
 import SeeAll from "../../Components/SeeAll";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductForUser } from "../../../api/AllApi";

@@ -23,7 +23,7 @@ const CategoryRow = ({ index, items, refetch }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         mutation.mutate(id)
-        // axios.delete(`https://server-site-psi-inky.vercel.app/api/category/${id}`);
+        // axios.delete(`https://moom24-backend-production.up.railway.app/api/category/${id}`);
         Swal.fire({
           title: "Deleted!",
           text: "Your file has been deleted.",

@@ -3,7 +3,7 @@ import CartList from "./CartList";
 import Loader from "../Components/Loader/Loader";
 import OrderSummery from "./OrderSummery";
 
-const CartDetails = ({ data, title, isPending, refetch,totalAmount }) => {
+const CartDetails = ({ data, title, isPending, refetch, totalAmount }) => {
   // console.log(data);
   return (
     <div className="">
@@ -12,17 +12,17 @@ const CartDetails = ({ data, title, isPending, refetch,totalAmount }) => {
       {data?.[0] ? (
         <div className="w-full flex gap-5 flex-col-reverse  items-start flex-col md:flex-row md:p-4">
           <div
-            className="w-full md:w-3/5 overflow-x-scroll flex justify-center items-center 
-             [&::-webkit-scrollbar]:h-2 
+            className="w-full  overflow-y-auto 
+             [&::-webkit-scrollbar]:h-1 
           [&::-webkit-scrollbar]:w-1 
-          [&::-webkit-scrollbar]:bg-white 
+          [&::-webkit-scrollbar]:bg-green-200 
           [&::-webkit-scrollbar-thumb]:hover:bg-gray-400 
           "
           >
             {isPending ? (
               <Loader display={``} />
             ) : (
-              <table className="table">
+              <table className="min-w-[700px] table">
                 {/* head */}
                 <thead>
                   <tr className="text-white">

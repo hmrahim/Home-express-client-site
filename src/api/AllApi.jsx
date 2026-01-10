@@ -32,7 +32,7 @@ api.interceptors.request.use(
 
 export const postUser = async (user) => {
   const res = await api.post(`/user`, user);
-  return res.status === 200 ? res.data : null;
+  return res.status === 200 ? res : null;
 };
 export const getAllUser = async (user) => {
   const res = await api.get(`/user`);
@@ -50,7 +50,7 @@ export const getUserLocation = async (lat, lng) => {
 };
 
 // =======================Payment===============================
-export const confirmedOrderWithPayment = async (items,email) => {
+export const confirmedOrderWithPayment = async (items, email) => {
   const res = await api.put(`/confirm-order/${email}`, items);
   return res.status === 200 ? res : null;
 };
@@ -74,7 +74,7 @@ export const postProduct = async (Pdata) => {
   return res.status === 200 ? res : null;
 };
 export const updateProduct = async (id, uPdata) => {
-  const res = await api.put(`/product/${id}`, uPdata);
+  const res = await api.patch(`/product/${id}`, uPdata,{});
   return res.status === 200 ? res : null;
 };
 export const getAllProduct = async () => {
@@ -90,12 +90,10 @@ export const deleteProducts = async (id) => {
   return res.status === 200 ? res.data : null;
 };
 
-
-export const infiniteScroll = async ({pageParam = 1}) => {
+export const infiniteScroll = async ({ pageParam = 1 }) => {
   const res = await api.get(`/infinite-scroll?page=${pageParam}&limit=10`);
   return res.status === 200 ? res.data : null;
 };
-
 
 //==================Category api==================
 

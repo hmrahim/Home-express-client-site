@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { IoCloseCircle } from "react-icons/io5";
@@ -22,8 +22,9 @@ import LoginClient from "./LoginClient";
 import { useMutation } from "@tanstack/react-query";
 import { postUser } from "../../../api/AllApi";
 
-const AuthClient = () => {
+const AuthClient = ({ modal, setModal }) => {
   const navigate = useNavigate();
+  const [login, setLogin] = useState(false);
 
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
@@ -45,33 +46,36 @@ const AuthClient = () => {
   const mutation = useMutation({
     mutationKey: ["postUser"],
     mutationFn: (user) => postUser(user),
+    onSuccess: (res) => {
+      if (res.status === 200 ) {
+        console.log(res);
+        toast.success("Signup successfull, you can add product to cart now ");
+        setModal(false);
+      }
+    },
   });
   const onSubmit = async (data) => {
-    const result = createUserWithEmailAndPassword(data.email, data.password);
-
+     createUserWithEmailAndPassword(data.email, data.password);
+    const user = {
+      name: data.name,
+      email: data.email,
+    };
     if (!error) {
       mutation.mutate(user);
-      // const res = await axios.post(
-      //   "https://server-site-psi-inky.vercel.app/api/user",
-      //   {}
-      // );
-      const user = {
-        name: data.name,
-        email: data.email,
-      };
-      toast.success("Registration sucesfully", {
-        autoClose: 1000,
-      });
-      reset();
     }
   };
 
   return (
     <div>
-      <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+      <input
+        type="checkbox"
+        checked={modal}
+        id="my_modal_6"
+        className=" modal-toggle"
+      />
       <div className="modal " role="dialog">
         <div className="modal-box relative  h-screen bg-base-100">
-          <label htmlFor="my_modal_6" className=" absolute right-0 top-0">
+          <label onClick={()=> setModal(false)} htmlFor="my_modal_6" className=" absolute right-0 top-0">
             <IoCloseCircle className="text-4xl cursor-pointer text-red-600" />
           </label>
           <Tabs>
@@ -81,7 +85,7 @@ const AuthClient = () => {
             </TabList>
 
             <TabPanel>
-              <LoginClient />
+              <LoginClient setModal={setModal} />
             </TabPanel>
             <TabPanel>
               <div className="max-w-lg w-full">

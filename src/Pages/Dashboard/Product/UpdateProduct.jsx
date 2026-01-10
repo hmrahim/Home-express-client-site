@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -16,21 +16,17 @@ const UpdateProduct = () => {
   const { id } = useParams();
   const [items, setIems] = useState("");
   const [image, setImage] = useState("");
+  const [loading, setLoading] = useState(false);
   const Navigate = useNavigate();
 
   const { data, isPending, refetch } = useQuery({
     queryKey: ["productbyid", id],
     queryFn: () =>
-      axios.get(`https://server-site-psi-inky.vercel.app/api/product/${id}`),
+      axios.get(
+        `https://moom24-backend-production.up.railway.app/api/product/${id}`
+      ),
   });
-  // useEffect(() => {
-  //   axios
-  //     .get(`https://server-site-psi-inky.vercel.app/api/product/${id}`)
-  //     .then((res) => {
-  //       setIems(res.data);
-  //       setImage(res.data.image);
-  //     });
-  // }, []);
+
   const oldImage = data?.data.image;
 
   const {
@@ -42,14 +38,23 @@ const UpdateProduct = () => {
     queryFn: fetchAllCategorys,
   });
 
-  const imgbbKey = "765622b71bed5a179efe4bce6d1d53c8";
+  const imgbbKey = import.meta.env.VITE_API_KEY_IMGBB;
 
   const {
     register,
+    control,
+    watch,
     formState: { errors },
     handleSubmit,
     reset,
   } = useForm();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "variants",
+  });
+
+  const variants = watch("variants");
 
   const imageUpload = async (e) => {
     const image = e.target.files[0];
@@ -84,11 +89,64 @@ const UpdateProduct = () => {
     const newImage = { ...data, image };
     const OldImage = { ...data, oldImage };
 
-    if (image === "") {
-      mutation.mutate(OldImage);
-    } else {
-      mutation.mutate(newImage);
-    }
+    const form = {
+      name: data.name,
+      brand: data.brand,
+      category: data.category,
+      country: data.country,
+      desc: data.desc,
+      discount: data.discount,
+      minQty: data.minQty,
+      price: data.price,
+      unit: data.unit,
+      image: image,
+    };
+
+    const uploadImage = async (file) => {
+      if (file !== undefined) {
+        setLoading(true);
+      }
+
+      const formData = new FormData();
+      formData.append("image", file); // ফাইল form data তে add করলাম
+
+      const res = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
+        formData
+      );
+
+      const data = res.data.data.url;
+      return data; // এখানে image এর link পাওয়া যাবে
+    };
+
+    const variants = await Promise.all(
+      data.variants.map(async (variant) => {
+        const files = Array.from(variant.images || []);
+        const images = await Promise.all(
+          files.map((file) =>
+            typeof file === "string" ? file : uploadImage(file)
+          )
+        );
+        if (images) {
+          setLoading(false);
+        }
+        return {
+          color: variant.color,
+          size: variant.size,
+          price: variant.price,
+          stock: variant.stock,
+          images: images[0],
+        };
+      })
+    );
+
+    const uData = { ...form, variants };
+    mutation.mutate(uData);
+
+    // if (image === "") {
+    //   mutation.mutate(OldImage);
+    // } else {
+    // }
   };
   if (isPending || data === undefined) {
     return <Loader />;
@@ -135,7 +193,10 @@ const UpdateProduct = () => {
                       },
                     })}
                   >
-                    <option disabled={true}>Select Category</option>
+                    <option disabled={true}>
+                      {" "}
+                      {isPending1 ? "Loading..." : " Select Category"}
+                    </option>
                     {data1?.map((category) => (
                       <option
                         value={category.name}
@@ -320,11 +381,11 @@ const UpdateProduct = () => {
                   />
                 </fieldset>
               </div>
-              <div className="rounded-3xl flex justify-center items-center max-h-40 overflow-hidden   mx-w-40 border border-success shadow-2xl">
+              <div className="flex justify-center items-center flex-col    border border-success shadow-2xl">
                 <div>
                   <img
                     src={image ? image : oldImage}
-                    className="  rounded-3xl"
+                    className="  rounded-3xl max-h-32 w-28"
                     alt="Product Image"
                   />
 
@@ -332,8 +393,115 @@ const UpdateProduct = () => {
                 </div>
               </div>
             </div>
+
+            <h1 className="text-2xl text-center mt-5">Update Variant</h1>
+            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600 my-3" />
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold">Variants</h2>
+
+                {/* Add Variant Button */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    append({
+                      color: "",
+                      size: "",
+                      price: "",
+                      stock: "",
+                      images: "",
+                    })
+                  }
+                  className="bg-black text-white px-4 py-2 rounded-md text-sm"
+                >
+                  ➕ Add Variant
+                </button>
+              </div>
+
+              {/* ===============================
+             VARIANT LOOP
+             =============================== */}
+              {fields.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="border rounded-lg p-4 space-y-4 bg-gray-50"
+                >
+                  {/* Variant header */}
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-medium">Variant #{index + 1}</h3>
+
+                    <button
+                      type="button"
+                      onClick={() => remove(index)}
+                      className="text-red-500 text-sm"
+                    >
+                      ❌ Remove
+                    </button>
+                  </div>
+
+                  {/* Variant fields */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <input
+                      {...register(`variants.${index}.color`, {
+                        required: true,
+                      })}
+                      placeholder="Color"
+                      className="border rounded-md px-3 py-2"
+                    />
+
+                    <input
+                      {...register(`variants.${index}.size`, {
+                        required: true,
+                      })}
+                      placeholder="Size"
+                      className="border rounded-md px-3 py-2"
+                    />
+
+                    <input
+                      type="number"
+                      {...register(`variants.${index}.price`, {
+                        required: true,
+                      })}
+                      placeholder="Price"
+                      className="border rounded-md px-3 py-2"
+                    />
+
+                    <input
+                      type="number"
+                      {...register(`variants.${index}.stock`, {
+                        required: true,
+                      })}
+                      placeholder="Stock"
+                      className="border rounded-md px-3 py-2"
+                    />
+                  </div>
+
+                  {/* ===============================
+                 IMAGE UPLOAD
+                 =============================== */}
+                  <div>
+                    <label className="block text-sm font-medium mb-1">
+                      Variant Images
+                    </label>
+                    <div className="flex items-center gap-4">
+                      <input
+                        {...register(`variants.${index}.images`, {
+                          required: true,
+                        })}
+                        type="file"
+                      />
+                    </div>
+
+                    {/* Image Preview Grid */}
+                    <div className="grid grid-cols-4 gap-2 mt-3"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
             <button className="btn w-full md:w-2/12 btn-success my-4">
-              {mutation.isPending ? "Updating..." : " Update Product"}
+              {mutation.isPending || loading
+                ? "Updating..."
+                : " Update Product"}
             </button>
           </form>
         </div>

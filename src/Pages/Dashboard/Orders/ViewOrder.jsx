@@ -14,6 +14,7 @@ import ConfirmDelivery from "./ConfirmDelivery";
 import DeliveryAnimation from "./DeliveryAnimation";
 import { SaudiRiyal } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import PaperPlainLoader from "../../Components/Loader/PaperPlainLoader";
 
 const ViewOrder = () => {
   const { id } = useParams();
@@ -23,7 +24,8 @@ const ViewOrder = () => {
     queryFn: () => fetchConfirmOrderById(id),
     refetchInterval: 1000,
   });
-  const deliveryFee = data?.distence <=5 ? (15).toFixed(2) : (Number(data?.distence) * 5).toFixed(2);
+  console.log(data);
+  const deliveryFee = data?.distence <=5 ? (15).toFixed(2) : (Number(data?.distence) * 1).toFixed(2);
 
   const { data: rider, isPending: isRiderPending } = useQuery({
     queryKey: ["fetchRider"],
@@ -88,6 +90,10 @@ const ViewOrder = () => {
       reset();
     }
   };
+
+if(isPending){
+  return <PaperPlainLoader/>
+}
 
   return (
     <div>

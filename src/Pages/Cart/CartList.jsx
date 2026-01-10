@@ -71,6 +71,10 @@ const CartList = ({ cart, refetch }) => {
     });
   };
 
+   function truncate(str, maxlength) {
+    return str.length > maxlength ? str.slice(0, maxlength - 1) + "…" : str;
+  }
+
   refetch();
   return (
     <tr className="">
@@ -81,7 +85,7 @@ const CartList = ({ cart, refetch }) => {
       </td>
       <td className="text-center">
         <div>
-          <h1 className="">{cart.name}</h1>
+          <h1 className="">{truncate(cart.name, 15)}</h1>
         </div>
       </td>
       <td className="text-center ">

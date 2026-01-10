@@ -1,11 +1,6 @@
 import React from "react";
 import SectionTitle from "../../Components/SectionTitle";
-import product2 from "../../../assets/cat-2.jpg";
-import product3 from "../../../assets/cat-3.jpg";
-import product4 from "../../../assets/cat-4.jpg";
-import product5 from "../../../assets/cat-5.jpg";
-import product6 from "../../../assets/cat-6.jpg";
-import product7 from "../../../assets/cat-7.jpg";
+
 import ProductCard from "../../Components/ProductCard";
 import SeeAll from "../../Components/SeeAll";
 import { useQuery } from "@tanstack/react-query";

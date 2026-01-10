@@ -26,7 +26,7 @@ const Signup = () => {
   const onSubmit = async (data) => {
     createUserWithEmailAndPassword(data.email, data.password);
     const res = await axios.post(
-      "https://server-site-psi-inky.vercel.app/api/user",
+      "https://moom24-backend-production.up.railway.app/api/user",
       {
         name: data.name,
         email: data.email,
@@ -48,16 +48,16 @@ const Signup = () => {
     }
   };
   return (
-    <div className=" flex justify-center items-center h-screen bg-gray-400 px-5 md:px-0">
+    <div className=" flex justify-center items-center h-screen bg-gradient-to-t from-green-500 to-emerald-600  px-5 md:px-0">
       <Helmet>
          <title>Moom24-Signup</title>
       </Helmet>
       <div
-        className=" bg-primary md:w-2/5 w-full mx-auto px-5 py-5 mx-5 rounded-lg
+        className=" bg-gradient-to-r from-green-500 to-emerald-600 md:w-2/5 w-full mx-auto px-5 py-5 mx-5 rounded-lg
               shadow-2xl "
       >
         <h1 className="text-2xl font-bold text-white text-center">
-          Home Express
+          Moom24
         </h1>
         <hr className="my-2 h-5" />
         <div className="flex flex-col gap-5">

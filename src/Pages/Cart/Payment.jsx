@@ -18,6 +18,7 @@ import {
 } from "../../api/AllApi";
 import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
 import OrderSummery from "./OrderSummery";
+import ViewShippingAddress from "./ViewShippingAddress";
 const Payment = () => {
   const navigate = useNavigate();
   const user = useAuthState(auth);
@@ -27,7 +28,7 @@ const Payment = () => {
   const deliveryFee =
     cart?.distence <= 5
       ? (15).toFixed(2)
-      : (Number(cart?.distence) * 5).toFixed(2);
+      : (Number(cart?.distence) * 1).toFixed(2);
   const totalAmount = (cart?.totalAmount + Number(deliveryFee)).toFixed(2);
 
   const { data, isPending } = useQuery({
@@ -35,6 +36,7 @@ const Payment = () => {
     queryFn: () => getDistanceApi(email),
     refetchInterval: 1000,
   });
+  
 
   const {
     register,
@@ -225,7 +227,9 @@ const Payment = () => {
               </p>
             </div>
           </div>
+          <ViewShippingAddress isPending={isPending} data={data} />
         </form>
+        
       </div>
 
       <ToastContainer />

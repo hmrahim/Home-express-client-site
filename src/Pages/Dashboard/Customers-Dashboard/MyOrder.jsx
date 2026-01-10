@@ -23,7 +23,7 @@ const MyOrder = () => {
   const deliveryFee =
     order?.distence <= 5
       ? (15).toFixed(2)
-      : (Number(order?.distence) * 5).toFixed(2);
+      : (Number(order?.distence) * 1).toFixed(2);
 
   const subTotal = (order?.totalAmount - Number(deliveryFee)).toFixed(2);
   const grandTotal = (Number(subTotal) + Number(deliveryFee)).toFixed(2);
@@ -40,7 +40,7 @@ const MyOrder = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axios.put(
-          `https://server-site-psi-inky.vercel.app/api/cancel-order/${id}`,
+          `https://moom24-backend-production.up.railway.app/api/cancel-order/${id}`,
           { status: "cancelled" }
         );
         // if(res.status === 200){

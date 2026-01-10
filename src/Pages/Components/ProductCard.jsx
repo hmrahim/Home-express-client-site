@@ -8,21 +8,32 @@ const ProductCard = ({ product, refetch }) => {
   const discountPrice = Number(product?.price) - discount;
   const [int, dec] = Number(discountPrice).toFixed(2).split(".");
   const [p_int, p_dec] = Number(product?.price).toFixed(2).split(".");
+
+  function truncate(str, maxlength) {
+    return str.length > maxlength ? str.slice(0, maxlength - 1) + "…" : str;
+  }
+
+
+
+
+
+
+
+  
+
   return (
-    <div
-      className="rounded-xl p-[1px] bg-gradient-to-r from-green-500 to-emerald-600"
-    >
+    <div className="rounded-xl p-[1px] bg-gradient-to-r from-green-500 to-emerald-600">
       <div className=" h-[320px] relative bg-base-100 hover:shadow-2xl  relative p-2 duration-300 rounded-xl border-2">
         <figure className="overflow-hidden rounded-xl flex justify-center items-center">
           <img
-            className="h-[180px] w-[180px] mx-5 h-full image-full hover:scale-150 transition-all"
+            className="max-h-[180px] min-h-[180px] w-[180px] mx-5 h-full image-full hover:scale-150 transition-all"
             src={product?.image}
             alt="Shoes"
           />
         </figure>
 
         <div className=" ">
-          <h2 className="card-title text-[16px] md:text-lg">{product?.name}</h2>
+          <h2 className=" capitalize text-center text-[16px] md:text-lg ">{truncate(product?.name, 20)}</h2>
 
           <div className="flex flex-col w-full">
             <div className="flex items-center  ">

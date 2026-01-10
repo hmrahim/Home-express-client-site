@@ -19,7 +19,7 @@ function App() {
   const { data, isPending, refetch } = useQuery({
     queryKey: ["userEmail"],
     queryFn: () =>
-      axios.get(`https://server-site-psi-inky.vercel.app/api/user/${email}`),
+      axios.get(`https://moom24-backend-production.up.railway.app/api/user/${email}`),
   });
 
    const { data:cart, isPending:cartLoader } = useQuery({

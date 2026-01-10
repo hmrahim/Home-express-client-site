@@ -4,7 +4,12 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { updateConfirmOrderStatus } from "../../../api/AllApi";
 import { useMutation } from "@tanstack/react-query";
-const ConfirmDelivery = ({ total,order }) => {
+const ConfirmDelivery = ({ total, order }) => {
+  const deliveryFee =
+    order?.distence <= 5
+      ? (15).toFixed(2)
+      : (Number(order?.distence) * 1).toFixed(2);
+  const totalAmount = Number(deliveryFee) + Number(order?.totalAmount);
   const [isChecked, setIsChecked] = useState(false);
   const toggle = () => {
     if (isChecked === true) {
@@ -13,45 +18,40 @@ const ConfirmDelivery = ({ total,order }) => {
       setIsChecked(true);
     }
   };
-  const id = order?._id
+  const id = order?._id;
   const {
-      register,
-      formState: { errors },
-      handleSubmit,
-      reset,
-    } = useForm();
-  
-     const mutation = useMutation({
-        mutationFn: (data) => updateConfirmOrderStatus(id, {...data,totalAmount:total}),
-      });
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
+
+  const mutation = useMutation({
+    mutationFn: (data) =>
+      updateConfirmOrderStatus(id, { ...data, totalAmount: total }),
+  });
 
   const confirmDeliveryHandler = (data) => {
-    
-    
-    
     Swal.fire({
-          title: "Are you sure?",
-          text: "You won't be able to revert this!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "green",
-          cancelButtonColor: "red",
-          confirmButtonText: "Yes, Delivered!",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            mutation.mutate(data);
-           
-           reset();
-            Swal.fire({
-              title: "Completed!",
-              text: "Your order has been delivered.",
-              icon: "success",
-              
-            });
-          }
-        });
-    
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "green",
+      cancelButtonColor: "red",
+      confirmButtonText: "Yes, Delivered!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutation.mutate(data);
 
+        reset();
+        Swal.fire({
+          title: "Completed!",
+          text: "Your order has been delivered.",
+          icon: "success",
+        });
+      }
+    });
   };
 
   return (
@@ -60,7 +60,7 @@ const ConfirmDelivery = ({ total,order }) => {
         <div className="container px-5 flex items-center justify-center gap-8">
           <div>
             <input
-            {...(register("status", { required: true }))}
+              {...register("status", { required: true })}
               onClick={toggle}
               checked={isChecked}
               style={{ display: "none" }}
@@ -81,7 +81,7 @@ const ConfirmDelivery = ({ total,order }) => {
                 isChecked ? "text-primary" : ""
               }`}
             >
-              {total}
+              {totalAmount}
             </strong>{" "}
             <sub className="text-lg font-semibold">sr</sub>
           </div>
@@ -91,7 +91,7 @@ const ConfirmDelivery = ({ total,order }) => {
             disabled={isChecked ? false : true}
             className="btn btn-primary btn-sm"
           >
-            Confirm Delivery
+            {mutation.isLoading ? "Confirming..." : "Confirm Delivery"}
           </button>
         </div>
       </form>

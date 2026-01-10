@@ -1,11 +1,6 @@
 import React from "react";
 import ProductCard from "../../Components/ProductCard";
-import product2 from "../../../assets/cat-2.jpg";
-import product3 from "../../../assets/cat-3.jpg";
-import product4 from "../../../assets/cat-4.jpg";
-import product5 from "../../../assets/cat-5.jpg";
-import product6 from "../../../assets/cat-6.jpg";
-import product7 from "../../../assets/cat-7.jpg";
+
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductForUser } from "../../../api/AllApi";
 import Loader from "../../Components/Loader/Loader";

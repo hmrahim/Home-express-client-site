@@ -16,7 +16,7 @@ const UserRow = ({ users, refetch, index }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios.delete(
-          `https://server-site-psi-inky.vercel.app/api/category/${id}`
+          `https://moom24-backend-production.up.railway.app/api/category/${id}`
         );
         Swal.fire({
           title: "Deleted!",

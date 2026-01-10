@@ -23,6 +23,9 @@ const CurrentOrders = () => {
     (data) => data?.status === "confirmed"
   );
 
+  const deliveryFee = confirmOrder?.distence <=5 ? (15).toFixed(2) : (Number(confirmOrder?.distence) * 5).toFixed(2);
+
+  console.log(confirmOrder);
   const location = confirmOrder?.address?.location;
 
   const withDscount = confirmOrder?.orders.filter(
@@ -106,8 +109,9 @@ const CurrentOrders = () => {
                 <div>
                   <p className="text-sm font-semibold">Deliver To</p>
                   <p className="text-sm text-gray-600">
-                    House #{confirmOrder?.address.building}, Street :{" "}
-                    {confirmOrder?.address.area}, {confirmOrder?.address.city},
+                      {confirmOrder?.address.road}, {confirmOrder?.address.suburb},{" "}
+                              {confirmOrder?.address.postcode}, {confirmOrder?.address.state},{" "}
+                              {confirmOrder?.address.city}, {confirmOrder?.address.country}
                   </p>
                 </div>
               </div>
@@ -156,10 +160,16 @@ const CurrentOrders = () => {
                 </tbody>
               </table>
             </div>
+            <div className="mt-4 b pt-3 flex items-center justify-between text-sm  ">
+              <span>Delivery Fees</span>
+              <span className="font-sans">
+                {deliveryFee} SAR
+              </span>
+            </div>
             <div className="mt-4 b pt-3 flex items-center justify-between text-sm font-semibold ">
               <span>Total</span>
               <span className="font-sans">
-                {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)} SAR
+                {Number(confirmOrder.totalAmount)  + Number(deliveryFee)  } SAR
               </span>
             </div>
           </div>
@@ -186,14 +196,14 @@ const CurrentOrders = () => {
                   <p className="text-sm text-gray-950">
                     Amount:{" "}
                     <span className="font-semibold text-green-600">
-                      {totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
+                      {Number(confirmOrder.totalAmount)  + Number(deliveryFee)}
                     </span>
                   </p>
                   <OpenMap location={location} />
                 </div>
                 <div className="">
                   <ConfirmDelivery
-                    total={totalAmoutWithDIscountAndWithoutDiscount.toFixed(2)}
+                    total={Number(confirmOrder.totalAmount)  + Number(deliveryFee)}
                     order={confirmOrder}
                   />
                 </div>

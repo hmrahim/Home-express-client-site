@@ -82,7 +82,7 @@ const Home = () => {
     <div className=" ">
       <Banner />
       <Helmet>
-        <title>Moom24-Home</title>
+        <title>Moom24</title>
       </Helmet>
       <form
         onSubmit={(e) => e.preventDefault()}
@@ -93,7 +93,9 @@ const Home = () => {
             onChange={(e) => setCatValue(e.target.value)}
             className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-l-full text-white px-4 py-[19px] outline-none cursor-pointer --webkit-appearance: none --moz-appearance:none appearance:none "
           >
-            <option className="text-black">Select Category</option>
+            <option className="text-black">
+              {catIspedning ? "Loading..." : "Select Category"}
+            </option>
             {catData &&
               catData?.map((cat) => (
                 <option
