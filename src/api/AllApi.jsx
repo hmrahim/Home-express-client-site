@@ -89,6 +89,13 @@ export const deleteProducts = async (id) => {
   const res = await api.delete(`/product/${id}`);
   return res.status === 200 ? res.data : null;
 };
+export const delete_variants = async (id) => {
+  const res = await api.delete(`/product/${id}`);
+  return res.status === 200 ? res.data : null;
+};
+
+
+
 
 export const infiniteScroll = async ({ pageParam = 1 }) => {
   const res = await api.get(`/infinite-scroll?page=${pageParam}&limit=10`);
@@ -241,5 +248,14 @@ export const updatePromoById = async (PromoData, id) => {
 };
 export const deletePromo = async (id) => {
   const res = await api.delete(`/promocode/${id}`);
+  return res.status === 200 ? res : [];
+};
+
+
+
+// =========Stripe Payment===============
+
+export const stripePayment = async (totalAmount) => {
+  const res = await api.post(`/create-payment-intent`, totalAmount);
   return res.status === 200 ? res : [];
 };

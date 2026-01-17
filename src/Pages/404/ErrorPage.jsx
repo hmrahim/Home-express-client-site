@@ -21,56 +21,56 @@ const ErrorPage = () => {
       50% { transform: rotate(15deg); }
     }
   `}</style>
-      <div class="text-center">
+      <div className="text-center">
         {/* <!-- Cartoon Character --> */}
         <div
-          class="relative mx-auto mb-10 w-40 h-40 mt-10"
+          className="relative mx-auto mb-10 w-40 h-40 mt-10"
           style={{animation: 'float 4s ease-in-out infinite'}}
         >
           {/* <!-- Head --> */}
-          <div class="absolute inset-0 bg-indigo-100 rounded-full shadow-lg"></div>
+          <div className="absolute inset-0 bg-indigo-100 rounded-full shadow-lg"></div>
 
           {/* <!-- Eyes --> */}
           <div
-            class="absolute top-16 left-10 w-6 h-6 bg-gray-800 rounded-full origin-center"
+            className="absolute top-16 left-10 w-6 h-6 bg-gray-800 rounded-full origin-center"
             style={{animation: "blink 4s infinite"}}
           ></div>
 
           <div
-            class="absolute top-16 right-10 w-6 h-6 bg-gray-800 rounded-full origin-center"
+            className="absolute top-16 right-10 w-6 h-6 bg-gray-800 rounded-full origin-center"
             style={{animation:" blink 4s infinite"}}
           ></div>
 
           {/* <!-- Smile --> */}
-          <div class="absolute bottom-12 left-1/2 -translate-x-1/2 w-16 h-8 border-b-4 border-gray-700 rounded-b-full"></div>
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-16 h-8 border-b-4 border-gray-700 rounded-b-full"></div>
 
           {/* <!-- Hand --> */}
           <div
-            class="absolute -right-6 top-24 w-10 h-4 bg-indigo-100 rounded-full origin-left"
+            className="absolute -right-6 top-24 w-10 h-4 bg-indigo-100 rounded-full origin-left"
             style={{animation: "wave 2s ease-in-out infinite"}}
           ></div>
         </div>
 
         {/* <!-- 404 Text --> */}
         <h1
-          class="text-8xl md:text-9xl font-extrabold  text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-green-600 to-red-500"
+          className="text-8xl md:text-9xl font-extrabold  text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-green-600 to-red-500"
           style={{animation:" float 3s ease-in-out infinite"}}
         >
           404
         </h1>
 
         {/* <!-- Message --> */}
-        <p class="mt-4 text-lg md:text-xl  text-transparent bg-clip-text bg-gradient-to-r from-black via-green-500 to-yellow-500">
+        <p className="mt-4 text-lg md:text-xl  text-transparent bg-clip-text bg-gradient-to-r from-black via-green-500 to-yellow-500">
           Oops! This page went on a coffee break ☕
         </p>
 
         {/* <!-- Divider --> */}
-        <div class="mx-auto mt-4 w-20 h-1 bg-green-500 rounded-full"></div>
+        <div className="mx-auto mt-4 w-20 h-1 bg-green-500 rounded-full"></div>
 
         {/* <!-- Button --> */}
         <Link
           to="/"
-          class="inline-block mt-8 px-8 py-4 text-white  rounded-xl shadow-md
+          className="inline-block mt-8 px-8 py-4 text-white  rounded-xl shadow-md
                bg-gradient-to-r from-green-500 to-emerald-600  hover:bg-indigo-700 hover:scale-105 transition-all duration-300"
         >
           Back to Home

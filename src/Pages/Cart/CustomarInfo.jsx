@@ -124,40 +124,40 @@ const CustomarInfo = () => {
             <div className="bg-white py-4 text-gray-800">
               <div className=" flex flex-col justify-center">
                 <div>
-                  <div class="bg-base-200 mb-4 rounded-2xl shadow p-4 ">
+                  <div className="bg-base-200 mb-4 rounded-2xl shadow p-4 ">
                     {/* <!-- Header --> */}
-                    <div class="flex items-center justify-between mb-4">
-                      <h2 class="text-lg font-semibold text-gray-800">
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-lg font-semibold text-gray-800">
                         Customer Information
                       </h2>
-                      <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                      <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">
                         Verified
                       </span>
                     </div>
 
                     {/* <!-- Info List --> */}
-                    <div class="space-y-2 grid grid-cols-1 md:grid-cols-2  ">
+                    <div className="space-y-2 grid grid-cols-1 md:grid-cols-2  ">
                       {/* <!-- Name --> */}
-                      <div class="flex items-start gap-3">
-                        <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
                           N
                         </div>
                         <div>
-                          <p class="text-sm text-gray-500">Full Name</p>
-                          <p class="text-base font-medium text-gray-800">
+                          <p className="text-sm text-gray-500">Full Name</p>
+                          <p className="text-base font-medium text-gray-800">
                             {data?.data.name}
                           </p>
                         </div>
                       </div>
 
                       {/* <!-- Email --> */}
-                      <div class="flex items-start gap-3">
-                        <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
                           <MdAttachEmail />
                         </div>
                         <div>
-                          <p class="text-sm text-gray-500">Email Address</p>
-                          <p class="text-base font-medium text-gray-800">
+                          <p className="text-sm text-gray-500">Email Address</p>
+                          <p className="text-base font-medium text-gray-800">
                             {email && email}
                           </p>
                         </div>
@@ -166,16 +166,16 @@ const CustomarInfo = () => {
                       {/* <!-- Phone --> */}
 
                       {/* <!-- Address --> */}
-                      <div class="flex items-start gap-3">
-                        <div class="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-semibold">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-semibold">
                           <FaShippingFast />
                         </div>
                         <div>
-                          <p class="text-sm text-gray-500">Shipping Address</p>
+                          <p className="text-sm text-gray-500">Shipping Address</p>
                           {info?.address === undefined ? (
                             <p>Loading...</p>
                           ) : (
-                            <p class="text-base font-medium text-gray-800 leading-relaxed">
+                            <p className="text-base font-medium text-gray-800 leading-relaxed">
                               {info?.address.road}, {info?.address.suburb},{" "}
                               {info?.address.postcode}, {info?.address.state},{" "}
                               {info?.address.city}, {info?.address.country}
@@ -183,8 +183,8 @@ const CustomarInfo = () => {
                           )}
                         </div>
                       </div>
-                      <div class="flex items-start gap-3 w-full">
-                        <div class="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-semibold">
+                      <div className="flex items-start gap-3 w-full">
+                        <div className="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-semibold">
                           <FaWhatsapp />
                         </div>
                         <div>
@@ -226,13 +226,13 @@ const CustomarInfo = () => {
                       </div>
                     </div>
                     <div>
-                      <div class="flex gap-3 flex-col mt-5 ">
+                      <div className="flex gap-3 flex-col mt-5 ">
                         <div className="flex  gap-2 items-center">
-                          <label class="text-white">
+                          <label className="text-white">
                             <input
                               checked={isChecked}
                               onClick={toggle}
-                              class="dark:border-white-400/20 dark:scale-100 transition-all duration-500 ease-in-out dark:hover:scale-110 dark:checked:scale-100 w-6 h-6"
+                              className="dark:border-white-400/20 dark:scale-100 transition-all duration-500 ease-in-out dark:hover:scale-110 dark:checked:scale-100 w-6 h-6"
                               type="checkbox"
                             />
                           </label>

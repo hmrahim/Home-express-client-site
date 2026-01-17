@@ -22,7 +22,7 @@ const ProductImageSlider = ({ variants = [] }) => {
           ❮
         </button>
 
-        <img src={variants[activeIndex]?.images} alt="product" />
+        <img src={variants[activeIndex]} alt="product" />
 
         <button className="arrow right rounded-md" onClick={nextImage}>
           ❯
@@ -34,7 +34,7 @@ const ProductImageSlider = ({ variants = [] }) => {
         {variants.map((img, index) => (
           <img
             key={index}
-            src={img.images}
+            src={img}
             alt="thumb"
             className={`${index === activeIndex ? "active" : ""} `}
             onClick={() => setActiveIndex(index)}

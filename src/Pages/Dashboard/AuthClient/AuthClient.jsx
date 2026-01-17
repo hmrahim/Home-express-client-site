@@ -48,7 +48,7 @@ const AuthClient = ({ modal, setModal }) => {
     mutationFn: (user) => postUser(user),
     onSuccess: (res) => {
       if (res.status === 200 ) {
-        console.log(res);
+        // console.log(res);
         toast.success("Signup successfull, you can add product to cart now ");
         setModal(false);
       }

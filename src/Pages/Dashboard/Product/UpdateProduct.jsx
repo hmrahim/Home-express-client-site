@@ -5,7 +5,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { fetchAllCategorys, updateProduct } from "../../../api/AllApi";
+import { delete_variants, fetchAllCategorys, updateProduct } from "../../../api/AllApi";
 import { countryApi } from "../../../api/countryApi";
 import { Helmet } from "react-helmet-async";
 import PreBackButton from "../../Components/PreBackButton";
@@ -25,9 +25,11 @@ const UpdateProduct = () => {
       axios.get(
         `https://moom24-backend-production.up.railway.app/api/product/${id}`
       ),
+    refetchInterval: 1000,
   });
 
   const oldImage = data?.data.image;
+  const oldVariant =  data?.data.variants;
 
   const {
     data: data1,
@@ -83,6 +85,18 @@ const UpdateProduct = () => {
       }
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn:(id)=> delete_variants(id)
+
+  })
+
+
+const deleteVariant = (id)=> {
+  deleteMutation.mutate(id)
+}
+
+
 
   const onSubmit = async (data) => {
     // const updateImage = image !== "" ? image : oldImage;
@@ -140,7 +154,10 @@ const UpdateProduct = () => {
       })
     );
 
-    const uData = { ...form, variants };
+    const up_varient = variants[0] ? variants : oldVariant
+
+    const uData = { ...form, variants:up_varient };
+  
     mutation.mutate(uData);
 
     // if (image === "") {
@@ -392,6 +409,59 @@ const UpdateProduct = () => {
                   <p className="text-center p-5">Upload your image</p>
                 </div>
               </div>
+
+              {data?.data?.variants[0] ? (
+                <div className="w-full overflow-x-auto">
+                   <legend className="fieldset-legend"> Product Variants</legend>
+                  <table className="w-full border-b border-gray-700 rounded-lg text-center">
+                    {/* <!-- Table Head --> */}
+                    <thead className="bg-gray-700 text-gray-200 ">
+                      <tr>
+                        <th className=" text-left whitespace-nowrap text-center">
+                          Size
+                        </th>
+                        <th className=" text-left whitespace-nowrap text-center">
+                          Color
+                        </th>
+                        <th className=" text-left whitespace-nowrap text-center">
+                          Price
+                        </th>
+                        <th className=" text-left whitespace-nowrap text-center">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+
+                    {/* <!-- Table Body --> */}
+                    <tbody className="divide-y divide-gray-700 bg-white text-black">
+                      {data?.data?.variants?.map((variant) => {
+                        return (
+                          <tr>
+                            <td className=" whitespace-nowrap py-2">
+                              {variant?.size}
+                            </td>
+                            <td className=" whitespace-nowrap py-2">
+                              {variant?.color}
+                            </td>
+                            <td className=" whitespace-nowrap py-2">
+                              {variant?.price}
+                            </td>
+                            <td className=" whitespace-nowrap py-2">
+                              <button onClick={()=> deleteVariant(variant?._id)}  className="btn btn-xs btn-error text-white">
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+
+                      {/* <!-- example 2nd row --> */}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
 
             <h1 className="text-2xl text-center mt-5">Update Variant</h1>

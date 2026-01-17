@@ -28,6 +28,8 @@ const CartDetails = ({ data, title, isPending, refetch, totalAmount }) => {
                   <tr className="text-white">
                     <th className="text-center">Image</th>
                     <th className="text-center">Name</th>
+                    <th className="text-center">Size</th>
+                    <th className="text-center">Color</th>
                     <th className="text-center">Price</th>
                     <th className="text-center">Qty </th>
                     <th className="text-center">Total Price</th>

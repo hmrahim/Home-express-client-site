@@ -69,9 +69,9 @@ const Header = ({ cemail, cart }) => {
             </ul>
           </div>
 
-          <div class="neon-container">
+          <div className="neon-container">
             <img className="h-12" src={settings?.logo.displayUrl} alt="" />
-            {/* <h1 class="neon-text capitalize text-4xl font-bold">{settings?.websiteName}</h1> */}
+            {/* <h1 className="neon-text capitalize text-4xl font-bold">{settings?.websiteName}</h1> */}
           </div>
         </div>
         {/* ================================================= */}

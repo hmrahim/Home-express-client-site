@@ -88,6 +88,16 @@ const CartList = ({ cart, refetch }) => {
           <h1 className="">{truncate(cart.name, 15)}</h1>
         </div>
       </td>
+      <td className="text-center">
+        <div>
+          {cart?.size} 
+        </div>
+      </td>
+      <td className="text-center">
+        <div>
+         {cart?.color} 
+        </div>
+      </td>
       <td className="text-center ">
         <div className="relative border-primary border flex flex-row flex-row-reverse justify-center items-center w-fit px-2 rounded-lg">
           <h3 className="text-xl font-bold ">

@@ -37,8 +37,8 @@ const ProductView = () => {
   const [color, setColor] = useState("");
 
   useEffect(() => {
-    if(data?.variants){
-      setSize(data?.variants[0]?.size)
+    if (data?.variants) {
+      setSize(data?.variants[0]?.size);
     }
     if (data?.minQty) {
       setCount(Number(data.minQty));
@@ -84,10 +84,18 @@ const ProductView = () => {
       quantity: count,
       minQty: data?.minQty,
       image: data?.image,
+      size:size,
+      color:color
     };
 
     mutation.mutate(items);
+    
+   
+  
   };
+const variantImage = data?.variants?.flatMap(item => item.images || []);
+
+
 
   const [int, dec] = Number(discountPrice).toFixed(2).split(".");
   const [p_int, p_dec] = Number(data?.price).toFixed(2).split(".");
@@ -115,15 +123,15 @@ const ProductView = () => {
             <div className="flex flex-col md:flex-row gap-2">
               <AuthClient modal={modal} setModal={setModal} />
               <div className="">
-                {data?.variants[0] !== undefined ? (
-                  <ProductImageSlider
-                    variants={data?.variants}
+               
+                
+
+                <ProductImageSlider
+                    variants={variantImage.length > 1 ? variantImage  : data?.image  }
+                    
                     MainPrice={data.price}
                     quantity={data.quantity}
                   />
-                ) : (
-                  <img className="w-96 h-96" src={data?.image} alt="" />
-                )}
               </div>
               <div className="md:w-[50%] bg-white flex flex-col gap-10">
                 <h1 className="text-2xl font-semibold text-left">
@@ -223,12 +231,12 @@ const ProductView = () => {
                         Select Size
                       </h2>
                     )}
-                    <div class="flex  gap-2 p-2">
+                    <div className="flex  gap-2 p-2">
                       {data?.variants.map((items, index) => {
                         return (
                           <div key={items?._id}>
                             <input
-                              class="peer sr-only"
+                              className="peer sr-only"
                               value={items?.size}
                               name="size"
                               id={items?.size}
@@ -236,9 +244,9 @@ const ProductView = () => {
                               checked={size === items?.size}
                               onChange={() => setSize(items?.size)}
                             />
-                            <div class="flex h-10 w-20 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-gray-300 bg-gray-50 p-1 transition-transform duration-150 hover:border-green-400 active:scale-95 peer-checked:border-green-500 peer-checked:shadow-lg peer-checked:shadow-green-400">
+                            <div className="flex h-10 w-20 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-gray-300 bg-gray-50 transition-transform duration-150 hover:border-green-400 active:scale-95 peer-checked:border-green-500 peer-checked:shadow-lg peer-checked:shadow-green-400">
                               <label
-                                class="flex cursor-pointer items-center justify-center text-sm uppercase text-gray-500 peer-checked:text-green-500"
+                                className="flex w-full h-full cursor-pointer items-center justify-center text-sm uppercase text-gray-500 peer-checked:text-green-500"
                                 for={items?.size}
                               >
                                 {items?.size}
@@ -256,12 +264,12 @@ const ProductView = () => {
                         Select Color
                       </h2>
                     )}
-                    <div class="flex  gap-2 p-2">
+                    <div className="flex  gap-2 p-2">
                       {data?.variants.map((items, index) => {
                         return (
                           <div key={items?._id}>
                             <input
-                              class="peer sr-only"
+                              className="peer sr-only"
                               value={items?.color}
                               name="color"
                               id={items?.color}
@@ -270,10 +278,10 @@ const ProductView = () => {
                               onChange={() => setColor(items?.color)}
                             />
                             <div
-                              class={`flex h-10 w-20 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-${color}-300 bg-${items?.color.toLocaleLowerCase()}-500 bg-${items?.color.toLocaleLowerCase()} p-1 transition-transform duration-150 hover:border-green-400 active:scale-95 peer-checked:border-green-500 peer-checked:shadow-xl peer-checked:shadow-green-400`}
+                              className={`flex h-10 w-20 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-${color}-300 bg-${items?.color.toLocaleLowerCase()}-500 bg-${items?.color.toLocaleLowerCase()}  transition-transform duration-150 hover:border-green-400 active:scale-95 peer-checked:border-green-500 peer-checked:shadow-xl peer-checked:shadow-green-400`}
                             >
                               <label
-                                class={`flex cursor-pointer items-center justify-center text-sm uppercase text-white peer-checked:text-green-500`}
+                                className={`flex h-full w-full cursor-pointer items-center justify-center text-sm uppercase text-white peer-checked:text-green-500`}
                                 for={items?.color}
                               >
                                 {items?.color}

@@ -12,7 +12,7 @@ import { IoMdCheckmark } from "react-icons/io";
 
 const AddProduct = () => {
   const imgbbKey = import.meta.env.VITE_API_KEY_IMGBB;
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState([]);
   const [loading, setLoading] = useState(false);
   const { data, isPending, refetch } = useQuery({
     queryKey: ["AllCategory"],
@@ -49,22 +49,34 @@ const AddProduct = () => {
   });
 
   const imageUpload = async (e) => {
-    const image = e.target.files[0];
-    // console.log(image);
-    const formData = new FormData();
-    formData.append("image", image);
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
 
-    const res = await axios.post(
-      `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
-      formData
-    );
+    try {
+      const uploadPromise = files.map(async (file) => {
+        const formData = new FormData();
+        formData.append("image", file);
 
-    setImage(res.data.data.url);
+        const res = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
+          formData
+        );
+
+        if (!res.data.success) {
+          throw new Error("Upload failed");
+        }
+        return res.data.data.display_url;
+      });
+
+      const results = await Promise.all(uploadPromise);
+      setImage(results);
+    } catch (error) {
+      // console.log(error.message);
+    }
   };
+  // console.log(image);
 
   const onSubmit = async (data) => {
-  
-
     const form = {
       name: data.name,
       brand: data.brand,
@@ -118,7 +130,6 @@ const AddProduct = () => {
     const Pdata = { ...form, variants };
 
     mutation.mutate(Pdata);
-    
   };
 
   return (
@@ -166,7 +177,9 @@ const AddProduct = () => {
                       },
                     })}
                   >
-                    <option disabled={true}>{isPending ? "Loading..." : " Select Category"}</option>
+                    <option disabled={true}>
+                      {isPending ? "Loading..." : " Select Category"}
+                    </option>
                     {data?.map((category) => (
                       <option value={category.name}>{category.name}</option>
                     ))}
@@ -335,6 +348,7 @@ const AddProduct = () => {
                 <fieldset className="fieldset">
                   <legend className="fieldset-legend"> Product image</legend>
                   <input
+                    multiple
                     onChange={imageUpload}
                     type="file"
                     className="file-input file-input-success w-full"

@@ -24,7 +24,7 @@ const ViewOrder = () => {
     queryFn: () => fetchConfirmOrderById(id),
     refetchInterval: 1000,
   });
-  console.log(data);
+  // console.log(data);
   const deliveryFee = data?.distence <=5 ? (15).toFixed(2) : (Number(data?.distence) * 1).toFixed(2);
 
   const { data: rider, isPending: isRiderPending } = useQuery({
