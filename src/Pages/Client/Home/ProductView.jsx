@@ -131,6 +131,7 @@ const variantImage = data?.variants?.flatMap(item => item.images || []);
                     
                     MainPrice={data.price}
                     quantity={data.quantity}
+                    productName={data?.name}
                   />
               </div>
               <div className="md:w-[50%] bg-white flex flex-col gap-10">

@@ -51,6 +51,8 @@ import AddPromoCode from "../Pages/Dashboard/PromoCode/AddPromoCode";
 import AllPromocode from "../Pages/Dashboard/PromoCode/AllPromocode";
 import UpdatePromo from "../Pages/Dashboard/PromoCode/UpdatePromo";
 import AdminProductForm from "../Pages/Dashboard/Product/AdminProductForm";
+import AllEmails from "../Pages/Dashboard/Emails/AllEmails";
+import VIewEmail from "../Pages/Dashboard/Emails/VIewEmail";
 
 export const router = createBrowserRouter([
   {
@@ -194,6 +196,14 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/update-promo/:id",
         Component: UpdatePromo,
+      },
+      {
+        path: "/dashboard/all-emails",
+        Component: AllEmails,
+      },
+      {
+        path: "/dashboard/view-emails/:id",
+        Component: VIewEmail,
       },
 
       {

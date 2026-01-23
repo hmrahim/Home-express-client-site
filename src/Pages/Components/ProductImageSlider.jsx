@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./ProductImageSlider.css";
 
-const ProductImageSlider = ({ variants = [] }) => {
+const ProductImageSlider = ({ variants = [] ,productName}) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   // আগের image
@@ -22,7 +22,7 @@ const ProductImageSlider = ({ variants = [] }) => {
           ❮
         </button>
 
-        <img src={variants[activeIndex]} alt="product" />
+        <img src={variants[activeIndex]} alt={productName}/>
 
         <button className="arrow right rounded-md" onClick={nextImage}>
           ❯
@@ -35,7 +35,7 @@ const ProductImageSlider = ({ variants = [] }) => {
           <img
             key={index}
             src={img}
-            alt="thumb"
+            alt={productName}
             className={`${index === activeIndex ? "active" : ""} `}
             onClick={() => setActiveIndex(index)}
           />

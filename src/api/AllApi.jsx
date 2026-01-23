@@ -259,3 +259,20 @@ export const stripePayment = async (totalAmount) => {
   const res = await api.post(`/create-payment-intent`, totalAmount);
   return res.status === 200 ? res : [];
 };
+export const postContact = async (data) => {
+  const res = await api.post(`/contact`, data);
+  return res.status === 200 ? res : [];
+};
+export const getEmails = async () => {
+  const res = await api.get(`/emails`,);
+  return res.status === 200 ? res : [];
+};
+export const getEmailsById = async (id) => {
+  const res = await api.get(`/emails/${id}`,);
+  return res.status === 200 ? res : [];
+};
+export const sendEmail= async (data) => {
+  const res = await api.post(`/send-emails`,data);
+  return res.status === 200 ? res : [];
+};
+

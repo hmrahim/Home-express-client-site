@@ -82,7 +82,25 @@ const Home = () => {
     <div className=" ">
       <Banner />
       <Helmet>
-        <title>Moom24</title>
+       
+        <title>Best Online Shop in Saudi Arabia</title>
+
+    
+        <meta
+          name="description"
+          content="Buy original products at best price with fast delivery"
+        />
+
+      
+        <meta name="robots" content="index, follow" />
+
+      
+        <link rel="canonical" href="https://moom24.com/" />
+
+        <meta property="og:title" content="Best Online Shop" />
+        <meta property="og:description" content="Buy products online" />
+        <meta property="og:image" content="https://moom24.com/cover.jpg" />
+        <meta property="og:url" content="https://moom24.com/" />
       </Helmet>
       <form
         onSubmit={(e) => e.preventDefault()}
