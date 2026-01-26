@@ -3,13 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { getAuth } from "firebase/auth";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-});
-
 // const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+//   baseURL: import.meta.env.VITE_API_BASE_URL,
 // });
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+});
 
 api.interceptors.request.use(
   async (config) => {

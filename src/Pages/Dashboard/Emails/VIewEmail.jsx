@@ -28,6 +28,7 @@ const VIewEmail = () => {
   const mutation = useMutation({
     mutationFn:(data)=> sendEmail(data),
     onSuccess:(res)=> {
+        console.log(res);
         if(res.status === 200){
             toast.success("Email send successfully")
             reset()
