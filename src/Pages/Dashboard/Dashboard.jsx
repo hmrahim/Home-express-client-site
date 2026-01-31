@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Navbar from "./Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet,useLocation } from "react-router-dom";
 import MenuList from "./MenuList";
 import { AuthContextDashboard } from "./AuthClient/AuthContextDashboard";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -13,8 +13,13 @@ import PaperPlainLoader from "../Components/Loader/PaperPlainLoader";
 import { Helmet } from "react-helmet-async";
 import { fetchCart, getUserByEmail } from "../../api/AllApi";
 import { getAuth } from "firebase/auth";
+import { useRef, useEffect } from "react";
+
 
 const Dashboard = () => {
+
+
+
   const email = getAuth()?.currentUser?.email;
   const { data, isPending } = useQuery({
     queryKey: ["getUserByEmail"],
@@ -36,11 +41,13 @@ const Dashboard = () => {
 
     return (
       <AuthContextDashboard.Provider value={{ email, activeUser, cart }}>
+        
         <Helmet>
           <title>Dashboard</title>
         </Helmet>
         {activeUser && (
           <div>
+            
             {activeUser?.rol === "user" || activeUser?.rol === "rider" ? (
               <CustomersDashboard />
             ) : (

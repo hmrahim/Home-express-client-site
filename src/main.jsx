@@ -15,14 +15,14 @@ import { ToastContainer, toast } from "react-toastify";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { HelmetProvider } from "react-helmet-async";
 import ScrollToTop from "./Pages/Components/ScrollToTop.jsx";
-import { Elements } from "@stripe/react-stripe-js";
-import { stripePromise } from "../stripePromise.js";
+import { Provider } from "react-redux";
+import { store } from "./redux/features/settings/store.js";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Elements stripe={stripePromise}>
+    <Provider store={store}>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router}>
@@ -31,6 +31,6 @@ createRoot(document.getElementById("root")).render(
           <ToastContainer />
         </QueryClientProvider>
       </HelmetProvider>
-    </Elements>
-  </StrictMode>
+    </Provider>
+  </StrictMode>,
 );

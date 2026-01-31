@@ -25,7 +25,7 @@ const Visitors = () => {
     refetchInterval: 1000,
   });
 
-  const getVisitorsBydate = () => {};
+
 
   return (
     <div>

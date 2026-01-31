@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useRef } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import profile from "../../../assets/profile.jpg";
 import "./customar.css";
@@ -16,8 +16,20 @@ import CurrentOrders from "./CurrentOrders";
 import RiderSearchingComponent from "./RiderSearchingComponent";
 import { Helmet } from "react-helmet-async";
 import Footer from "../../Components/Footer";
+import LoadingBar from "react-top-loading-bar";
 
 const CustomersDashboard = () => {
+   const loadingRef = useRef(null);
+    
+      const location = useLocation();
+    
+      useEffect(() => {
+        loadingRef.current.continuousStart();
+    
+        setTimeout(() => {
+          loadingRef.current.complete();
+        }, 500);
+      }, [location]);
   const { email ,cart} = useContext(AuthContextDashboard);
 
   const { data, isPending, refetch } = useQuery({
@@ -45,6 +57,7 @@ const CustomersDashboard = () => {
 
   return (
     <div>
+      <LoadingBar color="#fff" height={5} ref={loadingRef} />
       <Header cemail={email} cart={cart} />
       
         <Helmet>

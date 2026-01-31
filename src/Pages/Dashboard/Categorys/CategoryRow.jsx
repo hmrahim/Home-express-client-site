@@ -36,16 +36,19 @@ const CategoryRow = ({ index, items, refetch }) => {
   return (
     <tr className="bg-base-200 text-center">
       <th>{index + 1}</th>
-      <td>{items.name}</td>
+      <th>
+        <img className="h-10 w-10" src={items?.image} alt="" />
+      </th>
+      <td>{items?.name}</td>
       <td className="flex gap-3 justify-center items-center">
         <Link
-          to={`/dashboard/update-category/${items._id}`}
+          to={`/dashboard/update-category/${items?._id}`}
           className="btn btn-xs btn-primary"
         >
           Edit
         </Link>
         <button
-          onClick={() => deleteCategory(items._id)}
+          onClick={() => deleteCategory(items?._id)}
           className="btn btn-xs btn-error"
         >
           Delete

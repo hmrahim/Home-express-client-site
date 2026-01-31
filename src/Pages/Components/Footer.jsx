@@ -1,9 +1,18 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
+import { useGetSettingsQuery } from "../../redux/features/settings/api/baseApi";
+import { getSettingsData } from "../../api/AllApi";
+import { useQuery } from "@tanstack/react-query";
 
 const Footer = () => {
-  const { settings } = useContext(AuthContext);
+  // const { settings } = useContext(AuthContext);
+  // const {data:settings,isLoading} = useGetSettingsQuery()
+   const { data: settings, isPending: settingPending } = useQuery({
+      queryKey: ["getSettingsData"],
+      queryFn: getSettingsData,
+      refetchInterval: 1000,
+    });
 
   return (
     <div>

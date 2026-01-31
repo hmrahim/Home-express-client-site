@@ -1,32 +1,50 @@
 import "./App.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./Pages/Components/Footer";
 import Header from "./Pages/Components/Header";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "./firebase.init";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "./Pages/Dashboard/AuthClient/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { fetchCart, getSettingsData } from "./api/AllApi";
 import { getAuth } from "firebase/auth";
+import CategoryHeader from "./Pages/Components/CategoryHeader";
+
+import LoadingBar from "react-top-loading-bar";
+import MarqueeHeader from "./Pages/Components/MarqueeHeader";
 
 function App() {
+  const loadingRef = useRef(null);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    loadingRef.current.continuousStart();
+
+    setTimeout(() => {
+      loadingRef.current.complete();
+    }, 500);
+  }, [location]);
+
   const user = useAuthState(auth);
-  const email = getAuth()?.currentUser?.email
- 
+  const email = getAuth()?.currentUser?.email;
+
   // const email = user[0]?.email;
   const { data, isPending, refetch } = useQuery({
     queryKey: ["userEmail"],
     queryFn: () =>
-      axios.get(`https://moom24-backend-production.up.railway.app/api/user/${email}`),
+      axios.get(
+        `https://moom24-backend-production.up.railway.app/api/user/${email}`,
+      ),
   });
 
-   const { data:cart, isPending:cartLoader } = useQuery({
-      queryKey: ["allcart", email],
-      queryFn: () => fetchCart(email),
-      refetchInterval: 1000,
-    });
+  const { data: cart, isPending: cartLoader } = useQuery({
+    queryKey: ["allcart", email],
+    queryFn: () => fetchCart(email),
+    refetchInterval: 1000,
+  });
 
   let rol = "";
   if (!isPending) {
@@ -55,7 +73,6 @@ function App() {
 
     deferredPrompt.prompt();
     const result = await deferredPrompt.userChoice;
- 
 
     setDeferredPrompt(null);
     setShowInstall(true);
@@ -69,9 +86,11 @@ function App() {
 
   refetch();
   return (
-    <AuthContext.Provider value={{ email, rol, settings,cart,cartLoader }}>
+    <AuthContext.Provider value={{ email, rol, settings, cart, cartLoader }}>
       <div className="">
-        <Header cart={cart}  />
+        <LoadingBar className="rounded-xl" color="linear-gradient(135deg, red, pink, yellow)" height={5} ref={loadingRef}  loaderSpeed={400}  shadow={true} />
+         <MarqueeHeader />
+        <Header cart={cart} />
 
         <div>
           {showInstall && (

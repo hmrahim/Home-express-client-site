@@ -53,6 +53,9 @@ import UpdatePromo from "../Pages/Dashboard/PromoCode/UpdatePromo";
 import AdminProductForm from "../Pages/Dashboard/Product/AdminProductForm";
 import AllEmails from "../Pages/Dashboard/Emails/AllEmails";
 import VIewEmail from "../Pages/Dashboard/Emails/VIewEmail";
+import AddBanner from "../Pages/Dashboard/Banner/AddBanner";
+import AllBanners from "../Pages/Dashboard/Banner/AllBanners";
+import UpdateBanner from "../Pages/Dashboard/Banner/UpdateBanner";
 
 export const router = createBrowserRouter([
   {
@@ -152,6 +155,18 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/add-varient",
         Component: AdminProductForm,
+      },
+      {
+        path: "/dashboard/add-banner",
+        Component: AddBanner,
+      },
+      {
+        path: "/dashboard/all-banner",
+        Component: AllBanners,
+      },
+      {
+        path: "/dashboard/update-banner/:id",
+        Component: UpdateBanner,
       },
       {
         path: "/dashboard/all-product",

@@ -28,6 +28,7 @@ const AllCategory = () => {
               <thead>
                 <tr className="text-center">
                   <th>No</th>
+                  <th>image</th>
                   <th>Category</th>
                   <th>Action</th>
                 </tr>

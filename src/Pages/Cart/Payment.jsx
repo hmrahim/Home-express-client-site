@@ -20,20 +20,20 @@ import {
 import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
 import OrderSummery from "./OrderSummery";
 import ViewShippingAddress from "./ViewShippingAddress";
-import {
-  useStripe,
-  useElements,
-  CardNumberElement,
-  CardExpiryElement,
-  CardCvcElement,
-  CardElement,
-} from "@stripe/react-stripe-js";
-import { stripePromise } from "../../../stripePromise";
+// import {
+//   useStripe,
+//   useElements,
+//   CardNumberElement,
+//   CardExpiryElement,
+//   CardCvcElement,
+//   CardElement,
+// } from "@stripe/react-stripe-js";
+// import { stripePromise } from "../../../stripePromise";
 
 const Payment = () => {
   const navigate = useNavigate();
   const user = useAuthState(auth);
-  const stripe = useStripe();
+  // const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
 

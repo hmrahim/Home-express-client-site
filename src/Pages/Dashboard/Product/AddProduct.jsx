@@ -20,14 +20,15 @@ const AddProduct = () => {
     refetchInterval: 1000,
   });
 
-  const {
-    register,
-    control,
+    const {
+      register,
+      control,
     watch,
     formState: { errors },
     handleSubmit,
     reset,
   } = useForm();
+ 
 
   const { fields, append, remove } = useFieldArray({
     control,

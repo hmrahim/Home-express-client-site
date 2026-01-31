@@ -17,8 +17,7 @@ const ProductCard = ({ product, refetch }) => {
   return (
     <>
       <Helmet>
-        <title>{product?.name} price in Saudi Arabia</title>
-
+     
         <meta
           name="description"
           content={`Buy ${product?.name} at best price`}

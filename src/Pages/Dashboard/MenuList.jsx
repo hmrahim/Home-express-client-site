@@ -13,6 +13,14 @@ const MenuList = () => {
     
     "
     >
+      <div className=" ">
+        
+        <h1 className="collapse-title text-2xl font-bold text-center ">
+          Dashboard
+        </h1>
+        <hr  className="h-1 bg-white rounded-xl"/>
+     
+      </div>
       <div className="collapse collapse-plus bg-white border border-base-300">
         <input type="radio" name="my-accordion-det-" defaultChecked />
         <h1 className="collapse-title font-semibold bg-gradient-to-r from-green-500 to-emerald-600">
@@ -97,6 +105,33 @@ const MenuList = () => {
             <li className="text-black rounded-md   ">
               <NavLink to="/dashboard/orders" className="hover:text-white  mt-1    hover:bg-gradient-to-l from-gray-600 to-gray-800">
                 All Orders
+              </NavLink>
+            </li>
+          </ul>
+          ;
+        </div>
+      </div>
+      <div className="collapse collapse-plus bg-white border border-base-300">
+        <input type="radio" name="my-accordion-det-" defaultChecked />
+        <h1 className="collapse-title font-semibold bg-gradient-to-r from-green-500 to-emerald-600">
+          Banners
+        </h1>
+        <div className="collapse-content text-sm">
+          <ul>
+            <li className="text-black rounded-md   ">
+              <NavLink
+                to="/dashboard/add-banner"
+                className="hover:text-white  mt-1    hover:bg-gradient-to-l from-gray-600 to-gray-800"
+              >
+                Add Banner
+              </NavLink>
+            </li>
+            <li className="text-black rounded-md   ">
+              <NavLink
+                to="/dashboard/all-banner"
+                className="hover:text-white  mt-1    hover:bg-gradient-to-l from-gray-600 to-gray-800"
+              >
+                All Banners
               </NavLink>
             </li>
           </ul>

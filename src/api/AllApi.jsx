@@ -3,13 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { getAuth } from "firebase/auth";
 
-// const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_BASE_URL,
-// });
-
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
+
+// const api = axios.create({
+//   baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+// });
 
 api.interceptors.request.use(
   async (config) => {
@@ -112,8 +112,8 @@ export const getCategoryById = async (id) => {
   const res = await api.get(`/category/${id}`);
   return res.status === 200 ? res.data : [];
 };
-export const postCategory = async (data) => {
-  const res = await api.post(`/category`, data);
+export const postCategory = async (category) => {
+  const res = await api.post(`/category`, category);
   return res.status === 200 ? res : null;
 };
 export const putCategory = async (id, data) => {
@@ -248,6 +248,29 @@ export const updatePromoById = async (PromoData, id) => {
 };
 export const deletePromo = async (id) => {
   const res = await api.delete(`/promocode/${id}`);
+  return res.status === 200 ? res : [];
+};
+
+// ================banner api========
+export const postBanner = async (bannerData) => {
+  const res = await api.post(`/add-banner`, bannerData);
+  return res.status === 200 ? res : [];
+};
+export const getBanner = async () => {
+  const res = await api.get(`/all-banner`, );
+  return res.status === 200 ? res : [];
+};
+export const getBannerById = async (id) => {
+  const res = await api.get(`/all-banner/${id}`);
+  return res.status === 200 ? res : [];
+};
+
+export const updateBanner = async (bannerData,id) => {
+  const res = await api.put(`/update-banner/${id}`, bannerData);
+  return res.status === 200 ? res : [];
+};
+export const deleteBanner = async (id) => {
+  const res = await api.delete(`/delete-banner/${id}`);
   return res.status === 200 ? res : [];
 };
 

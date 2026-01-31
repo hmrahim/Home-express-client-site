@@ -16,6 +16,9 @@ import SectionTitle from "../../Components/SectionTitle";
 import ProductCard from "../../Components/ProductCard";
 import { Helmet } from "react-helmet-async";
 import { UAParser } from "ua-parser-js";
+import ProductSlider from "../../Components/ProductSlider";
+import CategoryHeader from "../../Components/CategoryHeader";
+import CoverFLowSlider from "../../Components/CoverFLowSlider";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -78,23 +81,30 @@ const Home = () => {
     filterdData = searchData;
   }
 
+  // fetch data for product slider
+  const { data: allData, isPending: allDataLoading } = useQuery({
+    queryKey: ["ElectricItems"],
+    queryFn: fetchProductForUser,
+    refetchInterval: 1000,
+  });
+
+  const elctric = allData?.filter((item) => item.category === "Electricals");
+  const tools = allData?.filter((item) => item.category === "Tools");
+
+  const plumbing = allData?.filter((item) => item.category === "Plumbing");
+
   return (
     <div className=" ">
-      <Banner />
       <Helmet>
-       
         <title>Best Online Shop in Saudi Arabia</title>
 
-    
         <meta
           name="description"
           content="Buy original products at best price with fast delivery"
         />
 
-      
         <meta name="robots" content="index, follow" />
 
-      
         <link rel="canonical" href="https://moom24.com/" />
 
         <meta property="og:title" content="Best Online Shop" />
@@ -102,53 +112,18 @@ const Home = () => {
         <meta property="og:image" content="https://moom24.com/cover.jpg" />
         <meta property="og:url" content="https://moom24.com/" />
       </Helmet>
-      <form
-        onSubmit={(e) => e.preventDefault()}
-        className="max-w-2xl mx-auto mt-5 shadow-green"
-      >
-        <div className="flex justify-center items-center ">
-          <select
-            onChange={(e) => setCatValue(e.target.value)}
-            className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-l-full text-white px-4 py-[19px] outline-none cursor-pointer --webkit-appearance: none --moz-appearance:none appearance:none "
-          >
-            <option className="text-black">
-              {catIspedning ? "Loading..." : "Select Category"}
-            </option>
-            {catData &&
-              catData?.map((cat) => (
-                <option
-                  className="text-black bg-gradient-to-r from-green-500 to-emerald-600"
-                  value={cat.name}
-                  key={cat._id}
-                >
-                  {cat.name}
-                </option>
-              ))}
-          </select>
+      <Banner />
 
-          {/* <!-- From Uiverse.io by jubayer-10 -->  */}
-          <div className="p-5 overflow-hidden w-[60px] h-[61px] hover:w-[270px] bg-gradient-to-l from-green-500 to-emerald-600 shadow-[2px_2px_20px_rgba(0,0,0,0.08)] rounded-r-full flex group items-center hover:duration-300 duration-300">
-            <div className="flex items-center justify-center fill-white">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                id="Isolation_Mode"
-                data-name="Isolation Mode"
-                viewBox="0 0 24 24"
-                width="22"
-                height="24"
-              >
-                <path d="M18.9,16.776A10.539,10.539,0,1,0,16.776,18.9l5.1,5.1L24,21.88ZM10.5,18A7.5,7.5,0,1,1,18,10.5,7.507,7.507,0,0,1,10.5,18Z"></path>
-              </svg>
-            </div>
-            <input
-              onChange={(e) => setSearch(e.target.value)}
-              type="text"
-              className="outline-none text-[18px]  w-full ml-2 text-white hover:text-gray-900 font-normal px-4 py-2 bg-transparent rounded-full hover:bg-white"
-              placeholder="Search"
-            />
-          </div>
-        </div>
-      </form>
+      <CategoryHeader cat={catData} />
+      {allData && (
+        <>
+          <CoverFLowSlider data={plumbing} />
+          <ProductSlider data={elctric} title="Electricals Product" />
+          <ProductSlider data={plumbing} title="Plumbing Product" />
+          <ProductSlider data={tools} title="Tools Product" />
+        </>
+      )}
+
       {filterdData?.length > 0 ? (
         <div className="w-11/12 mx-auto mt-5  text-center bg-white">
           {search?.length > 0 ? (
@@ -157,7 +132,7 @@ const Home = () => {
             <SectionTitle title={`Category: ${catValue}`} />
           )}
 
-          <div className="container mx-auto px-3 sm:px-4 lg:px-6  bg-slate-300 rounded-md  py-5">
+          <div className="container mx-auto px-3 sm:px-4 lg:px-3  bg-slate-300 rounded-md  py-5">
             <div
               className=" grid
       grid-cols-2

@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import MyOrder from "./Customers-Dashboard/MyOrder";
 import CurrentOrders from "./Customers-Dashboard/CurrentOrders";
 import { AuthContextDashboard } from "./AuthClient/AuthContextDashboard";
-import { fetchActiveUser } from "../../api/AllApi";
+import { fetchActiveUser, getVisitor } from "../../api/AllApi";
 
 import {
   FaBoxOpen,
@@ -24,6 +24,8 @@ import {
   FaShieldAlt,
 } from "react-icons/fa";
 import DashboardCard from "./DashboardCard";
+import TraficChart from "../Components/Charts/TraficChart";
+import PreBackButton from "../Components/PreBackButton";
 
 const DashHome = () => {
   const { email } = useContext(AuthContextDashboard);
@@ -192,15 +194,40 @@ const DashHome = () => {
     },
   ];
 
+
+    const visitorData = [
+    { date: "2026-01-22", visitors: 120 },
+    { date: "2026-01-23", visitors: 95 },
+    { date: "2026-01-24", visitors: 130 },
+    { date: "2026-01-25", visitors: 150 },
+    { date: "2026-01-26", visitors: 170 },
+    { date: "2026-01-27", visitors: 200 },
+  ];
+
+  const { data:visitor, isPending:pendingVisitor } = useQuery({
+    queryKey: ["getVisitors"],
+    queryFn: () => getVisitor(date),
+    refetchInterval: 1000,
+  });
+
+
+
+
+
+
+
+
+
   return (
     <div>
       <div className="bg-base-200  pt-10 px-5 md:px-0">
         <div className=" md:w-10/12 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
+        <PreBackButton title="Dashboard" /> <hr className="h-1 bg-primary" />
           <div
             className="grid gap-6 
-      grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 p-6"
+      grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 p-6"
           >
-            {cardsData.map((card, index) => (
+            {/* {cardsData.map((card, index) => (
               <DashboardCard
                 key={index}
                 title={card.title}
@@ -208,7 +235,16 @@ const DashHome = () => {
                 icon={card.icon}
                 gradient={card.gradient}
               />
-            ))}
+            ))} */}
+
+             <TraficChart data={visitor} />
+
+
+
+
+
+
+
           </div>
         </div>
       </div>

@@ -6,8 +6,12 @@ import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getSettingsData, postSettingsData } from "../../api/AllApi";
 import { toast, ToastContainer } from "react-toastify";
+import { useUpdateSettingsMutation } from "../../redux/features/settings/api/baseApi";
 
 const Settings = () => {
+  const [updateSetting, { data:dd, error:err, isLoading }] =
+    useUpdateSettingsMutation();
+  
   const imgbbKey = "765622b71bed5a179efe4bce6d1d53c8";
 
   const [preview, setPreview] = useState(null);
@@ -66,11 +70,11 @@ const Settings = () => {
     formData.append("address", data.address);
     formData.append("phone", data.phone);
 
+    // updateSetting(formData);
     mutation.mutate(formData);
     if (mutation?.data?.status === 200) {
       toast.success("Settings Updated ", {
         autoClose: 1000,
-       
       });
     }
   };
@@ -80,7 +84,7 @@ const Settings = () => {
       <div className="bg-base-200  pt-10 px-5 md:px-0">
         <div className=" md:w-4/5 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
           <PreBackButton title="Home Settings" />{" "}
-            <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
+          <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-6 mb-6 md:grid-cols-2 my-5">
               <div>
@@ -315,9 +319,7 @@ const Settings = () => {
                                   : "https://img.icons8.com/dusk/64/000000/file.png"
                               }
                             />
-                          
                           )}
-                          
 
                           <span className="block text-gray-500 font-semibold">
                             Drag &amp; drop your files here
@@ -349,7 +351,7 @@ const Settings = () => {
                 </div>
               </div>
               <div>
-                <button className="btn btn-primary min-w-full">Submit</button>
+                <button className="btn btn-primary min-w-full">{mutation.isPending ? "Submiting" : "Submit"} </button>
               </div>
             </div>
           </form>
