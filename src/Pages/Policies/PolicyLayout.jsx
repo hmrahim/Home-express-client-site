@@ -2,9 +2,11 @@ import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
+import MarqueeHeader from "../Components/MarqueeHeader";
 const PolicyLayout = () => {
   return (
     <div className="min-h-screen w-full bg-gray-300 ">
+      <MarqueeHeader/>
         <Header/>
       
       <main className="w-full md:w-4/5 mx-auto py-8 mt-10 bg-white rounded-xl shadow  ">

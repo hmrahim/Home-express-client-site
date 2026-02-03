@@ -56,6 +56,7 @@ import VIewEmail from "../Pages/Dashboard/Emails/VIewEmail";
 import AddBanner from "../Pages/Dashboard/Banner/AddBanner";
 import AllBanners from "../Pages/Dashboard/Banner/AllBanners";
 import UpdateBanner from "../Pages/Dashboard/Banner/UpdateBanner";
+import MarqueeManager from "../Pages/Dashboard/Marquee/marquee";
 
 export const router = createBrowserRouter([
   {
@@ -163,6 +164,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/all-banner",
         Component: AllBanners,
+      },
+      {
+        path: "/dashboard/marquee-manager",
+        Component: MarqueeManager,
       },
       {
         path: "/dashboard/update-banner/:id",

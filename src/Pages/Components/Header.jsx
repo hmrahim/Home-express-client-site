@@ -15,8 +15,12 @@ import { useGetSettingsQuery } from "../../redux/features/settings/api/baseApi";
 import SearchBar from "./SearchBar";
 import MarqueeHeader from "./MarqueeHeader";
 import SearchModal from "../Client/Home/SearchModal";
+import GoogleTranslator from "./GoogleTranslator";
+
 
 const Header = ({ cemail, cart }) => {
+
+
   let [isOpen, setIsOpen] = useState(false);
   const { email } = useContext(AuthContext);
   const { data: settings, isLoading } = useGetSettingsQuery();
@@ -92,6 +96,7 @@ const Header = ({ cemail, cart }) => {
           <div className="hidden lg:flex">
             <ul className="menu menu-horizontal px-1">{menu}</ul>
           </div>
+       
           <div className="flex justify-center items-center gap-2">
             {cemail || email ? (
               <NavLink to="/cart" className="btn btn-sm">

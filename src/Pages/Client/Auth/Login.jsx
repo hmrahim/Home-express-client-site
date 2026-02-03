@@ -13,6 +13,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Helmet } from "react-helmet-async";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
+import axios from "axios";
 
 const Login = () => {
   const {
@@ -39,19 +40,24 @@ const Login = () => {
 
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
   const googleSignIn = async () => {
-    signInWithGoogle();
-    const res = await axios.post(
-      "https://moom24-backend-production.up.railway.app/api/user",
-      {
-        name: gUser.user.displayName,
-        email: gUser.user.email,
+    try {
+      signInWithGoogle();
+      if (!gError) {
+        await axios.post(
+          "https://moom24-backend-production.up.railway.app/api/user",
+          {
+            name: gUser.user.displayName,
+            email: gUser.user.email,
+          },
+        );
       }
-    );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
-     
       <div className=" flex justify-center items-center mt-19 h-screen bg-gradient-to-t from-green-500 to-emerald-600 px-5 md:px-0">
         <Helmet>
           <title>Moom24-Login</title>
@@ -60,9 +66,7 @@ const Login = () => {
           className=" bg-gradient-to-r from-green-500 to-emerald-600 md:w-2/5 w-full mx-auto px-5 py-5 mx-5 rounded-lg
       shadow-2xl "
         >
-          <h1 className="text-2xl font-bold text-white text-center">
-            Moom24
-          </h1>
+          <h1 className="text-2xl font-bold text-white text-center">Moom24</h1>
           <hr className="my-2 h-5" />
           <div className="flex flex-col gap-5">
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -135,10 +139,7 @@ const Login = () => {
                 </button>
               </div>
             </form>
-            <button
-              onClick={googleSignIn}
-              className="btn btn-neutral my-3 hidden"
-            >
+            <button onClick={googleSignIn} className="btn btn-neutral my-3 ">
               <img src={google} className="h-6 w-6" alt="" />
               {gLoading ? (
                 <span className="loading loading-bars loading-md">
@@ -152,7 +153,6 @@ const Login = () => {
         </div>
         <ToastContainer />
       </div>
-    
     </>
   );
 };

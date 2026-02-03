@@ -3,12 +3,15 @@ import { settingSlice } from "./settingSlice";
 
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../auth/authSlice";
+import searchSlice from "./../search/searchSlice";
 
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
     settingSlice: settingSlice,
     auth: authReducer,
+    searchSlice:searchSlice
+
   },
 
   middleware: (getDefaultMiddleware) =>

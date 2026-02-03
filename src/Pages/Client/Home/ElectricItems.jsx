@@ -78,16 +78,16 @@ const ElectricItems = () => {
 
   return (
     <div className="flex flex-col justify-center">
-      <div className="container mx-auto  lg:px-3  my-10  text-center bg-white ">
+      <div className="w-full mx-auto  lg:px-3  my-10  text-center bg-white ">
         <div className="shadow-md  bg-slate-300 rounded-md pb-3 px-3">
           {isPending ? (
             <div
-              className=" grid
+              className="w-full grid
       grid-cols-2
       sm:grid-cols-3
       md:grid-cols-4
-      lg:grid-cols-4
-      xl:grid-cols-5
+      lg:grid-cols-5
+      xl:grid-cols-6
       gap-4
       sm:gap-5
       md:gap-6"
@@ -100,11 +100,11 @@ const ElectricItems = () => {
             </div>
           ) : (
             <div
-              className="grid
+              className="w-full grid
       grid-cols-2
       sm:grid-cols-3
       md:grid-cols-4
-      lg:grid-cols-4
+      lg:grid-cols-5
       xl:grid-cols-5
       gap-4
       sm:gap-5

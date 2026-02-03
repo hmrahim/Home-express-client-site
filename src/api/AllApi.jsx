@@ -25,7 +25,7 @@ api.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // ===========================user api===============================
@@ -42,9 +42,13 @@ export const getUserByEmail = async (email) => {
   const res = await api.get(`/user/${email}`);
   return res.status === 200 ? res : null;
 };
+export const updateUserRoll = async (data) => {
+  const res = await api.put(`/user/role`, data);
+  return res.status === 200 ? res : null;
+};
 export const getUserLocation = async (lat, lng) => {
   const res = await axios.get(
-    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
   );
   return res.status === 200 ? res : null;
 };
@@ -74,7 +78,7 @@ export const postProduct = async (Pdata) => {
   return res.status === 200 ? res : null;
 };
 export const updateProduct = async (id, uPdata) => {
-  const res = await api.patch(`/product/${id}`, uPdata,{});
+  const res = await api.patch(`/product/${id}`, uPdata, {});
   return res.status === 200 ? res : null;
 };
 export const getAllProduct = async () => {
@@ -93,9 +97,6 @@ export const delete_variants = async (id) => {
   const res = await api.delete(`/product/${id}`);
   return res.status === 200 ? res.data : null;
 };
-
-
-
 
 export const infiniteScroll = async ({ pageParam = 1 }) => {
   const res = await api.get(`/infinite-scroll?page=${pageParam}&limit=10`);
@@ -199,7 +200,7 @@ export const riderWallet = async (email) => {
 };
 export const getAddressFromLocation = async (lat, lng) => {
   const res = await axios.get(
-    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
   );
   return res.status === 200 ? res.data : [];
 };
@@ -257,7 +258,7 @@ export const postBanner = async (bannerData) => {
   return res.status === 200 ? res : [];
 };
 export const getBanner = async () => {
-  const res = await api.get(`/all-banner`, );
+  const res = await api.get(`/all-banner`);
   return res.status === 200 ? res : [];
 };
 export const getBannerById = async (id) => {
@@ -265,7 +266,7 @@ export const getBannerById = async (id) => {
   return res.status === 200 ? res : [];
 };
 
-export const updateBanner = async (bannerData,id) => {
+export const updateBanner = async (bannerData, id) => {
   const res = await api.put(`/update-banner/${id}`, bannerData);
   return res.status === 200 ? res : [];
 };
@@ -273,8 +274,6 @@ export const deleteBanner = async (id) => {
   const res = await api.delete(`/delete-banner/${id}`);
   return res.status === 200 ? res : [];
 };
-
-
 
 // =========Stripe Payment===============
 
@@ -287,15 +286,35 @@ export const postContact = async (data) => {
   return res.status === 200 ? res : [];
 };
 export const getEmails = async () => {
-  const res = await api.get(`/emails`,);
+  const res = await api.get(`/emails`);
   return res.status === 200 ? res : [];
 };
 export const getEmailsById = async (id) => {
-  const res = await api.get(`/emails/${id}`,);
+  const res = await api.get(`/emails/${id}`);
   return res.status === 200 ? res : [];
 };
-export const sendEmail= async (data) => {
-  const res = await api.post(`/send-emails`,data);
+export const sendEmail = async (data) => {
+  const res = await api.post(`/send-emails`, data);
   return res.status === 200 ? res : [];
 };
 
+// ===============marquee====================
+
+export const postMarquee = async (data) => {
+  const res = await api.post(`/marquee`, data);
+  return res.status === 200 ? res : [];
+};
+
+export const getMarquee = async () => {
+  const res = await api.get(`/marquee`);
+  return res.status === 200 ? res : [];
+};
+
+export const putMarquee = async (data,editId) => {
+  const res = await api.put(`/marquee/${editId}`, data);
+  return res.status === 200 ? res : [];
+};
+export const deleteMarquee = async (id) => {
+  const res = await api.delete(`/marquee/${id}`);
+  return res.status === 200 ? res : [];
+};

@@ -34,7 +34,7 @@ const Payment = () => {
   const navigate = useNavigate();
   const user = useAuthState(auth);
   // const stripe = useStripe();
-  const elements = useElements();
+  // const elements = useElements();
   const [loading, setLoading] = useState(false);
 
   // const email = user[0]?.email;
@@ -213,7 +213,7 @@ const Payment = () => {
                     Card Number
                   </label>
                   <div className="border border-gray-300 rounded-lg px-4 py-3 focus-within:ring-2 focus-within:ring-indigo-500 transition">
-                    <CardNumberElement options={CARD_STYLE} />
+                    {/* <CardNumberElement options={CARD_STYLE} /> */}
                   </div>
 
                   <div className="flex gap-4 p-2">
@@ -222,7 +222,7 @@ const Payment = () => {
                         Expiry Date
                       </label>
                       <div className="border border-gray-300 rounded-lg px-4 py-3 focus-within:ring-2 focus-within:ring-indigo-500 transition">
-                        <CardExpiryElement options={CARD_STYLE} />
+                        {/* <CardExpiryElement options={CARD_STYLE} /> */}
                       </div>
                     </div>
 
@@ -231,7 +231,7 @@ const Payment = () => {
                         CVC
                       </label>
                       <div className="border border-gray-300 rounded-lg px-4 py-3 focus-within:ring-2 focus-within:ring-indigo-500 transition">
-                        <CardCvcElement options={CARD_STYLE} />
+                        {/* <CardCvcElement options={CARD_STYLE} /> */}
                       </div>
                     </div>
                   </div>

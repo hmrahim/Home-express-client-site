@@ -12,7 +12,7 @@ export default function ProductSlider({ title ,data}) {
   const product = data?.slice(0, 15);
     
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="w-full mx-auto px-4 py-8">
       
       {/* Section Title */}
       <div className="flex justify-between items-center mb-4">
@@ -33,8 +33,8 @@ export default function ProductSlider({ title ,data}) {
         breakpoints={{
           320: { slidesPerView: 2 },
           640: { slidesPerView: 3 },
-          768: { slidesPerView: 4 },
-          1024: { slidesPerView: 5 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 6 },
         }}
       >
         {product?.map((product) => (

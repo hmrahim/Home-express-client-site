@@ -17,6 +17,7 @@ import { HelmetProvider } from "react-helmet-async";
 import ScrollToTop from "./Pages/Components/ScrollToTop.jsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/features/settings/store.js";
+import "./i18n";
 
 const queryClient = new QueryClient();
 

@@ -13,7 +13,7 @@ import SpecialOfferTitle from "./SpecialOfferTitle";
 
 const CoverFLowSlider = ({ data }) => {
   return (
-    <div className="my-5 pb-5 px-5 md:px-0 shadow-2xl">
+    <div className="w-screen my-5 pb-5 px-5 md:px-0 shadow-2xl">
       
         <h1 className="text-center "> <SpecialOfferTitle title="Hot Deals" /> </h1>
       <Swiper
@@ -36,13 +36,13 @@ const CoverFLowSlider = ({ data }) => {
         modules={[EffectCoverflow, Pagination, Autoplay]}
         breakpoints={{
           640: {
-            slidesPerView: 1,
+            slidesPerView: 3,
           },
           768: {
-            slidesPerView: 2,
+            slidesPerView: 3,
           },
           1024: {
-            slidesPerView: 3,
+            slidesPerView: 4,
           },
         }}
         className="w-full py-10"

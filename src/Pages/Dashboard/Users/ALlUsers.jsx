@@ -36,6 +36,7 @@ const ALlUsers = () => {
                   <th>No</th>
                   <th>Name</th>
                   <th>Email Address</th>
+                  <th>Role</th>
                   <th>Action</th>
                 </tr>
               </thead>

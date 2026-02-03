@@ -5,6 +5,7 @@ import axios from "axios";
 import { fetchAllCategorys } from "../../../api/AllApi";
 import PreBackButton from "../../Components/PreBackButton";
 import { Helmet } from "react-helmet-async";
+import LoadingSpiner from "../../Components/Loader/LoadingSpiner";
 
 const AllCategory = () => {
   const { data, isPending, refetch } = useQuery({
@@ -12,6 +13,11 @@ const AllCategory = () => {
     queryFn: fetchAllCategorys,
     refetchInterval: 1000,
   });
+  if(isPending){
+    return <div className="flex justify-cener iems-center">
+      <LoadingSpiner/>
+    </div>
+  }
 
   return (
     <div>

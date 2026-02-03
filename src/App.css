@@ -1,0 +1,13 @@
+
+/* Hide Google Translate top banner */
+.goog-te-banner-frame.skiptranslate { display: none !important; }
+
+/* Hide Google logo */
+.goog-logo-link { display: none !important; }
+.goog-te-gadget-icon { display: none !important; }
+
+/* Optional: Remove border / padding */
+body { top: 0px !important; }
+
+/* Hide iframe dropdown arrow if needed */
+.goog-te-combo { border: none !important; outline: none !important; }
