@@ -66,29 +66,7 @@ const CustomarInfo = () => {
     mutationFn: (info) => confirmOrder(info),
   });
 
-  // useEffect(() => {
-  //   setValue("name", data?.data.name, {
-  //     shouldValidate: true,
-  //     shouldDirty: true,
-  //   });
-  //   setValue("email", data?.data.email, {
-  //     shouldValidate: true,
-  //     shouldDirty: true,
-  //   });
-  //   setValue("city", info?.city, { shouldValidate: true, shouldDirty: true });
-  //   setValue("region", info?.state, {
-  //     shouldValidate: true,
-  //     shouldDirty: true,
-  //   });
-  //   setValue("building", info?.road, {
-  //     shouldValidate: true,
-  //     shouldDirty: true,
-  //   });
-  //   setValue("area", address?.data.display_name, {
-  //     shouldValidate: true,
-  //     shouldDirty: true,
-  //   });
-  // }, [setValue]);
+ 
 
   const onSubmit = async (data) => {
     const info = {
@@ -100,13 +78,7 @@ const CustomarInfo = () => {
     };
     mutation.mutate(info);
 
-    //  localStorage.setItem("address", JSON.stringify(info));
-    //  const isSaved = localStorage.getItem("address")
-
-    // if (isSaved) {
-    //   navigate("/cart/payment");
-    // }
-    // console.log(info);
+   
   };
   if (isPending) {
     return <PaperPlainLoader />;

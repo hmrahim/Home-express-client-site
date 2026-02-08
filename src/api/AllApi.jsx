@@ -3,13 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { getAuth } from "firebase/auth";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-});
-
 // const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+//   baseURL: import.meta.env.VITE_API_BASE_URL,
 // });
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+});
 
 api.interceptors.request.use(
   async (config) => {
@@ -62,6 +62,11 @@ export const confirmOrder = async (items) => {
   const res = await api.post(`/confirm-order`, { items });
   return res.status === 200 ? res : null;
 };
+export const updateLocation = async (items, email) => {
+  const res = await api.patch(`/update-location/${email}`, items );
+  return res.status === 200 ? res : null;
+};
+
 export const getconfirmOrderByEmail = async (email) => {
   const res = await api.get(`/confirm-order/${email}`);
   return res.status === 200 ? res : null;
@@ -229,6 +234,20 @@ export const getVisitor = async (date) => {
   const res = await api.get(`/visitors?date=${date}`);
   return res.status === 200 ? res.data : [];
 };
+export const getVisitorByMonth = async (year,month) => {
+  const res = await api.get(`/visitors/monthly?year=${year}&month=${month}`);
+  return res.status === 200 ? res.data : [];
+};
+export const getMonthlyConfirmOrder = async (year,month) => {
+  const res = await api.get(`/monthly-confirm-order?year=${year}&month=${month}`);
+  return res.status === 200 ? res.data : [];
+};
+export const getLiveLocation = async () => {
+  const res = await api.get(`/location`);
+  return res.status === 200 ? res.data : [];
+};
+
+
 
 // ========================promocode routers =======================
 export const postPromocode = async (data) => {

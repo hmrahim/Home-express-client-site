@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const MenuList = () => {
   return (
@@ -14,12 +14,12 @@ const MenuList = () => {
     "
     >
       <div className=" ">
-        
-        <h1 className="collapse-title text-2xl font-bold text-center ">
-          Dashboard
-        </h1>
-        <hr  className="h-1 bg-white rounded-xl"/>
-     
+        <Link to="/dashboard">
+          <h1 className="collapse-title text-2xl font-bold text-center ">
+            Dashboard
+          </h1>
+        </Link>
+        <hr className="h-1 bg-white rounded-xl" />
       </div>
       <div className="collapse collapse-plus bg-white border border-base-300">
         <input type="radio" name="my-accordion-det-" defaultChecked />
@@ -63,7 +63,6 @@ const MenuList = () => {
                 Add Products
               </NavLink>
             </li>
-           
           </ul>
           ;
         </div>
@@ -103,7 +102,10 @@ const MenuList = () => {
         <div className="collapse-content text-sm">
           <ul>
             <li className="text-black rounded-md   ">
-              <NavLink to="/dashboard/orders" className="hover:text-white  mt-1    hover:bg-gradient-to-l from-gray-600 to-gray-800">
+              <NavLink
+                to="/dashboard/orders"
+                className="hover:text-white  mt-1    hover:bg-gradient-to-l from-gray-600 to-gray-800"
+              >
                 All Orders
               </NavLink>
             </li>
@@ -153,7 +155,6 @@ const MenuList = () => {
                 Add Banner
               </NavLink>
             </li>
-         
           </ul>
           ;
         </div>
@@ -242,8 +243,6 @@ const MenuList = () => {
           ;
         </div>
       </div>
-     
-    
     </div>
   );
 };

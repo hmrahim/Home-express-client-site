@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FaCartPlus } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
@@ -16,10 +16,56 @@ import SearchBar from "./SearchBar";
 import MarqueeHeader from "./MarqueeHeader";
 import SearchModal from "../Client/Home/SearchModal";
 import GoogleTranslator from "./GoogleTranslator";
-
+import { getLiveLocation, getUserLocation } from "../../api/AllApi";
 
 const Header = ({ cemail, cart }) => {
+  const [location, setLocation] = useState(null);
+  const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
+  // const { data, isPending, error } = useQuery({
+  //   queryKey: ["location"],
+  //   queryFn: getLiveLocation,
+  //   refetchInterval: 5000, // Refetch every 5 seconds
+  // });
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
 
+      setLat(lat);
+      setLng(lng);
+    },
+    (error) => {
+      console.error("Location error:", error.message);
+    },
+    {
+      enableHighAccuracy: true, // ⭐ exact এর জন্য
+      timeout: 10000,
+    },
+  );
+
+  // const [lat,lng] = data?.location.loc.split(",") || [];
+
+  const { data, isPending } = useQuery({
+    queryKey: ["getUserLocation"],
+    queryFn: () => getUserLocation(lat, lng),
+  });
+
+
+  useEffect(() => {
+    const getLocation = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/location");
+        const data = await res.json();
+
+        setLocation(data);
+      } catch (error) {
+        console.log("Location error", error);
+      }
+    };
+
+    getLocation();
+  }, []);
 
   let [isOpen, setIsOpen] = useState(false);
   const { email } = useContext(AuthContext);
@@ -52,8 +98,11 @@ const Header = ({ cemail, cart }) => {
 
   return (
     <div className="flex flex-col fixed mt-0 z-10 opacity-95 ">
-      <div style={{height:"15px",paddingY:0}}  className="navbar bg-gradient-to-r from-green-500 to-emerald-600 text-base-100 shadow-sm fixed flex justify-between top-6 z-10 ">
-        <div className="navbar-start">
+      <div
+        style={{ height: "15px", paddingY: 0 }}
+        className="navbar bg-gradient-to-r from-green-500 to-emerald-600 text-base-100 shadow-sm fixed flex justify-between top-6 z-10 "
+      >
+        <div className="navbar-start flex gap-5">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <svg
@@ -86,8 +135,14 @@ const Header = ({ cemail, cart }) => {
             </div>
             <SearchModal isOpen={isOpen} setIsOpen={setIsOpen} />
           </Link>
+           <p>
+           Deliverd To  {data?.data.address.suburb}
+          </p>
         </div>
+      
+
         <div className="navbar-center flex justify-center items-center">
+           
           <SearchBar setIsOpen={setIsOpen} />
         </div>
 
@@ -96,7 +151,7 @@ const Header = ({ cemail, cart }) => {
           <div className="hidden lg:flex">
             <ul className="menu menu-horizontal px-1">{menu}</ul>
           </div>
-       
+
           <div className="flex justify-center items-center gap-2">
             {cemail || email ? (
               <NavLink to="/cart" className="btn btn-sm">

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import LoadingSpiner from "../Components/Loader/LoadingSpiner";
+import ReSelectLocation from "./ReSelectLocation";
 
 const ViewShippingAddress = ({data,isPending}) => {
+   let [isOpen, setIsOpen] = useState(false)
   
     
   return (
@@ -14,11 +16,14 @@ const ViewShippingAddress = ({data,isPending}) => {
  
 
         <label
+        onClick={()=> setIsOpen(true)}
           for="editAddress"
           className="text-sm text-primary cursor-pointer hover:underline peer-checked:hidden"
         >
           Edit
         </label>
+
+        <ReSelectLocation isOpen={isOpen} setIsOpen={setIsOpen} data={data}/>
 
       
       </div>
