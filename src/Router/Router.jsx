@@ -57,6 +57,17 @@ import AddBanner from "../Pages/Dashboard/Banner/AddBanner";
 import AllBanners from "../Pages/Dashboard/Banner/AllBanners";
 import UpdateBanner from "../Pages/Dashboard/Banner/UpdateBanner";
 import MarqueeManager from "../Pages/Dashboard/Marquee/marquee";
+import Quotation from "../Pages/Dashboard/Customers-Dashboard/Quotation";
+import WarningComponent from "../Pages/Client/Home/warningComponent";
+import Quotations from "../Pages/Dashboard/Quotations/Quotations";
+import QuotationProductTable from "../Pages/Dashboard/Customers-Dashboard/QuotationProductTable";
+import UpdateQuotationForm from "../Pages/Dashboard/Quotations/UpdateQuotation";
+import QuotationInvoice from "../Pages/Dashboard/Quotations/QuotationInvoice";
+import QuotList from "../Pages/Dashboard/Customers-Dashboard/QuotList";
+import EmailVerificationGuard from "../Pages/Components/EmailVerificationGuard";
+import EmailVerifiedHandler from "../Pages/Components/EmailVerifiedHandler";
+import OfferControl from "../Pages/Dashboard/Offer/OfferControl";
+import AllOffer from "../Pages/Dashboard/Offer/AllOffer";
 
 export const router = createBrowserRouter([
   {
@@ -82,6 +93,10 @@ export const router = createBrowserRouter([
       {
         path: "product-details/:id",
         Component: ProductView,
+      },
+      {
+        path: "service-not-Available",
+        Component:WarningComponent,
       },
       {
         path: "cart",
@@ -136,6 +151,14 @@ export const router = createBrowserRouter([
   {
     path: "/resetpass",
     Component: ResetPass,
+  },
+  {
+    path: "/verify-email",
+    Component: EmailVerificationGuard,
+  },
+  {
+    path: "/verified-email",
+    Component: EmailVerifiedHandler,
   },
   {
     path: "/dashboard",
@@ -214,6 +237,22 @@ export const router = createBrowserRouter([
         Component: AllPromocode,
       },
       {
+        path: "/dashboard/quotations",
+        Component: Quotations,
+      },
+      {
+        path: "/dashboard/all-quotations",
+        Component: QuotationProductTable,
+      },
+      {
+        path: "/dashboard/update-quotations/:id",
+        Component: UpdateQuotationForm,
+      },
+      {
+        path: "/dashboard/quotations-invoice/:id",
+        Component: QuotationInvoice,
+      },
+      {
         path: "/dashboard/update-promo/:id",
         Component: UpdatePromo,
       },
@@ -224,6 +263,14 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/view-emails/:id",
         Component: VIewEmail,
+      },
+      {
+        path: "/dashboard/create-offer",
+        Component: OfferControl,
+      },
+      {
+        path: "/dashboard/all-offer",
+        Component: AllOffer,
       },
 
       {
@@ -262,6 +309,10 @@ export const router = createBrowserRouter([
             Component: MyOrder,
           },
           {
+            path: "/dashboard/quotation",
+            Component: Quotation,
+          },
+          {
             path: "/dashboard/profile",
             Component: Profile,
           },
@@ -280,6 +331,10 @@ export const router = createBrowserRouter([
           {
             path: "/dashboard/current-order",
             Component: CurrentOrders,
+          },
+          {
+            path: "/dashboard/quotation-list",
+            Component: QuotList,
           },
         ],
       },

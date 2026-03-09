@@ -24,18 +24,11 @@ const OrderStatusChart = ({ ordersData }) => {
         queryFn:()=> getMonthlyConfirmOrder(year,month),
         refetchInterval:10000
       })
-      console.log(data)
+     
     
       const years = Array.from({ length: 16 }, (_, i) => 2020 + i);
       const months = Array.from({ length: 12 }, (_, i) => i + 1);
- const februaryData = [
-  { day: "1", delivered: 5, pending: 2, cancelled: 0, confirmed: 3 },
-  { day: "2", delivered: 7, pending: 1, cancelled: 1, confirmed: 4 },
-  { day: "3", delivered: 4, pending: 2, cancelled: 0, confirmed: 5 },
-  { day: "4", delivered: 8, pending: 0, cancelled: 0, confirmed: 6 },
-  { day: "5", delivered: 6, pending: 3, cancelled: 1, confirmed: 5 },
-  // ... up to day 28/30/31
-]
+
 
   return (
     <div className="bg-white p-4 rounded-lg  w-full h-96">

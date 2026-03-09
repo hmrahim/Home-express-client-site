@@ -30,7 +30,7 @@ export default function SearchBar({ setIsOpen }) {
         {/* Button */}
         <button className="bg-green-600 hover:bg-green-700 transition px-5 py-2 text-white flex items-center gap-2">
           <Search size={18} />
-          <span className="hidden md:block">Search</span>
+          <span className="">Search</span>
         </button>
       </div>
     </div>

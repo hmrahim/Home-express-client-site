@@ -26,7 +26,7 @@ const Signup = () => {
   const onSubmit = async (data) => {
     createUserWithEmailAndPassword(data.email, data.password);
     const res = await axios.post(
-      "https://moom24-backend-production.up.railway.app/api/user",
+      "https://moom24-backend.onrender.com/api/user",
       {
         name: data.name,
         email: data.email,
@@ -75,9 +75,16 @@ const Signup = () => {
                     value: true,
                     message: "Name is required",
                   },
+                  pattern:{
+                    value: /^[a-zA-Z\s]+$/,
+                    message: "Name cannot be like a email.",
+                  }
                 })}
               />
               {errors.name?.type === "required" && (
+                <span className="text-red-600">{errors.name.message}</span>
+              )}
+              {errors.name?.type === "pattern" && (
                 <span className="text-red-600">{errors.name.message}</span>
               )}
               {error && <span className="text-red-600">{error.message}</span>}
@@ -130,7 +137,7 @@ const Signup = () => {
             <div className="flex flex-col">
               <p className="text-white">
                 Already have an account?{" "}
-                <Link to="/login" className="text-blue-400">
+                <Link to="/login" className="text-white underline">
                   Login
                 </Link>
               </p>

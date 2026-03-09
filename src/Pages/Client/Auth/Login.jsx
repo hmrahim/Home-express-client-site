@@ -44,7 +44,7 @@ const Login = () => {
       signInWithGoogle();
       if (!gError) {
         await axios.post(
-          "https://moom24-backend-production.up.railway.app/api/user",
+          "https://moom24-backend.onrender.com/api/user",
           {
             name: gUser.user.displayName,
             email: gUser.user.email,
@@ -121,7 +121,7 @@ const Login = () => {
               <div className="flex flex-col">
                 <p className="text-white">
                   Dont have any account?{" "}
-                  <Link to="/signup" className="text-blue-400">
+                  <Link to="/signup" className="text-white underline">
                     Register
                   </Link>
                 </p>

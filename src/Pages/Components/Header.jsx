@@ -1,32 +1,29 @@
+// import { useQuery } from "@tanstack/react-query";
+
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, { useContext, useEffect, useState } from "react";
 import { FaCartPlus } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
-
 import { ToastContainer } from "react-toastify";
-import auth from "../../firebase.init";
 import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
-import { AuthContextDashboard } from "../Dashboard/AuthClient/AuthContextDashboard";
-import "./custom.css";
-
 import { useGetSettingsQuery } from "../../redux/features/settings/api/baseApi";
 import SearchBar from "./SearchBar";
-import MarqueeHeader from "./MarqueeHeader";
 import SearchModal from "../Client/Home/SearchModal";
-import GoogleTranslator from "./GoogleTranslator";
-import { getLiveLocation, getUserLocation } from "../../api/AllApi";
+import { getUserLocation } from "../../api/AllApi";
 
 const Header = ({ cemail, cart }) => {
-  const [location, setLocation] = useState(null);
+  const { email } = useContext(AuthContext);
+  const { data: settings } = useGetSettingsQuery();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+
+
+      const [location, setLocation] = useState(null);
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
-  // const { data, isPending, error } = useQuery({
-  //   queryKey: ["location"],
-  //   queryFn: getLiveLocation,
-  //   refetchInterval: 5000, // Refetch every 5 seconds
-  // });
+ 
+  
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const lat = position.coords.latitude;
@@ -44,120 +41,98 @@ const Header = ({ cemail, cart }) => {
     },
   );
 
-  // const [lat,lng] = data?.location.loc.split(",") || [];
 
   const { data, isPending } = useQuery({
     queryKey: ["getUserLocation"],
     queryFn: () => getUserLocation(lat, lng),
+    refetchInterval:5000
   });
 
 
-  useEffect(() => {
-    const getLocation = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/api/location");
-        const data = await res.json();
-
-        setLocation(data);
-      } catch (error) {
-        console.log("Location error", error);
-      }
-    };
-
-    getLocation();
-  }, []);
-
-  let [isOpen, setIsOpen] = useState(false);
-  const { email } = useContext(AuthContext);
-  const { data: settings, isLoading } = useGetSettingsQuery();
-
   const menu = (
     <>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-
-      <li>
-        <NavLink to="/services">Services</NavLink>
-      </li>
-      {/* <li>
-        <NavLink to="/about">About</NavLink>
-      </li> */}
-      <li>
-        <NavLink to="/contact">Contact</NavLink>
-      </li>
-      {email && (
-        <li>
-          <NavLink className="" to="/dashboard">
-            Dashboard
-          </NavLink>
-        </li>
-      )}
+      <li><NavLink to="/">Home</NavLink></li>
+      <li><NavLink to="/services">Services</NavLink></li>
+      <li><NavLink to="/contact">Contact</NavLink></li>
+      {email && <li><NavLink to="/dashboard">Dashboard</NavLink></li>}
     </>
   );
 
   return (
-    <div className="flex flex-col fixed mt-0 z-10 opacity-95 ">
-      <div
-        style={{ height: "15px", paddingY: 0 }}
-        className="navbar bg-gradient-to-r from-green-500 to-emerald-600 text-base-100 shadow-sm fixed flex justify-between top-6 z-10 "
-      >
-        <div className="navbar-start flex gap-5">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+    <div className="fixed top-0 w-full z-50">
+
+      {/* ================= UNIFIED HEADER ================= */}
+      <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white opacity-95 mt-[21px] ">
+
+        {/* TOP ROW (Location + Button) */}
+        <div className="px-4 py-1 flex  sm:flex-row justify-between items-center gap-3 border-b border-white/20">
+
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              {isPending && (
+                <span className="absolute h-6 w-6 rounded-full bg-white/40 animate-ping"></span>
+              )}
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
+                className="w-6 h-6 animate-bounce"
+                fill="currentColor"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
               >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />{" "}
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
               </svg>
             </div>
-            <ul
-              tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-gradient-to-l from-green-500 to-emerald-600 rounded-box z-1 mt-3 w-52 p-2 shadow"
-            >
+
+            <div>
+              <p className="text-xs opacity-80">Your Current Location</p>
+              <p className={`font-semibold text-md transition ${isPending ? "opacity-0" : "opacity-100"}`}>
+                {data?.data?.address?.road+","+data?.data?.address?.suburb+","+data?.data?.address?.city}
+              </p>
+            </div>
+          </div>
+
+          <NavLink
+            to="/dashboard/quotation"
+            className="px-1 py-1 text-md bg-white text-indigo-600 rounded-full font-semibold hover:bg-indigo-600 hover:text-white transition"
+          >
+            Get a Quotation →
+          </NavLink>
+        </div>
+
+        {/* MAIN NAVBAR ROW */}
+        <div className="px-4 py-1 flex justify-between items-center">
+
+          {/* LEFT */}
+          <div className="flex items-center gap-4">
+            <div className="dropdown lg:hidden">
+              <div tabIndex={0} role="button" className="btn btn-ghost text-white">
+                ☰
+              </div>
+              <ul className="menu menu-sm dropdown-content bg-green-600 rounded-box mt-3 w-52 shadow">
+                {menu}
+              </ul>
+            </div>
+
+            <Link to="/" className=" lg:flex">
+              <img className="h-10" src={settings?.logo?.displayUrl} alt="logo" />
+            </Link>
+
+            <SearchModal isOpen={isOpen} setIsOpen={setIsOpen} />
+          </div>
+
+          {/* CENTER */}
+          <div className=" lg:flex w-1/3">
+            <SearchBar setIsOpen={setIsOpen} />
+          </div>
+
+          {/* RIGHT */}
+          <div className="flex items-center gap-4">
+            <ul className="hidden lg:flex menu menu-horizontal px-1">
               {menu}
             </ul>
-          </div>
-          <Link to="/">
-            <div className=" hidden lg:flex">
-              <img className="h-12" src={settings?.logo.displayUrl} alt="" />
-              {/* <h1 className="neon-text capitalize text-4xl font-bold">{settings?.websiteName}</h1> */}
-            </div>
-            <SearchModal isOpen={isOpen} setIsOpen={setIsOpen} />
-          </Link>
-           <p>
-           Deliverd To  {data?.data.address.suburb}
-          </p>
-        </div>
-      
 
-        <div className="navbar-center flex justify-center items-center">
-           
-          <SearchBar setIsOpen={setIsOpen} />
-        </div>
-
-        {/* ================================================= */}
-        <div className="navbar-end ">
-          <div className="hidden lg:flex">
-            <ul className="menu menu-horizontal px-1">{menu}</ul>
-          </div>
-
-          <div className="flex justify-center items-center gap-2">
             {cemail || email ? (
-              <NavLink to="/cart" className="btn btn-sm">
-                {cart?.data.length}
-
-                <FaCartPlus className="text-2xl text-primary" />
+              <NavLink to="/cart" className="flex items-center gap-2 bg-white text-green-600 px-3 py-1 rounded-full font-semibold">
+                {cart?.data?.length || 0}
+                <FaCartPlus />
               </NavLink>
             ) : (
               <NavLink to="/login">Login</NavLink>
@@ -165,6 +140,7 @@ const Header = ({ cemail, cart }) => {
           </div>
         </div>
       </div>
+
       <ToastContainer />
     </div>
   );

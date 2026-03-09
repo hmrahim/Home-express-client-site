@@ -2,6 +2,7 @@ import React from "react";
 import ViewOrdersRow from "./ViewOrdersRow";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import {
+  activeOffer,
   fetchConfirmOrderById,
   fetchRider,
   updateConfirmOrderStatus,
@@ -19,12 +20,19 @@ import PaperPlainLoader from "../../Components/Loader/PaperPlainLoader";
 const ViewOrder = () => {
   const { id } = useParams();
 
+    const { data:activeOfferData, isPending:pendigActive } = useQuery({
+      queryKey: ["activeOffer"],
+      queryFn: () => activeOffer(),
+      refetchInterval: 1000,
+    });
+
   const { data, isPending } = useQuery({
     queryKey: ["fetchConfirmOrderById", id],
     queryFn: () => fetchConfirmOrderById(id),
     refetchInterval: 1000,
   });
-  // console.log(data);
+
+ 
   const deliveryFee = data?.distence <=5 ? (15).toFixed(2) : (Number(data?.distence) * 1).toFixed(2);
 
   const { data: rider, isPending: isRiderPending } = useQuery({
@@ -165,7 +173,14 @@ if(isPending){
             </div>
             <div className="flex justify-between">
               <h3>Shipping Fees</h3>   
-              <strong className="text-green-600 flex items-center"><SaudiRiyal size={18} />{" "} {deliveryFee}</strong>
+              <strong className="text-green-600 flex items-center"><SaudiRiyal size={18} />{" "} 
+              {
+                  <span>{ activeOfferData?.status === true && Number(totalAmoutWithDIscountAndWithoutDiscount)  > 200 ? "Free" : `${deliveryFee}`}</span>
+              
+              }
+              
+              
+              </strong>
             </div>
             <hr className="h-1 bg-primary my-1" />
             <div className="flex justify-between">
@@ -174,7 +189,11 @@ if(isPending){
               </h3>
               <strong className="flex items-center">
                 <SaudiRiyal size={18} />{" "}
-                {  Number(totalAmoutWithDIscountAndWithoutDiscount) + Number(deliveryFee) }
+                {
+                  
+                activeOfferData?.status === true && Number(totalAmoutWithDIscountAndWithoutDiscount)  > 200 ? Number(totalAmoutWithDIscountAndWithoutDiscount) :  (Number(totalAmoutWithDIscountAndWithoutDiscount) + Number(deliveryFee)).toFixed(2) 
+                 
+                 }
               </strong>
             </div>
           </div>

@@ -208,6 +208,26 @@ const MenuList = () => {
       <div className="collapse collapse-plus bg-white border border-base-300">
         <input type="radio" name="my-accordion-det-" defaultChecked />
         <h1 className="collapse-title font-semibold bg-gradient-to-r from-green-500 to-emerald-600">
+          Quotations
+        </h1>
+        <div className="collapse-content text-sm">
+          <ul>
+            <li className="text-black rounded-md   ">
+              <NavLink
+                to="/dashboard/quotations"
+                className="hover:text-white  mt-1    hover:bg-gradient-to-l from-gray-600 to-gray-800"
+              >
+                All Quotations
+              </NavLink>
+            </li>
+          
+          </ul>
+          ;
+        </div>
+      </div>
+      <div className="collapse collapse-plus bg-white border border-base-300">
+        <input type="radio" name="my-accordion-det-" defaultChecked />
+        <h1 className="collapse-title font-semibold bg-gradient-to-r from-green-500 to-emerald-600">
           Emails
         </h1>
         <div className="collapse-content text-sm">
@@ -218,6 +238,33 @@ const MenuList = () => {
                 className="hover:text-white  mt-1    hover:bg-gradient-to-l from-gray-600 to-gray-800"
               >
                 All Emails
+              </NavLink>
+            </li>
+          </ul>
+          ;
+        </div>
+      </div>
+      <div className="collapse collapse-plus bg-white border border-base-300">
+        <input type="radio" name="my-accordion-det-" defaultChecked />
+        <h1 className="collapse-title font-semibold bg-gradient-to-r from-green-500 to-emerald-600">
+          Offers
+        </h1>
+        <div className="collapse-content text-sm">
+          <ul>
+            <li className="text-black rounded-md   ">
+              <NavLink
+                to="/dashboard/create-offer"
+                className="hover:text-white  mt-1    hover:bg-gradient-to-l from-gray-600 to-gray-800"
+              >
+                Create Offers
+              </NavLink>
+            </li>
+            <li className="text-black rounded-md   ">
+              <NavLink
+                to="/dashboard/all-offer"
+                className="hover:text-white  mt-1    hover:bg-gradient-to-l from-gray-600 to-gray-800"
+              >
+                All Offers
               </NavLink>
             </li>
           </ul>

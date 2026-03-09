@@ -45,35 +45,22 @@ const DashHome = () => {
     return <CurrentOrders />;
   }
 
-  const visitorData = [
-    { date: "01 Feb", visitors: 120 },
-    { date: "02 Feb", visitors: 260 },
-    { date: "03 Feb", visitors: 300 },
-    { date: "04 Feb", visitors: 220 },
-    { date: "05 Feb", visitors: 350 },
-  ];
-
- 
-  const { data: visitor, isPending: pendingVisitor } = useQuery({
-    queryKey: ["getVisitors"],
-    queryFn: () => getVisitor(date),
-    refetchInterval: 1000,
-  });
-
-  return (
-    <div>
-      <div className="bg-base-200  pt-10 px-5 md:px-0 min-h-screen py-10">
-        <div className="min-h-screen  md:w-11/12 w-full  mx-auto py-5 bg-base-100 p-4 border border-success">
-          <PreBackButton title="Dashboard" /> <hr className="h-1 bg-primary" />
-          <div className="grid md:grid-cols-2 gap-12 mt-5">
-            <TraficChart data={visitorData} />
+  if (data?.rol === "admin") {
+    return (
+      <div>
+        <div className="bg-base-200  pt-10 px-5 md:px-0 min-h-screen py-10">
+          <div className="min-h-screen  md:w-11/12 w-full  mx-auto py-5 bg-base-100 p-4 border border-success">
+            <PreBackButton title="Dashboard" />{" "}
+            <hr className="h-1 bg-primary" />
+            <div className="grid md:grid-cols-2 gap-12 mt-5">
+              <TraficChart  />
          <OrderStatusChart/>
+            </div>
           </div>
-         
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default DashHome;

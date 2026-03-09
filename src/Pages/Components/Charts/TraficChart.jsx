@@ -12,27 +12,18 @@ import {
 import { getVisitorByMonth } from "../../../api/AllApi";
 import LoaderModal from "../Loader/LoaderModal";
 const TraficChart = () => {
-  let [isOpen, setIsOpen] = useState(true)
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
 
   const [year, setYear] = useState(currentYear);
   const [month, setMonth] = useState(currentMonth);
 
-  console.log(year + " " + month);
+ 
 
   const years = Array.from({ length: 16 }, (_, i) => 2020 + i);
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
-  const visitorData = [
-    { date: "01 Feb", visitors: 120 },
-    { date: "02 Feb", visitors: 210 },
-    { date: "03 Feb", visitors: 180 },
-    { date: "04 Feb", visitors: 260 },
-    { date: "05 Feb", visitors: 300 },
-    { date: "06 Feb", visitors: 220 },
-    { date: "07 Feb", visitors: 350 },
-  ];
+ 
 const {data,isPending} = useQuery({
   queryKey:["getVisitorByMonth"],
   queryFn:()=> getVisitorByMonth(year,month),

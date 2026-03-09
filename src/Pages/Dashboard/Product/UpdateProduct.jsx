@@ -23,7 +23,7 @@ const UpdateProduct = () => {
     queryKey: ["productbyid", id],
     queryFn: () =>
       axios.get(
-        `https://moom24-backend-production.up.railway.app/api/product/${id}`
+        `https://moom24-backend.onrender.com/api/product/${id}`
       ),
     refetchInterval: 1000,
   });

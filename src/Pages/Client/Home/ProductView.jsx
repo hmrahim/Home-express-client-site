@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import currency from "../../../assets/Saudi_Riyal_Symbol-1.png";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdAddLocationAlt } from "react-icons/md";
 import { FaHandHoldingHeart } from "react-icons/fa";
 import { RiGhostSmileLine } from "react-icons/ri";
@@ -17,11 +17,19 @@ import { ToastContainer, toast } from "react-toastify";
 import AuthClient from "../../Dashboard/AuthClient/AuthClient";
 import { AuthContext } from "../../Dashboard/AuthClient/AuthContext";
 import { Helmet } from "react-helmet-async";
-import { addToCartData, getProductById } from "../../../api/AllApi";
+import {
+  addToCartData,
+  getLiveLocation,
+  getProductById,
+  getUserLocation,
+} from "../../../api/AllApi";
 import Loader from "../../Components/Loader/Loader";
 import ProductImageSlider from "../../Components/ProductImageSlider";
 import ProductViewVariant from "./ProductViewVariant";
 const ProductView = () => {
+  const Navigate = useNavigate();
+  const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
   const { email, rol } = useContext(AuthContext);
   const [modal, setModal] = useState(false);
   const [vPrice, setVPrice] = useState("");
@@ -35,6 +43,28 @@ const ProductView = () => {
   const [count, setCount] = useState(Number(data?.minQty) || 1);
   const [size, setSize] = useState(data?.variants && data?.variants[0]?.size);
   const [color, setColor] = useState("");
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      setLat(lat);
+      setLng(lng);
+    },
+    (error) => {
+      console.error("Location error:", error.message);
+    },
+    {
+      enableHighAccuracy: true, // ⭐ exact এর জন্য
+      timeout: 10000,
+    },
+  );
+
+  const { data: location, isPending: pendingLocation } = useQuery({
+    queryKey: ["getUserLocation"],
+    queryFn: () => getUserLocation(lat, lng),
+  });
 
   useEffect(() => {
     if (data?.variants) {
@@ -84,18 +114,17 @@ const ProductView = () => {
       quantity: count,
       minQty: data?.minQty,
       image: data?.image,
-      size:size,
-      color:color
+      size: size,
+      color: color,
     };
 
-    mutation.mutate(items);
-    
-   
-  
+    if (location?.data.address.city !== "Riyadh") {
+      Navigate("/service-not-Available");
+    } else {
+      mutation.mutate(items);
+    }
   };
-const variantImage = data?.variants?.flatMap(item => item.images || []);
-
-
+  const variantImage = data?.variants?.flatMap((item) => item.images || []);
 
   const [int, dec] = Number(discountPrice).toFixed(2).split(".");
   const [p_int, p_dec] = Number(data?.price).toFixed(2).split(".");
@@ -123,16 +152,14 @@ const variantImage = data?.variants?.flatMap(item => item.images || []);
             <div className="flex flex-col md:flex-row gap-2">
               <AuthClient modal={modal} setModal={setModal} />
               <div className="">
-               
-                
-
                 <ProductImageSlider
-                    variants={variantImage.length > 1 ? variantImage  : data?.image  }
-                    
-                    MainPrice={data.price}
-                    quantity={data.quantity}
-                    productName={data?.name}
-                  />
+                  variants={
+                    variantImage?.length > 1 ? variantImage : data?.image
+                  }
+                  MainPrice={data?.price}
+                  quantity={data?.quantity}
+                  productName={data?.name}
+                />
               </div>
               <div className="md:w-[50%] bg-white flex flex-col gap-10">
                 <h1 className="text-2xl font-semibold text-left">
@@ -321,8 +348,12 @@ const variantImage = data?.variants?.flatMap(item => item.images || []);
                   >
                     Buy Now
                   </Link>
+
                   {email ? (
                     <button
+                      // disabled={location?.data.address.city !== "Riyadh" ? true : false
+
+                      // }
                       onClick={addToCart}
                       className="btn  rounded-none md:px-20 bg-gradient-to-r from-green-500 to-emerald-600 text-white"
                     >

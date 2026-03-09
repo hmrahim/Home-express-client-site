@@ -7,6 +7,7 @@ import PaintingItems from "./PaintingItems";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  activeOffer,
   fetchAllCategorys,
   fetchProductForUser,
   fetchSeacrhProduct,
@@ -20,6 +21,9 @@ import ProductSlider from "../../Components/ProductSlider";
 import CategoryHeader from "../../Components/CategoryHeader";
 import CoverFLowSlider from "../../Components/CoverFLowSlider";
 import { useTranslation } from "react-i18next";
+import OfferPopup from "../../Components/Offer/OfferPopup";
+import OfferBanner from "../../Components/Offer/OfferCountDown/OfferBanner";
+import OfferPopupCount from "../../Components/Offer/OfferCountDown/OfferPopupCount";
 
 const Home = () => {
   const { t, i18n } = useTranslation();
@@ -27,6 +31,12 @@ const Home = () => {
   const [catValue, setCatValue] = useState("");
 
   const parser = new UAParser(navigator.userAgent);
+
+  const { data:activeOfferData, isPending:pendigActive } = useQuery({
+    queryKey: ["activeOffer"],
+    queryFn: () => activeOffer(),
+    refetchInterval: 1000,
+  });
 
   // Parsed result object
   const result = parser.getResult();
@@ -97,6 +107,10 @@ const Home = () => {
 
   return (
     <div className="w-full">
+      {
+        activeOfferData?.status === true && <OfferPopup data={activeOfferData} />
+      }
+      
       <Helmet>
         <title> Best Online Shop in Saudi Arabia</title>
 
@@ -114,7 +128,13 @@ const Home = () => {
         <meta property="og:image" content="https://moom24.com/cover.jpg" />
         <meta property="og:url" content="https://moom24.com/" />
       </Helmet>
+
       <Banner />
+        {
+        activeOfferData?.status === true &&  <OfferBanner data={activeOfferData}/>
+      }
+     
+    <OfferPopupCount/>
 
       <CategoryHeader cat={catData} />
       {allData && (

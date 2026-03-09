@@ -14,6 +14,7 @@ import CategoryHeader from "./Pages/Components/CategoryHeader";
 
 import LoadingBar from "react-top-loading-bar";
 import MarqueeHeader from "./Pages/Components/MarqueeHeader";
+import SubHeader from "./Pages/Components/SubHeader";
 
 function App() {
   const loadingRef = useRef(null);
@@ -36,7 +37,7 @@ function App() {
     queryKey: ["userEmail"],
     queryFn: () =>
       axios.get(
-        `https://moom24-backend-production.up.railway.app/api/user/${email}`,
+        `https://moom24-backend.onrender.com/api/user/${email}`,
       ),
   });
 
@@ -91,6 +92,8 @@ function App() {
         <LoadingBar className="rounded-xl" color="linear-gradient(135deg, red, pink, yellow)" height={5} ref={loadingRef}  loaderSpeed={400}  shadow={true} />
          <MarqueeHeader />
         <Header cart={cart} />
+          {/* <SubHeader/> */}
+       
 
         <div>
           {showInstall && (

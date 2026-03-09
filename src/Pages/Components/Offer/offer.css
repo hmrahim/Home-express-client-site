@@ -1,0 +1,24 @@
+@keyframes gradientMove {
+  0% { background-position: 0% }
+  100% { background-position: 200% }
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradientMove 4s linear infinite;
+}
+
+/* Confetti */
+.confetti::before,
+.confetti::after {
+  content: "🎊 🎉 ✨ 🎈 🎁";
+  position: absolute;
+  width: 100%;
+  font-size: 22px;
+  animation: confettiFall 3s linear infinite;
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-100%); opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}

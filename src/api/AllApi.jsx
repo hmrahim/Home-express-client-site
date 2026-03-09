@@ -3,13 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { getAuth } from "firebase/auth";
 
-// const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_BASE_URL,
-// });
-
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
+
+// const api = axios.create({
+//   baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+// });
 
 api.interceptors.request.use(
   async (config) => {
@@ -336,4 +336,51 @@ export const putMarquee = async (data,editId) => {
 export const deleteMarquee = async (id) => {
   const res = await api.delete(`/marquee/${id}`);
   return res.status === 200 ? res : [];
+};
+
+// =======================quotation====================================
+
+export const postQuotation = async (quotation) => {
+  const res = await api.post(`/quotation`, quotation);
+  return res.status === 200 ? res : [];
+};
+export const getQuotation = async () => {
+  const res = await api.get(`/quotation`);
+  return res.status === 200 ? res : [];
+};
+export const getQuotationById = async (id) => {
+  const res = await api.get(`/quotation/${id}`);
+  return res.status === 200 ? res.data : [];
+};
+export const getAllQuotationByEmail = async (email) => {
+  const res = await api.get(`/quotation-all-email/${email}`);
+  return res.status === 200 ? res.data : [];
+};
+export const updateQuotation = async (data,id) => {
+  const res = await api.put(`/quotation/${id}/product`,data);
+  return res.status === 200 ? res : [];
+};
+
+
+// ===========offer api============
+
+export const postOffer = async (offer) => {
+  const res = await api.post(`/create-offer`, offer);
+  return res.status === 200 ? res : [];
+};
+export const deleteOffer = async (id) => {
+  const res = await api.delete(`/delete-offer/${id}`);
+  return res.status === 200 ? res.data : [];
+};
+export const updateOffer = async (data) => {
+  const res = await api.put(`/update-offer/${data.id}`, data);
+  return res.status === 200 ? res.data : [];
+};
+export const gettOffer = async () => {
+  const res = await api.get(`/all-offer`);
+  return res.status === 200 ? res.data : [];
+};
+export const activeOffer = async () => {
+  const res = await api.get(`/active-offer`);
+  return res.status === 200 ? res.data : [];
 };

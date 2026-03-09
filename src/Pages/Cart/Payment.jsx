@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  activeOffer,
   confirmedOrderWithPayment,
   confirmOrder,
   getDistanceApi,
@@ -20,15 +21,7 @@ import {
 import { AuthContext } from "../Dashboard/AuthClient/AuthContext";
 import OrderSummery from "./OrderSummery";
 import ViewShippingAddress from "./ViewShippingAddress";
-// import {
-//   useStripe,
-//   useElements,
-//   CardNumberElement,
-//   CardExpiryElement,
-//   CardCvcElement,
-//   CardElement,
-// } from "@stripe/react-stripe-js";
-// import { stripePromise } from "../../../stripePromise";
+
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -37,19 +30,32 @@ const Payment = () => {
   // const elements = useElements();
   const [loading, setLoading] = useState(false);
 
+
+  const { data:activeOfferData, isPending:pendigActive } = useQuery({
+    queryKey: ["activeOffer"],
+    queryFn: () => activeOffer(),
+    refetchInterval: 1000,
+  });
+
+
+
   // const email = user[0]?.email;
   const { email, cart } = useContext(AuthContext);
   const deliveryFee =
     cart?.distence <= 5
       ? (15).toFixed(2)
       : (Number(cart?.distence) * 1).toFixed(2);
-  const totalAmount = (cart?.totalAmount + Number(deliveryFee)).toFixed(2);
+
+  const totalAmount = activeOfferData?.status === true && cart?.totalAmount > 200 ? (cart?.totalAmount).toFixed(2) : (cart?.totalAmount + Number(deliveryFee)).toFixed(2);
 
   const { data, isPending } = useQuery({
     queryKey: ["getDistanceApi", email],
     queryFn: () => getDistanceApi(email),
     refetchInterval: 1000,
   });
+
+
+ 
 
   const {
     register,
@@ -91,35 +97,36 @@ const Payment = () => {
       confirmButtonText: "Yes, Confirm it",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        if (data.payment === "card") {
-          stripeMutation.mutate({ amount: totalAmount });
-          const res = stripeMutation.data;
+        // if (data.payment === "card") {
+        //   stripeMutation.mutate({ amount: totalAmount });
+        //   const res = stripeMutation.data;
 
-          const clientSecret = res?.data?.clientSecret;
+        //   const clientSecret = res?.data?.clientSecret;
 
-          const cardElement = elements.getElement(CardNumberElement);
-          const { paymentIntent, error } = await stripe.confirmCardPayment(
-            clientSecret,
-            {
-              payment_method: {
-                card: cardElement,
-                billing_details: {
-                  name: email,
-                },
-              },
-            },
-          );
+        //   const cardElement = elements.getElement(CardNumberElement);
+        //   const { paymentIntent, error } = await stripe.confirmCardPayment(
+        //     clientSecret,
+        //     {
+        //       payment_method: {
+        //         card: cardElement,
+        //         billing_details: {
+        //           name: email,
+        //         },
+        //       },
+        //     },
+        //   );
           
 
 
-          if (paymentIntent.status === "succeeded") {
-            setTransId(paymentIntent.id);
-            toast.success("Payment complete successfuly", { autoClose: 1000 });
+        //   if (paymentIntent.status === "succeeded") {
+        //     setTransId(paymentIntent.id);
+        //     toast.success("Payment complete successfuly", { autoClose: 1000 });
            
-          }
-        }
+        //   }
+        // }
 
         mutation.mutate(items);
+        // console.log(items);
 
         Swal.fire({
           title: "Confirmed!",
@@ -258,7 +265,7 @@ const Payment = () => {
                 </div>
                 <div className="flex justify-between text-black">
                   <span>Delivery Fee</span>
-                  <span>{deliveryFee}</span>
+                  <span>{ activeOfferData?.status === true && cart?.totalAmount > 200 ? "Free" : `${deliveryFee}`}</span>
                 </div>
 
                 <hr />
