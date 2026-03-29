@@ -143,7 +143,7 @@ const ProductView = () => {
 
   return (
     <div>
-      <div className="w-11/12 mx-auto my-20  text-center bg-base-200 ">
+      <div className="w-11/12 mx-auto mt-32  text-center bg-base-200 ">
         <Helmet>
           <title>Moom24-{`${data?.name}`}</title>
         </Helmet>
@@ -361,7 +361,7 @@ const ProductView = () => {
                     </button>
                   ) : (
                     <label
-                      onClick={() => modal === false && setModal(true)}
+                      onClick={() => Navigate("/login")}
                       className="btn rounded-none md:px-20 btn-primary text-center"
                     >
                       Add To Cart

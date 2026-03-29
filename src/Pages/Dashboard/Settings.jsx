@@ -8,7 +8,7 @@ import { getSettingsData, postSettingsData } from "../../api/AllApi";
 import { toast, ToastContainer } from "react-toastify";
 import { useUpdateSettingsMutation } from "../../redux/features/settings/api/baseApi";
 
-const Settings = () => {
+const GeneralSettings = () => {
   const [updateSetting, { data:dd, error:err, isLoading }] =
     useUpdateSettingsMutation();
   
@@ -81,9 +81,9 @@ const Settings = () => {
 
   return (
     <div>
-      <div className="bg-base-200  pt-10 px-5 md:px-0">
-        <div className=" md:w-4/5 w-full  mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
-          <PreBackButton title="Home Settings" />{" "}
+      <div className="">
+        <div className="   mx-auto py-5 bg-base-100 rounded-lg shadow-lg p-4 border border-success">
+          <PreBackButton title="General Settings" />{" "}
           <hr className="h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-6 mb-6 md:grid-cols-2 my-5">
@@ -362,4 +362,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default GeneralSettings;

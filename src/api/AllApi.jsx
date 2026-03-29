@@ -3,13 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { getAuth } from "firebase/auth";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-});
-
 // const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+//   baseURL: import.meta.env.VITE_API_BASE_URL,
 // });
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+});
 
 api.interceptors.request.use(
   async (config) => {
@@ -88,6 +88,10 @@ export const updateProduct = async (id, uPdata) => {
 };
 export const getAllProduct = async () => {
   const res = await api.get(`/product`);
+  return res.status === 200 ? res.data : null;
+};
+export const getAllProductByCategory = async (category) => {
+  const res = await api.get(`/product/category/${category}`);
   return res.status === 200 ? res.data : null;
 };
 export const getProductById = async (id) => {

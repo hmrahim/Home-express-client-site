@@ -8,11 +8,11 @@ import { useQuery } from "@tanstack/react-query";
 const Footer = () => {
   // const { settings } = useContext(AuthContext);
   // const {data:settings,isLoading} = useGetSettingsQuery()
-   const { data: settings, isPending: settingPending } = useQuery({
-      queryKey: ["getSettingsData"],
-      queryFn: getSettingsData,
-      refetchInterval: 1000,
-    });
+  const { data: settings, isPending: settingPending } = useQuery({
+    queryKey: ["getSettingsData"],
+    queryFn: getSettingsData,
+    refetchInterval: 1000,
+  });
 
   return (
     <div>
@@ -75,7 +75,10 @@ const Footer = () => {
                 </li>
                 <li>
                   Phone:{" "}
-                  <a href="tel:+1234567890" className="hover:text-white transition">
+                  <a
+                    href="tel:+1234567890"
+                    className="hover:text-white transition"
+                  >
                     {settings?.phone}
                   </a>
                 </li>
@@ -85,17 +88,29 @@ const Footer = () => {
               {/* <!-- Social Links --> */}
               <div className="flex space-x-4 mt-4">
                 <a href="#" className="text-white hover:text-white transition">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h11.06v-9.29H9.69v-3.62h3.14V8.41c0-3.1 1.89-4.79 4.66-4.79 1.32 0 2.46.1 2.79.14v3.24l-1.92.001c-1.51 0-1.8.72-1.8 1.77v2.32h3.6l-.47 3.62h-3.13V24h6.13c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z" />
                   </svg>
                 </a>
                 <a href="#" className="text-white hover:text-white transition">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M12 0c-6.63 0-12 5.37-12 12 0 5.3 3.44 9.79 8.2 11.38.6.11.82-.26.82-.58v-2.02c-3.34.73-4.03-1.61-4.03-1.61-.55-1.4-1.34-1.77-1.34-1.77-1.1-.75.08-.73.08-.73 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.84 1.31 3.53 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.52 11.52 0 0 1 3-.41c1.02.01 2.04.14 3 .41 2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.82.57C20.56 21.79 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
                   </svg>
                 </a>
                 <a href="#" className="text-white hover:text-white transition">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M23.954 4.569c-.885.392-1.83.656-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.949.555-2.005.959-3.127 1.184-.897-.959-2.178-1.555-3.594-1.555-2.72 0-4.924 2.204-4.924 4.924 0 .39.044.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.425.729-.666 1.577-.666 2.476 0 1.71.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.229-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.112-.849.171-1.296.171-.317 0-.626-.03-.927-.086.627 1.956 2.444 3.379 4.6 3.419-1.68 1.319-3.809 2.105-6.102 2.105-.395 0-.785-.023-1.17-.068 2.179 1.397 4.768 2.212 7.557 2.212 9.054 0 14-7.496 14-13.986 0-.21 0-.423-.016-.633.962-.695 1.8-1.562 2.46-2.549z" />
                   </svg>
                 </a>
@@ -104,8 +119,62 @@ const Footer = () => {
           </div>
 
           {/* <!-- Bottom Text --> */}
-          <div className="mt-12 border-t border-white pt-6 text-center text-white text-sm">
-            &copy; {settings?.copyright}
+          <div className="mt-12 border-t border-white pt-6 text-center text-white text-sm flex  justify-between flex-col md:flex-row">
+            <div>&copy; {settings?.copyright}</div>
+            <div>
+              <a
+                href="https://github.com/hmrahim"
+                target="_blank"
+                class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white 
+          rounded-full overflow-hidden group transition-all duration-300 transform-gpu"
+              >
+                {/* <!-- 🖤 Black Gradient Background --> */}
+                <span
+                  class="absolute inset-0 bg-gradient-to-r from-black via-gray-900 to-black 
+               group-hover:scale-110 transition-all duration-500"
+                ></span>
+
+                {/* <!-- 🌫️ Soft Glow --> */}
+                <span
+                  class="absolute inset-0 blur-md opacity-60 
+               bg-gradient-to-r from-gray-800 via-black to-gray-800 
+               group-hover:opacity-100 transition"
+                ></span>
+
+                {/* <!-- ⚡ Border Glow Ring --> */}
+                <span
+                  class="absolute inset-0 rounded-full border border-gray-600/40 
+               group-hover:border-gray-400/80 group-hover:scale-110 transition"
+                ></span>
+
+                {/* <!-- ✨ Inner Highlight --> */}
+                <span class="absolute inset-[2px] rounded-full bg-black/80 backdrop-blur-md"></span>
+
+                {/* <!-- 🎯 Content --> */}
+                <span
+                  class="relative z-10 flex items-center gap-2 
+               transition-all duration-300 group-hover:scale-110 group-hover:tracking-wider"
+                >
+                  {/* <!-- GitHub Icon --> */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-125"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.85 10.91.57.1.78-.25.78-.56 
+      0-.28-.01-1.03-.02-2.02-3.19.69-3.86-1.54-3.86-1.54-.52-1.31-1.27-1.66-1.27-1.66-1.04-.71.08-.7.08-.7 
+      1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.34.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.28-5.23-5.68 
+      0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 
+      3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.73.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.39-5.25 5.67.41.35.77 
+      1.04.77 2.1 0 1.52-.01 2.75-.01 3.13 0 .31.21.67.79.56A10.99 10.99 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"
+                    />
+                  </svg>
+                  Developed by Rahim
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </footer>

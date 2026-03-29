@@ -68,6 +68,10 @@ import EmailVerificationGuard from "../Pages/Components/EmailVerificationGuard";
 import EmailVerifiedHandler from "../Pages/Components/EmailVerifiedHandler";
 import OfferControl from "../Pages/Dashboard/Offer/OfferControl";
 import AllOffer from "../Pages/Dashboard/Offer/AllOffer";
+import SettingsLayout from "../Pages/Dashboard/Settings/SettingsLayout ";
+import GeneralSettings from "../Pages/Dashboard/Settings";
+import HomeSettings from "../Pages/Dashboard/Settings/HomeSettings";
+import Category from "../Pages/Client/Home/Category";
 
 export const router = createBrowserRouter([
   {
@@ -77,6 +81,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/category/:category",
+        element: <Category />,
       },
       {
         path: "/about",
@@ -220,10 +228,7 @@ export const router = createBrowserRouter([
         path: "/dashboard/all-users",
         Component: ALlUsers,
       },
-      {
-        path: "/dashboard/settings",
-        Component: Settings,
-      },
+    
       {
         path: "/dashboard/visitors",
         Component: Visitors,
@@ -271,6 +276,27 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/all-offer",
         Component: AllOffer,
+      },
+      {
+        path: "/dashboard/settings",
+        Component: SettingsLayout,
+        children:[
+          {
+            path:"/dashboard/settings",
+            Component: GeneralSettings,
+
+          },
+          {
+            path:"/dashboard/settings/general",
+            Component: GeneralSettings,
+
+          },
+          {
+            path:"/dashboard/settings/home-settings",
+            Component: HomeSettings,
+
+          },
+        ]
       },
 
       {

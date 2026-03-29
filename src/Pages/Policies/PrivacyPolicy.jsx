@@ -3,7 +3,7 @@ import React from 'react';
 const PrivacyPolicy = () => {
     return (
     <>
-      <div className="bg-white shadow">
+      <div className="bg-white shadow mt-32">
     <div className="max-w-4xl mx-auto px-6 py-6">
       <h1 className="text-3xl font-bold">Privacy Policy</h1>
       <p className="text-gray-500 mt-1">Your privacy matters to us</p>
@@ -25,7 +25,7 @@ const PrivacyPolicy = () => {
 
       <p className="text-gray-600">
         For any privacy-related questions, contact us at  
-        <strong>support@yourwebsite.com</strong>
+        <strong> support@moom24.com</strong>
       </p>
     </div>
   </div>

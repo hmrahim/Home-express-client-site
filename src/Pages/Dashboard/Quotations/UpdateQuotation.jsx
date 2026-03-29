@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import PreBackButton from "../../Components/PreBackButton";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function UpdateQuotation() {
   const { id } = useParams();
@@ -53,7 +54,26 @@ export default function UpdateQuotation() {
   });
   // 🔥 Submit
   const onSubmit = (data) => {
-    mutation.mutate(data.products);
+   
+
+     Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Approved!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+           mutation.mutate(data.products);
+            Swal.fire({
+              title: "Approved!",
+              text: "Your file has been Approved.",
+              icon: "success",
+            });
+          }
+        });
   };
 
   if (isLoading) {

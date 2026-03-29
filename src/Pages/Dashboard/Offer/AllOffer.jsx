@@ -22,7 +22,7 @@ const AllOffer = () => {
     refetchInterval: 1000,
   });
 
-  
+  console.log(data);
   return (
     <div className="max-w-5xl mx-auto mt-10">
       <div className="bg-white shadow-xl rounded-2xl border overflow-hidden">

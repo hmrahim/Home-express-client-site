@@ -9,7 +9,7 @@ const PolicyLayout = () => {
       <MarqueeHeader/>
         <Header/>
       
-      <main className="w-full md:w-4/5 mx-auto py-8 mt-10 bg-white rounded-xl shadow  ">
+      <main className="w-full md:w-4/5 mx-auto py-8 mt-24 bg-white rounded-xl shadow  ">
       <div className=" mx-auto py-5 flex justify-center">
           <nav className="flex gap-3">
             <NavLink

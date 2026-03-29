@@ -4,6 +4,7 @@ import { MdCategory } from "react-icons/md";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import { Link } from "react-router-dom";
 
 export default function CategoryHeader({ cat }) {
   return (
@@ -11,14 +12,14 @@ export default function CategoryHeader({ cat }) {
       <Swiper
         modules={[Navigation, Autoplay]}
         spaceBetween={12}
-        slidesPerView={3} 
-        loop={true} 
+        slidesPerView={3}
+        loop={true}
         autoplay={{
-          delay: 0, 
+          delay: 0,
           disableOnInteraction: false,
           pauseOnMouseEnter: false,
         }}
-        speed={2000} 
+        speed={2000}
         breakpoints={{
           320: { slidesPerView: 3 },
           640: { slidesPerView: 5 },
@@ -27,22 +28,24 @@ export default function CategoryHeader({ cat }) {
         }}
       >
         {cat?.map((cat) => (
-          <SwiperSlide key={cat.id}>
-            <div className="flex flex-col items-center gap-1 cursor-pointer group ">
-              <div className="w-12 h-12 overflow-hidden  rounded-full bg-transparent  flex items-center justify-center text-xl  group-hover:bg-transparent transition">
-                {cat?.image ? (
-                  <img className="h-full w-full" src={cat?.image} alt="" />
-                ) : (
-                  <p className="text-gray-800">
-                    {" "}
-                    <MdCategory />
-                  </p>
-                )}
+          <SwiperSlide key={cat?._id}>
+            <Link to={`/category/${cat?.name}`}>
+              <div className="flex flex-col items-center gap-1 cursor-pointer group ">
+                <div className="w-12 h-12 overflow-hidden  rounded-full bg-transparent  flex items-center justify-center text-xl  group-hover:bg-transparent transition">
+                  {cat?.image ? (
+                    <img className="h-full w-full" src={cat?.image} alt="" />
+                  ) : (
+                    <p className="text-gray-800">
+                      {" "}
+                      <MdCategory />
+                    </p>
+                  )}
+                </div>
+                <p className="text-md font-medium group-hover:text-green-500">
+                  {cat.name}
+                </p>
               </div>
-              <p className="text-md font-medium group-hover:text-green-500">
-                {cat.name}
-              </p>
-            </div>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

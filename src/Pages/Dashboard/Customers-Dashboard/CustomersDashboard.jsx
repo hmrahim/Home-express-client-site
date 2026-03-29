@@ -63,7 +63,7 @@ const CustomersDashboard = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <div className="w-full min-h-screen bg-gray-300 mt-28 md:mt-28 font-serif">
+      <div className="w-full min-h-screen bg-gray-300 mt-28 md:mt-32 font-serif">
         <div className="w-full md:w-5/6 mx-auto flex flex-col  md:flex-row md:flex-row-reverse  flex-col-reverse justify-around  py-5 gap-5 ">
           <div className="bg-base-100 w-full md:w-3/4  md:px-5 rounded-lg ">
             <Outlet />

@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 
 const Services = () => {
   return (
-    <div className="bg-white text-gray-800 overflow-hidden">
+    <div className="bg-white text-gray-800 overflow-hidden mt-32">
       <Helmet>
           <title>Moom24-Services</title>
       </Helmet>

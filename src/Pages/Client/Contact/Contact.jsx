@@ -27,11 +27,9 @@ const Contact = () => {
 
   const onSubmit = (data) => {
     mutation.mutate(data);
-  
-  
   };
   return (
-    <div className="bg-white text-gray-800 overflow-hidden mt-10">
+    <div className="bg-white text-gray-800 overflow-hidden mt-32">
       <Helmet>
         <title>Moom24-Contact</title>
       </Helmet>

@@ -66,7 +66,7 @@ const Navbar = () => {
             
             </li>
             <li>
-              <a>Settings</a>
+              <Link to="/dashboard/settings">Settings</Link>
             </li>
             <li>
               <Link  onClick={handleSignOut}>Logout</Link>
