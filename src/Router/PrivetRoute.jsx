@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 const PrivetRoute = ({ children }) => {
   const [user, loading] = useAuthState(auth);
-  console.log(user);
+
   
   const location = useLocation();
   if (loading ) {

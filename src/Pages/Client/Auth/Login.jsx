@@ -44,7 +44,7 @@ const Login = () => {
       signInWithGoogle();
       if (!gError) {
         await axios.post(
-          "https://moom24-backend.onrender.com/api/user",
+          "https://moom24-backend-production.up.railway.app/api/user",
           {
             name: gUser.user.displayName,
             email: gUser.user.email,

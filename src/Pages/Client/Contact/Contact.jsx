@@ -54,7 +54,7 @@ const Contact = () => {
                   <p className="text-gray-600 text-sm">
                     Speak directly with our support team
                   </p>
-                  <p className="font-medium mt-1">+966 50 123 4567</p>
+                  <p className="font-medium mt-1">+966 577839381</p>
                 </div>
               </div>
 
@@ -68,7 +68,7 @@ const Contact = () => {
                   <p className="text-gray-600 text-sm">
                     Send us your queries anytime
                   </p>
-                  <p className="font-medium mt-1">support@yourcompany.com</p>
+                  <p className="font-medium mt-1">admin@moom24.com</p>
                 </div>
               </div>
 

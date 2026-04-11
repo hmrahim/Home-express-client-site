@@ -107,9 +107,9 @@ const GeneralSettings = () => {
                     },
                   })}
                 />
-                {errors.websiteName?.type === "required" && (
+                {errors?.websiteName?.type === "required" && (
                   <span className="mt-1 text-red-600">
-                    {errors.websiteName.message}
+                    {errors?.websiteName?.message}
                   </span>
                 )}
               </div>
@@ -129,9 +129,9 @@ const GeneralSettings = () => {
                     },
                   })}
                 />
-                {errors.email?.type === "required" && (
+                {errors?.email?.type === "required" && (
                   <span className="mt-1 text-red-600">
-                    {errors.email.message}
+                    {errors?.email?.message}
                   </span>
                 )}
               </div>
@@ -143,7 +143,7 @@ const GeneralSettings = () => {
                   Facebook Url
                 </label>
                 <input
-                  defaultValue={data?.socialLinks.facebook}
+                  defaultValue={data?.socialLinks?.facebook}
                   type="url"
                   id="company"
                   className="bg-base-300 border border-gray-600 text-heading text-sm rounded-md focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -155,9 +155,9 @@ const GeneralSettings = () => {
                     },
                   })}
                 />
-                {errors.facebook?.type === "required" && (
+                {errors?.facebook?.type === "required" && (
                   <span className="mt-1 text-red-600">
-                    {errors.facebook.message}
+                    {errors?.facebook?.message}
                   </span>
                 )}
               </div>
@@ -166,7 +166,7 @@ const GeneralSettings = () => {
                   Instagram Url
                 </label>
                 <input
-                  defaultValue={data?.socialLinks.instagram}
+                  defaultValue={data?.socialLinks?.instagram}
                   type="url"
                   className="bg-base-300 border border-gray-600 text-heading text-sm rounded-md focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                   placeholder="Instagram url"
@@ -179,7 +179,7 @@ const GeneralSettings = () => {
                 />
                 {errors.instagram?.type === "required" && (
                   <span className="mt-1 text-red-600">
-                    {errors.instagram.message}
+                    {errors?.instagram?.message}
                   </span>
                 )}
               </div>
@@ -188,7 +188,7 @@ const GeneralSettings = () => {
                   Twitter Url
                 </label>
                 <input
-                  defaultValue={data?.socialLinks.twitter}
+                  defaultValue={data?.socialLinks?.twitter}
                   type="url"
                   id="website"
                   className="bg-base-300 border border-gray-600 text-heading text-sm rounded-md focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -202,7 +202,7 @@ const GeneralSettings = () => {
                 />
                 {errors.twitter?.type === "required" && (
                   <span className="mt-1 text-red-600">
-                    {errors.twitter.message}
+                    {errors?.twitter?.message}
                   </span>
                 )}
               </div>
@@ -222,9 +222,9 @@ const GeneralSettings = () => {
                     },
                   })}
                 />
-                {errors.copyright?.type === "required" && (
+                {errors?.copyright?.type === "required" && (
                   <span className="mt-1 text-red-600">
-                    {errors.copyright.message}
+                    {errors?.copyright?.message}
                   </span>
                 )}
               </div>
@@ -246,7 +246,7 @@ const GeneralSettings = () => {
                 />
                 {errors.phone?.type === "required" && (
                   <span className="mt-1 text-red-600">
-                    {errors.phone.message}
+                    {errors?.phone?.message}
                   </span>
                 )}
               </div>
@@ -266,9 +266,9 @@ const GeneralSettings = () => {
                     },
                   })}
                 />
-                {errors.address?.type === "required" && (
+                {errors?.address?.type === "required" && (
                   <span className="mt-1 text-red-600">
-                    {errors.address.message}
+                    {errors?.address?.message}
                   </span>
                 )}
               </div>
@@ -289,7 +289,7 @@ const GeneralSettings = () => {
                 ></textarea>
                 {errors.about?.type === "required" && (
                   <span className="mt-1 text-red-600">
-                    {errors.about.message}
+                    {errors?.about?.message}
                   </span>
                 )}
               </div>
@@ -314,8 +314,8 @@ const GeneralSettings = () => {
                               alt="File Icon"
                               className="mb-3"
                               src={
-                                data?.logo.displayUrl
-                                  ? data?.logo.displayUrl
+                                data?.logo?.displayUrl
+                                  ? data?.logo?.displayUrl
                                   : "https://img.icons8.com/dusk/64/000000/file.png"
                               }
                             />

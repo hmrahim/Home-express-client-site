@@ -40,7 +40,7 @@ const MyOrder = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axios.put(
-          `https://moom24-backend.onrender.com/api/cancel-order/${id}`,
+          `https://moom24-backend-production.up.railway.app/api/cancel-order/${id}`,
           { status: "cancelled" }
         );
         // if(res.status === 200){

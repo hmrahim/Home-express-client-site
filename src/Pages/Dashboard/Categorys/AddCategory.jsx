@@ -52,17 +52,29 @@ const AddCategory = () => {
     },
   });
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("image", file);
+    try {
+      let image = "";
 
-    const res = await axios.post(
-      `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
-      formData,
-    );
-    const image = res.data.data.display_url;
-    const category = { ...data, image };
+      if (file) {
+        const formData = new FormData();
+        formData.append("image", file);
 
-    mutation.mutate(category);
+        const res = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
+          formData,
+        );
+
+        image = res.data.data.display_url;
+      }
+
+      const category = image ? { ...data, image } : { ...data };
+
+      console.log(category);
+
+      mutation.mutate(category);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
   return (
     <div>

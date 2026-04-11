@@ -36,7 +36,7 @@ const CustomersDashboard = () => {
   const { data, isPending, refetch } = useQuery({
     queryKey: ["userByEmail"],
     queryFn: () =>
-      axios.get(`https://moom24-backend.onrender.com/api/user/${email}`),
+      axios.get(`https://moom24-backend-production.up.railway.app/api/user/${email}`),
   });
 
   const { data: Odata, isPending: oLoading } = useQuery({

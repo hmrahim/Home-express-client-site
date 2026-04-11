@@ -26,7 +26,7 @@ const Signup = () => {
   const onSubmit = async (data) => {
     createUserWithEmailAndPassword(data.email, data.password);
     const res = await axios.post(
-      "https://moom24-backend.onrender.com/api/user",
+      "https://moom24-backend-production.up.railway.app/api/user",
       {
         name: data.name,
         email: data.email,

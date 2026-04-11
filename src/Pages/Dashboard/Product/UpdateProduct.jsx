@@ -5,7 +5,11 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { delete_variants, fetchAllCategorys, updateProduct } from "../../../api/AllApi";
+import {
+  delete_variants,
+  fetchAllCategorys,
+  updateProduct,
+} from "../../../api/AllApi";
 import { countryApi } from "../../../api/countryApi";
 import { Helmet } from "react-helmet-async";
 import PreBackButton from "../../Components/PreBackButton";
@@ -23,13 +27,13 @@ const UpdateProduct = () => {
     queryKey: ["productbyid", id],
     queryFn: () =>
       axios.get(
-        `https://moom24-backend.onrender.com/api/product/${id}`
+        `https://moom24-backend-production.up.railway.app/api/product/${id}`,
       ),
     refetchInterval: 1000,
   });
 
   const oldImage = data?.data.image;
-  const oldVariant =  data?.data.variants;
+  const oldVariant = data?.data.variants;
 
   const {
     data: data1,
@@ -66,7 +70,7 @@ const UpdateProduct = () => {
 
     const res = await axios.post(
       `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
-      formData
+      formData,
     );
 
     setImage(res.data.data.url);
@@ -87,16 +91,12 @@ const UpdateProduct = () => {
   });
 
   const deleteMutation = useMutation({
-    mutationFn:(id)=> delete_variants(id)
+    mutationFn: (id) => delete_variants(id),
+  });
 
-  })
-
-
-const deleteVariant = (id)=> {
-  deleteMutation.mutate(id)
-}
-
-
+  const deleteVariant = (id) => {
+    deleteMutation.mutate(id);
+  };
 
   const onSubmit = async (data) => {
     // const updateImage = image !== "" ? image : oldImage;
@@ -126,11 +126,11 @@ const deleteVariant = (id)=> {
 
       const res = await axios.post(
         `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
-        formData
+        formData,
       );
 
       const data = res.data.data.url;
-      return data; // এখানে image এর link পাওয়া যাবে
+      return data;
     };
 
     const variants = await Promise.all(
@@ -138,8 +138,8 @@ const deleteVariant = (id)=> {
         const files = Array.from(variant.images || []);
         const images = await Promise.all(
           files.map((file) =>
-            typeof file === "string" ? file : uploadImage(file)
-          )
+            typeof file === "string" ? file : uploadImage(file),
+          ),
         );
         if (images) {
           setLoading(false);
@@ -151,13 +151,13 @@ const deleteVariant = (id)=> {
           stock: variant.stock,
           images: images[0],
         };
-      })
+      }),
     );
 
-    const up_varient = variants[0] ? variants : oldVariant
+    const up_varient = variants[0] ? variants : oldVariant;
 
-    const uData = { ...form, variants:up_varient };
-  
+    const uData = { ...form, variants: up_varient };
+
     mutation.mutate(uData);
 
     // if (image === "") {
@@ -412,7 +412,7 @@ const deleteVariant = (id)=> {
 
               {data?.data?.variants[0] ? (
                 <div className="w-full overflow-x-auto">
-                   <legend className="fieldset-legend"> Product Variants</legend>
+                  <legend className="fieldset-legend"> Product Variants</legend>
                   <table className="w-full border-b border-gray-700 rounded-lg text-center">
                     {/* <!-- Table Head --> */}
                     <thead className="bg-gray-700 text-gray-200 ">
@@ -447,7 +447,10 @@ const deleteVariant = (id)=> {
                               {variant?.price}
                             </td>
                             <td className=" whitespace-nowrap py-2">
-                              <button onClick={()=> deleteVariant(variant?._id)}  className="btn btn-xs btn-error text-white">
+                              <button
+                                onClick={() => deleteVariant(variant?._id)}
+                                className="btn btn-xs btn-error text-white"
+                              >
                                 Delete
                               </button>
                             </td>

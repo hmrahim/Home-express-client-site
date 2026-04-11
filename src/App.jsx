@@ -37,7 +37,7 @@ function App() {
     queryKey: ["userEmail"],
     queryFn: () =>
       axios.get(
-        `https://moom24-backend.onrender.com/api/user/${email}`,
+        `https://moom24-backend-production.up.railway.app/api/user/${email}`,
       ),
   });
 
