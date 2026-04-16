@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Product.css";
-import { SaudiRiyal } from "lucide-react";
+import { SaudiRiyal, Heart, Star } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 const SliderCard = ({ product, refetch }) => {
@@ -16,89 +15,94 @@ const SliderCard = ({ product, refetch }) => {
 
   return (
     <>
+      <style jsx>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%) skewX(-12deg); }
+          100% { transform: translateX(100%) skewX(-12deg); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-2px); }
+        }
+        @keyframes bounce-slow {
+          0%, 60%, 100% { transform: translateY(0); }
+          30% { transform: translateY(-8px); }
+        }
+        @keyframes wiggle {
+          0%, 100% { transform: rotate(0deg); }
+          25% { transform: rotate(1deg); }
+          75% { transform: rotate(-1deg); }
+        }
+        @keyframes pulse-glow {
+          0% { box-shadow: 0 0 5px rgba(16,185,129,0.3); }
+          50% { box-shadow: 0 0 15px rgba(16,185,129,0.6); }
+          100% { box-shadow: 0 0 5px rgba(16,185,129,0.3); }
+        }
+        .animate-shimmer { animation: shimmer 2s infinite linear; }
+        .animate-float { animation: float 2s ease-in-out infinite; }
+        .animate-bounce-slow { animation: bounce-slow 2s infinite; }
+        .animate-wiggle { animation: wiggle 0.4s ease-in-out; }
+        
+        .gradient-text {
+          background: linear-gradient(135deg, #10b981, #059669);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      `}</style>
+
       <Helmet>
         <title>{product?.name} price in Saudi Arabia</title>
-
-        <meta
-          name="description"
-          content={`Buy ${product?.name} at best price`}
-        />
-
-        <link
-          rel="canonical"
-          href={`https://moom24.com/product-details/${product?._id}`}
-        />
+        <meta name="description" content={`Buy ${product?.name} at best price`} />
+        <link rel="canonical" href={`https://moom24.com/product-details/${product?._id}`} />
       </Helmet>
 
-      <div className="rounded-xl p-[1px] bg-gradient-to-r from-green-500 to-emerald-600">
+      <div className="group  relative rounded-xl p-[1px] bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 transition-all duration-500 hover:shadow-xl hover:shadow-emerald-400/30 hover:scale-[1.02]">
+     
+        
         <Link to={`/product-details/${product?._id}`}>
-          <div className="  relative bg-base-100 hover:shadow-4xl  relative p-2 duration-300 rounded-xl border-2">
-            <figure className="overflow-hidden rounded-xl flex justify-center items-center">
+          <div className=" relative bg-base-100 hover:shadow-2xl p-5 duration-300 rounded-xl border hover:border-emerald-200 transition-all bg-gradient-to-b from-white/80 to-slate-50/80 backdrop-blur-sm ">
+            
+            {/* Image - Fixed Height */}
+            <figure className="overflow-hidden rounded-xl flex justify-center items-center mb-2 gap-5">
               <img
-                className="max-h-[150px] min-h-[150px] w-[180px] mx-5  image-full hover:scale-150 transition-all"
+                className="max-h-[150px] min-h-[150px] w-[180px] mx-2 hover:scale-110 hover:rotate-[1deg] transition-all duration-500 hover:brightness-110 object-cover group-hover:contrast-110"
                 src={product?.image}
                 alt={product?.name}
                 loading="lazy"
               />
+              
+           
+
+              {/* Discount Badge */}
+              {product?.discount && (
+                <div className="absolute top-0 right-0 bg-gradient-to-r from-red-500 to-pink-500 text-white px-2 py-1 rounded-tr-xl rounded-bl-xl  text-xs font-bold  shadow-lg">
+                  {product?.discount}% OFF
+                </div>
+              )}
             </figure>
 
-            <div className=" ">
-              <h1 className=" capitalize text-center text-[16px] md:text-lg ">
-                {truncate(product?.name, 20)}
-              </h1>
+            {/* Product Name */}
+            <h1 className="capitalize text-center text-sm md:text-base font-semibold mb-2 px-1 leading-tight group-hover:text-emerald-700 transition-all duration-300">
+              <span className="gradient-text hover:font-bold">{truncate(product?.name, 20)}</span>
+            </h1>
 
-              <div className="flex flex-col w-full">
-                <div className="flex items-center  ">
-                  <div className="flex justify-between items-end w-full">
-                    {product?.discount ? (
-                      <h2 className="text-2xl  flex items-center text-gray-600">
-                        <sub>
-                          <SaudiRiyal size={20} />
-                        </sub>
-                        <del className="flex">
-                          <p>{p_int}</p>{" "}
-                          {p_dec > 0 && (
-                            <p className="text-[12px] font-normal">.{p_dec}</p>
-                          )}
-                        </del>
-                      </h2>
-                    ) : (
-                      ""
-                    )}
-                    {product?.discount ? (
-                      <h2 className=" flex items-center">
-                        <SaudiRiyal size={28} />
-                        <p className="text-4xl font-bold">{int}</p>
-                        {dec > 0 && (
-                          <p className="text-sm font-normal">.{dec}</p>
-                        )}
-                      </h2>
-                    ) : (
-                      <h2 className="text-4xl font-bold flex items-center">
-                        <sub>
-                          <SaudiRiyal size={20} />
-                        </sub>
-                        <p className="flex">
-                          <p>{p_int}</p>{" "}
-                          {p_dec > 0 && (
-                            <p className="text-[12px] font-normal">.{p_dec}</p>
-                          )}
-                        </p>
-                      </h2>
-                    )}
-                  </div>
-
-                  {product?.discount ? (
-                    <h2 className=" bg-gradient-to-r from-green-500 to-emerald-600 px-2 py-1 rounded-bl-xl rounded-tr-xl text-white font-semibold absolute top-0  right-0 animate-pulse">
-                      {" "}
-                      {product?.discount}% Off
-                    </h2>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
+            {/* Price Section */}
+            <div className="flex items-center justify-between gap-2">
+              {product?.discount ? (
+                <h2 className="text-lg text-gray-500 animate-float flex items-center justify-center">
+                  <SaudiRiyal size={16} />
+                  <del className="ml-1">{p_int}.{p_dec || '00'}</del>
+                </h2>
+              ) : null}
+              
+              <h2 className="flex items-center animate-float">
+                <SaudiRiyal size={24} className="text-emerald-600 pulse-glow mr-1" />
+                <span className="text-3xl font-black gradient-text drop-shadow-sm">{int}</span>
+                <span className="text-sm font-medium text-emerald-600 ml-1">.{dec || '00'}</span>
+              </h2>
             </div>
+
           </div>
         </Link>
       </div>

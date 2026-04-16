@@ -72,6 +72,7 @@ import SettingsLayout from "../Pages/Dashboard/Settings/SettingsLayout ";
 import GeneralSettings from "../Pages/Dashboard/Settings";
 import HomeSettings from "../Pages/Dashboard/Settings/HomeSettings";
 import Category from "../Pages/Client/Home/Category";
+import ProfileComponent from "../Pages/Dashboard/Profile/ProfileComponent";
 
 export const router = createBrowserRouter([
   {
@@ -276,6 +277,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/all-offer",
         Component: AllOffer,
+      },
+      {
+        path: "/dashboard/profile",
+        Component: ProfileComponent,
       },
       {
         path: "/dashboard/settings",

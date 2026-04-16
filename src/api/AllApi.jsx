@@ -3,13 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
 import { getAuth } from "firebase/auth";
 
-// const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_BASE_URL,
-// });
-
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
+
+// const api = axios.create({
+//   baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+// });
 
 api.interceptors.request.use(
   async (config) => {
@@ -40,6 +40,10 @@ export const getAllUser = async (user) => {
 };
 export const getUserByEmail = async (email) => {
   const res = await api.get(`/user/${email}`);
+  return res.status === 200 ? res : null;
+};
+export const deletedUser = async (id) => {
+  const res = await api.delete(`/user/${id}`);
   return res.status === 200 ? res : null;
 };
 export const updateUserRoll = async (data) => {

@@ -3,13 +3,16 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { updateUserRoll } from "../../../api/AllApi";
+import { deletedUser, updateUserRoll } from "../../../api/AllApi";
 import { toast } from "react-toastify";
+import { useDeleteUser } from "react-firebase-hooks/auth";
+import Auth from "../../../firebase.init";
+import { getAuth, deleteUser } from "firebase/auth";
 
 const UserRow = ({ users, refetch, index }) => {
   const [rol, setRol] = useState("");
- 
-
+  const [deleteUser, loading, error] = useDeleteUser(Auth);
+const user = Auth.currentUser;
   const mutation = useMutation({
     mutationFn: (data) => updateUserRoll(data),
     onSuccess: (res) => {
@@ -21,8 +24,36 @@ const UserRow = ({ users, refetch, index }) => {
   });
 
   const updateRol = () => {
-    const data = { rol: rol ,email:users?.email};
+    const data = { rol: rol, email: users?.email };
     mutation.mutate(data);
+  };
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deletedUser(id)
+   
+  });
+
+  const deleteUserById = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+      //  await deleteUser(user)
+        deleteMutation.mutate(id);
+    
+        // axios.delete(`https://moom24-backend-production.up.railway.app/api/category/${id}`);
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+    });
   };
 
   refetch();
@@ -57,8 +88,8 @@ const UserRow = ({ users, refetch, index }) => {
           Edit
         </Link>
         <button
-          disabled
-          onClick={() => deleteCategory(users._id)}
+        
+          onClick={() => deleteUserById(users._id)}
           className="btn btn-xs btn-error"
         >
           Delete

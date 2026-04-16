@@ -62,8 +62,9 @@ const Navbar = () => {
             tabIndex="-1"
             className="menu menu-sm dropdown-content bg-primary text-white rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
+          
             <li>
-            
+              <Link to="/dashboard/settings">Profile</Link>
             </li>
             <li>
               <Link to="/dashboard/settings">Settings</Link>

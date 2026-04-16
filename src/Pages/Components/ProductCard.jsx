@@ -17,93 +17,111 @@ const ProductCard = ({ product, refetch }) => {
   return (
     <>
       <Helmet>
-     
         <meta
           name="description"
           content={`Buy ${product?.name} at best price`}
         />
-
         <link
           rel="canonical"
           href={`https://moom24.com/product-details/${product?._id}`}
         />
       </Helmet>
 
-      <div className="rounded-xl p-[1px] bg-gradient-to-r from-green-500 to-emerald-600">
-        <div className=" h-[320px] relative bg-base-100 hover:shadow-2xl  relative p-2 duration-300 rounded-xl border-2">
-          <figure className="overflow-hidden rounded-xl flex justify-center items-center">
+      <div className="group relative overflow-hidden rounded-xl p-[1.5px] bg-gradient-to-r from-emerald-500/80 to-green-500/80 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.01] before:absolute before:inset-0 before:bg-gradient-to-r before:from-emerald-400/30 before:to-green-400/30 before:blur-lg before:opacity-0 group-hover:before:opacity-100">
+        
+        {/* Inner Card - Compact Height */}
+        <div className="relative h-[400px] bg-white/95 hover:bg-emerald-50/80 p-4 rounded-xl border border-emerald-100/50 backdrop-blur-sm transition-all duration-500 hover:shadow-glow-sm hover:border-emerald-200/70">
+         
+
+          {/* Compact Image */}
+          <div className="relative h-[150px] mx-auto mb-2 overflow-hidden rounded-xl shadow-lg border-2 border-white/60 hover:border-emerald-200/80 transition-all duration-500">
+            <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
             <img
-              className="max-h-[180px] min-h-[180px] w-[180px] mx-5 h-full image-full hover:scale-150 transition-all"
+              className="w-full h-full object-contain p-2 transition-all duration-700 group-hover:scale-105 hover:brightness-110 shadow-md rounded-xl"
               src={product?.image}
               alt={product?.name}
-              loading="lazy" 
+              loading="lazy"
             />
-          </figure>
+            {/* Shine Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-x-full group-hover:translate-x-full"></div>
+          </div>
 
-          <div className=" ">
-            <h1 className=" capitalize text-center text-[16px] md:text-lg ">
-              {truncate(product?.name, 20)}
+          {/* Compact Content */}
+          <div className="space-y-3 text-center relative z-10 px-1">
+            
+            {/* Compact Name */}
+            <h1 className="font-semibold text-base md:text-lg leading-tight bg-gradient-to-r from-gray-800 to-gray-700 bg-clip-text text-transparent hover:from-emerald-600 hover:to-green-600 transition-all duration-300 capitalize">
+              {truncate(product?.name, 25)}
             </h1>
 
-            <div className="flex flex-col w-full">
-              <div className="flex items-center  ">
-                <div className="flex justify-between items-end w-full">
-                  {product?.discount ? (
-                    <h2 className="text-2xl  flex items-center text-gray-600">
-                      <sub>
-                        <SaudiRiyal size={20} />
-                      </sub>
-                      <del className="flex">
-                        <p>{p_int}</p>{" "}
-                        {p_dec > 0 && (
-                          <p className="text-[12px] font-normal">.{p_dec}</p>
-                        )}
-                      </del>
-                    </h2>
-                  ) : (
-                    ""
-                  )}
-                  {product?.discount ? (
-                    <h2 className=" flex items-center">
-                      <SaudiRiyal size={28} />
-                      <p className="text-4xl font-bold">{int}</p>
-                      {dec > 0 && <p className="text-sm font-normal">.{dec}</p>}
-                    </h2>
-                  ) : (
-                    <h2 className="text-4xl font-bold flex items-center">
-                      <sub>
-                        <SaudiRiyal size={20} />
-                      </sub>
-                      <p className="flex">
-                        <p>{p_int}</p>{" "}
-                        {p_dec > 0 && (
-                          <p className="text-[12px] font-normal">.{p_dec}</p>
-                        )}
-                      </p>
-                    </h2>
-                  )}
-                </div>
-
-                {product?.discount ? (
-                  <h2 className=" bg-gradient-to-r from-green-500 to-emerald-600 px-2 py-1 rounded-bl-xl rounded-tr-xl text-white font-semibold absolute top-0  right-0 animate-pulse">
-                    {" "}
-                    {product?.discount}% Off
-                  </h2>
-                ) : (
-                  ""
+            {/* Compact Price */}
+            <div className="p-3 bg-white/90 rounded-xl shadow-md border border-emerald-100 hover:border-emerald-200 hover:shadow-glow-price transition-all duration-300 hover:scale-[1.01]">
+              <div className="flex items-end justify-center space-x-2 mb-1">
+                
+                {/* Original Price */}
+                {product?.discount && (
+                  <div className="flex items-center space-x-1">
+                    <SaudiRiyal className="text-gray-400 w-4 h-4" />
+                    <span className="text-lg font-medium text-gray-400 line-through">
+                      {p_int}{p_dec > 0 && <span className="text-xs">.{p_dec}</span>}
+                    </span>
+                  </div>
                 )}
+                
+                {/* Discount Price */}
+                <div className="flex items-end space-x-1">
+                  <SaudiRiyal className="text-emerald-600 w-6 h-6" />
+                  <div className="flex items-baseline">
+                    <span className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                      {int}
+                    </span>
+                    {dec > 0 && (
+                      <span className="text-sm font-medium text-emerald-600 -mt-1">.{dec}</span>
+                    )}
+                  </div>
+                </div>
               </div>
-
-              <Link
-                to={`/product-details/${product?._id}`}
-                className="absolute bottom-0 left-0 right-0 btn btn-md bg-gradient-to-r from-green-500 to-emerald-600 text-white  w-full mt-2 rounded-b-xl rounded-none"
-              >
-                Buy Now
-              </Link>
+              
+              {/* Compact Savings */}
+              {product?.discount && (
+                <div className="bg-gradient-to-r from-emerald-500 to-green-500 text-white text-xs font-semibold px-2.5 py-1 rounded-lg shadow-sm w-full">
+                  Save {product?.discount}%!
+                </div>
+              )}
             </div>
+
+            {/* Slim Compact Button */}
+            <Link
+              to={`/product-details/${product?._id}`}
+              className="group/btn block w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-semibold py-2.5 px-6 rounded-xl shadow-lg hover:shadow-glow-btn border hover:border-emerald-400/50 transform hover:-translate-y-1 transition-all duration-400 uppercase tracking-wide text-sm before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:-skew-x-12 before:-translate-x-full group-hover/btn:before:translate-x-full before:transition-transform before:duration-700"
+            >
+              <span className="flex items-center justify-center space-x-1.5 group-hover/btn:scale-105 transition-transform duration-300">
+                <span>Buy Now</span>
+                <svg className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
+            </Link>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.8; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.02); }
+        }
+        .animate-pulse { animation: pulse-slow 2s ease-in-out infinite; }
+        .shadow-glow-sm {
+          box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.4);
+        }
+        .shadow-glow-price {
+          box-shadow: 0 12px 25px -8px rgba(16, 185, 129, 0.3);
+        }
+        .shadow-glow-btn {
+          box-shadow: 0 12px 30px -8px rgba(16, 185, 129, 0.5);
+        }
+      `}</style>
     </>
   );
 };

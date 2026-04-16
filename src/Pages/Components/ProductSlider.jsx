@@ -8,11 +8,11 @@ import { fetchProductForUser } from "../../api/AllApi";
 import { useQuery } from "@tanstack/react-query";
 import SliderCard from "./SliderCard";
 
-export default function ProductSlider({ title ,data}) {
+export default function ProductSlider({ title, data }) {
   const product = data?.slice(0, 15);
-    
+
   return (
-    <div className="w-full mx-auto px-4 py-8">
+    <div className="w-full mx-auto px-4 py-10">
       
       {/* Section Title */}
       <div className="flex justify-between items-center mb-4">
@@ -26,7 +26,7 @@ export default function ProductSlider({ title ,data}) {
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
-          reverseDirection: true,   // 👉 Right to Left
+          reverseDirection: true,
         }}
         navigation={true}
         spaceBetween={15}
@@ -38,7 +38,7 @@ export default function ProductSlider({ title ,data}) {
         }}
       >
         {product?.map((product) => (
-          <SwiperSlide key={product._id}>
+          <SwiperSlide key={product._id} className="p-2">
             <SliderCard product={product} />
           </SwiperSlide>
         ))}

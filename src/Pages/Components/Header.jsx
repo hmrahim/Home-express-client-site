@@ -1,5 +1,3 @@
-// import { useQuery } from "@tanstack/react-query";
-
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useEffect, useState } from "react";
 import { FaCartPlus } from "react-icons/fa6";
@@ -10,44 +8,34 @@ import { useGetSettingsQuery } from "../../redux/features/settings/api/baseApi";
 import SearchBar from "./SearchBar";
 import SearchModal from "../Client/Home/SearchModal";
 import { getUserLocation } from "../../api/AllApi";
+import AnimatedQuotationButton from "./AnimatedQuotationButton/AnimatedQuotationButton";
 
 const Header = ({ cemail, cart }) => {
   const { email } = useContext(AuthContext);
   const { data: settings } = useGetSettingsQuery();
 
   const [isOpen, setIsOpen] = useState(false);
-
-
-
-      const [location, setLocation] = useState(null);
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
- 
-  
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
 
-      setLat(lat);
-      setLng(lng);
-    },
-    (error) => {
-      console.error("Location error:", error.message);
-    },
-    {
-      enableHighAccuracy: true, // ⭐ exact এর জন্য
-      timeout: 10000,
-    },
-  );
-
+  // 🌍 Location
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+      },
+      (error) => console.error(error),
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }, []);
 
   const { data, isPending } = useQuery({
-    queryKey: ["getUserLocation"],
+    queryKey: ["getUserLocation", lat, lng],
     queryFn: () => getUserLocation(lat, lng),
-    refetchInterval:5000
+    enabled: !!lat && !!lng,
+    refetchInterval: 5000,
   });
-
 
   const menu = (
     <>
@@ -59,13 +47,16 @@ const Header = ({ cemail, cart }) => {
   );
 
   return (
-    <div className="fixed top-0 w-full z-50">
+    <div className="fixed top-0 w-full z-50 overflow-visible">
 
-      {/* ================= UNIFIED HEADER ================= */}
-      <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white opacity-95 mt-[21px] ">
+      {/* 🌿 ANIMATED BACKGROUND */}
+      <div className="absolute inset-0 -z-20 animated-header-bg"></div>
 
-        {/* TOP ROW (Location + Button) */}
-        <div className="px-4 py-1 flex  sm:flex-row justify-between items-center gap-3 border-b border-white/20">
+      {/* ================= HEADER ================= */}
+      <div className="relative text-white opacity-95 mt-[21px]">
+
+        {/* TOP ROW */}
+        <div className="px-4 py-1 flex sm:flex-row justify-between items-center gap-3 border-b border-white/20">
 
           <div className="flex items-center gap-2">
             <div className="relative">
@@ -84,34 +75,34 @@ const Header = ({ cemail, cart }) => {
             <div>
               <p className="text-xs opacity-80">Your Current Location</p>
               <p className={`font-semibold text-md transition ${isPending ? "opacity-0" : "opacity-100"}`}>
-                {data?.data?.address?.road+","+data?.data?.address?.suburb+","+data?.data?.address?.city}
+                {data?.data?.address?.road},
+                {data?.data?.address?.suburb},
+                {data?.data?.address?.city}
               </p>
             </div>
           </div>
 
-          <NavLink
-            to="/dashboard/quotation"
-            className="px-1 py-1 text-md bg-white text-indigo-600 rounded-full font-semibold hover:bg-indigo-600 hover:text-white transition"
-          >
-            Get a Quotation →
-          </NavLink>
+          <AnimatedQuotationButton />
         </div>
 
-        {/* MAIN NAVBAR ROW */}
+        {/* MAIN NAVBAR */}
         <div className="px-4 py-1 flex justify-between items-center">
 
           {/* LEFT */}
           <div className="flex items-center gap-4">
-            <div className="dropdown lg:hidden">
+
+            {/* 🍔 MOBILE MENU FIXED */}
+            <div className="dropdown lg:hidden relative z-[9999]">
               <div tabIndex={0} role="button" className="btn btn-ghost text-white">
                 ☰
               </div>
-              <ul className="menu menu-sm dropdown-content bg-green-600 rounded-box mt-3 w-52 shadow">
+
+              <ul className="menu menu-sm dropdown-content bg-green-600 rounded-box mt-3 w-52 shadow z-[9999] relative">
                 {menu}
               </ul>
             </div>
 
-            <Link to="/" className=" lg:flex">
+            <Link to="/">
               <img className="h-10" src={settings?.logo?.displayUrl} alt="logo" />
             </Link>
 
@@ -119,7 +110,7 @@ const Header = ({ cemail, cart }) => {
           </div>
 
           {/* CENTER */}
-          <div className=" lg:flex w-1/3">
+          <div className="lg:flex w-1/3">
             <SearchBar setIsOpen={setIsOpen} />
           </div>
 
@@ -130,7 +121,10 @@ const Header = ({ cemail, cart }) => {
             </ul>
 
             {cemail || email ? (
-              <NavLink to="/cart" className="flex items-center gap-2 bg-white text-green-600 px-3 py-1 rounded-full font-semibold">
+              <NavLink
+                to="/cart"
+                className="flex items-center gap-2 bg-white text-green-600 px-3 py-1 rounded-full font-semibold"
+              >
                 {cart?.data?.length || 0}
                 <FaCartPlus />
               </NavLink>
@@ -142,6 +136,28 @@ const Header = ({ cemail, cart }) => {
       </div>
 
       <ToastContainer />
+
+      {/* 🌿 ANIMATED BACKGROUND CSS */}
+      <style jsx>{`
+        @keyframes bgMove {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .animated-header-bg {
+          background: linear-gradient(
+            -45deg,
+            #16a34a,
+            #10b981,
+            #059669,
+            #047857,
+            #22c55e
+          );
+          background-size: 400% 400%;
+          animation: bgMove 10s ease infinite;
+        }
+      `}</style>
     </div>
   );
 };
