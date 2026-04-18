@@ -9,7 +9,7 @@ import { fetchSeacrhProduct } from "../../../api/AllApi";
 export default function QuotationForm() {
   const [query, setQuery] = useState("");
 
-  const [showDropdown, setShowDropdown] = useState(true);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const [showFields, setShowFields] = useState(false);
   const [cartProducts, setCartProducts] = useState([]);
@@ -113,6 +113,7 @@ export default function QuotationForm() {
               value={query}
               onChange={(e) => { setQuery(e.target.value); }}
               onFocus={() => setShowDropdown(true)}
+              onBlur={()=> setShowDropdown(false)}
               placeholder="Product Name"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />

@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useSignOut } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
+import { useQuery } from "@tanstack/react-query";
+import { getProfileData } from "../../api/AllApi";
+import { AuthContextDashboard } from "./AuthClient/AuthContextDashboard";
 
 
 const Navbar = () => {
+    const { email } = useContext(AuthContextDashboard);
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
   // const [signOut] = useSignOut(auth);
@@ -15,6 +19,12 @@ const Navbar = () => {
     signOut(auth);
     navigate('/')
   }
+
+    const { data, isPending } = useQuery({
+      queryKey: ["getProfileData", email],
+      queryFn: () => getProfileData(email),
+      refetchInterval: 5000,
+    });
   return (
     <div className="navbar bg-gradient-to-r from-green-500 to-emerald-600  text-primary-content fixed top-0 z-10">
       <div className="navbar-start">
@@ -54,7 +64,7 @@ const Navbar = () => {
             <div className="w-10 rounded-full">
               <img
                 alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                src={` ${data?.image ? data?.image : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} `}
               />
             </div>
           </div>
@@ -64,7 +74,7 @@ const Navbar = () => {
           >
           
             <li>
-              <Link to="/dashboard/settings">Profile</Link>
+              <Link to="/dashboard/profile">Profile</Link>
             </li>
             <li>
               <Link to="/dashboard/settings">Settings</Link>

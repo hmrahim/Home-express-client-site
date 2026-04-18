@@ -344,6 +344,10 @@ export const router = createBrowserRouter([
             Component: Quotation,
           },
           {
+            path: "/dashboard/procile-customer",
+            Component: ProfileComponent,
+          },
+          {
             path: "/dashboard/profile",
             Component: Profile,
           },

@@ -392,3 +392,15 @@ export const activeOffer = async () => {
   const res = await api.get(`/active-offer`);
   return res.status === 200 ? res.data : [];
 };
+
+
+
+export const updateProfile = async (data,email) => {
+  const res = await api.patch(`/update-profile/${email}`,data);
+  return res.status === 200 ? res : [];
+};
+
+export const getProfileData = async (email) => {
+  const res = await api.get(`/update-profile/${email}`);
+  return res.status === 200 ? res.data : [];
+};

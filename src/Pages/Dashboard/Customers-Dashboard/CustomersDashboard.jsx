@@ -64,15 +64,15 @@ const CustomersDashboard = () => {
         <title>Dashboard</title>
       </Helmet>
       <div className="w-full min-h-screen bg-gray-300 mt-28 md:mt-32 font-serif">
-        <div className="w-full md:w-5/6 mx-auto flex flex-col  md:flex-row md:flex-row-reverse  flex-col-reverse justify-around  py-5 gap-5 ">
-          <div className="bg-base-100 w-full md:w-3/4  md:px-5 rounded-lg ">
+        <div className="w-full md:w-11/12 mx-auto flex flex-col  md:flex-row md:flex-row-reverse  flex-col-reverse justify-around  py-5 gap-5 ">
+          <div className="bg-base-100 w-full md:w-3/4  md:px-5 rounded-lg md:py-5">
             <Outlet />
           </div>
 
           <div className="bg-base-100 md:w-1/4 w-full px-2  rounded-lg">
             <div className=" rounded-xl overflow-hidden   flex flex-col items-center shadow-lg bg-white font-Roboto-light">
               <div className="bg-primary relative h-32 md:h-24 rounded-lg mt-2 w-full ">
-                <div className="md:max-w-36 md:max-h-36 max-w-40 max-h-40 rounded-full absolute top-10   left-36 md:left-14 md:top-4 overflow-hidden rounded-full shadow-gray-400  shadow-xl border border-primary border-4">
+                <div className="md:max-w-36 md:max-h-36 max-w-40 max-h-40 rounded-full absolute top-10   left-40 md:left-16 md:top-4 overflow-hidden rounded-full shadow-gray-400  shadow-xl border border-primary border-4">
                   <img className="" src={profile} alt="" />
                 </div>
               </div>
@@ -81,7 +81,7 @@ const CustomersDashboard = () => {
                   {data?.data.name}
                 </h1>
                 <p className="text-center font-bold m-0">{data?.data.email}</p>
-                <Link className="btn btn-xs btn-primary ">Edit Profile</Link>
+                <Link to="/dashboard/procile-customer" className="btn btn-xs btn-primary ">Edit Profile</Link>
                 <div className="divider"></div>
               </div>
               <div>
